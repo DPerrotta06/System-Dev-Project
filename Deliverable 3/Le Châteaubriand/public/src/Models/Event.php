@@ -36,4 +36,58 @@ class Event {
             eventType: (string) $bean->eventType,
         );
     }
+
+    //Map Admin object to bean
+    public function toBean(): object
+{
+    $bean = R::dispense('event'); // assumes your table is 'event'
+
+    $bean->eventId          = $this->eventId;
+    $bean->clientId         = $this->clientId;         // FK to client
+    $bean->ballroomId       = $this->ballroomId;
+    $bean->menuId           = $this->menuId;
+    $bean->barId            = $this->barId;
+    $bean->eventDate        = $this->eventDate->format('Y-m-d');
+    $bean->guestQuantity    = $this->guestQuantity;
+    $bean->eventDescription = $this->eventDescription;
+    $bean->eventStatus      = $this->eventStatus;
+    $bean->eventTime        = $this->eventTime->format('H:i:s');
+    $bean->eventType        = $this->eventType;
+
+    return $bean;
+}
+
+//CRUD operations
+    public function createEvent(): void
+    {
+        $bean = R::dispense('event');
+        $bean->import($this->toBean());
+        R::store($bean);
+    }
+
+    public static function getEvent(int $eventId): ?self
+    {
+        $bean = R::load('event', $eventId);
+        if ($bean->id === 0) {
+            return null; 
+        }
+        return self::fromBean($bean);
+    }
+
+    public function updateEvent(): ?self
+    {
+        $bean = R::load('event', $this->eventId);
+        if ($bean->id === 0) {
+            throw new \Exception("Event with ID {$this->eventId} not found.");
+        }
+        $bean->import($this->toBean());
+        R::store($bean);
+        return $this;
+    }
+
+    public static function deleteEvent(int $eventId): void
+    {
+        R::trash('event', $eventId);
+    }
+
 }
