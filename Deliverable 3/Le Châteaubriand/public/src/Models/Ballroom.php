@@ -31,5 +31,4 @@ class Ballroom
             pictures:   (array)  $bean->pictures,
         );
     }
-
 }
