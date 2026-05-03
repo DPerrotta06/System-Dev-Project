@@ -30,14 +30,14 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . '/var/chateaubriand.sql'; 
-R::setup('sqlite', $dbPath);
+$dbPath = __DIR__ . '/var/chateaubriand.db'; 
+R::setup('sqlite' . $dbPath);
 R::exec('PRAGMA foreign_keys = ON;');       
 R::freeze(false);
 
 
 //TEMPLATE ENGINE ───────────────────────────────────────────────────────
-$loader = new FilesystemLoader(__DIR__ . '/templates');
+$loader = new FilesystemLoader(__DIR__ . 'public/src/Templates');
 $twig = new Environment($loader, ['cache' => false, 'auto_reload' => true,]);
 
 
@@ -68,7 +68,6 @@ $container->set(ClientController::class,       fn() => new ClientController($twi
 $container->set(BookingController::class,      fn() => new BookingController($twig, $basePath));
 $container->set(MenuController::class,         fn() => new MenuController($twig, $basePath));
 $container->set(FloorPlanningController::class,fn() => new FloorPlanningController($twig, $basePath));
-$container->set(GoogleReviewsController::class,fn() => new GoogleReviewsController());
 
 
 //APPLICATION ───────────────────────────────────────────────────────────
