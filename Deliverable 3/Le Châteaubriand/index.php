@@ -19,12 +19,18 @@ use Symfony\Component\Translation\Translator;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
+use App\Controllers\BookingController;
+use App\Controllers\EventController;
+use App\Controllers\ClientController;
+use App\Controllers\MenuController;
+use App\Controllers\FloorPlanningController;
+use App\Controllers\GoogleReviewsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . 'var/chateaubriand.sql'; 
+$dbPath = __DIR__ . '/var/chateaubriand.sql'; 
 R::setup('sqlite', $dbPath);
 R::exec('PRAGMA foreign_keys = ON;');       
 R::freeze(false);
@@ -55,6 +61,14 @@ $container->set(AuthController::class, fn() => new AuthController(
     new OtpService(), // a new OtpService instance
     $basePath // the $basePath string
 ));
+
+// Register other controllers in the container
+$container->set(EventController::class,        fn() => new EventController($twig, $basePath));
+$container->set(ClientController::class,       fn() => new ClientController($twig, $basePath));
+$container->set(BookingController::class,      fn() => new BookingController($twig, $basePath));
+$container->set(MenuController::class,         fn() => new MenuController($twig, $basePath));
+$container->set(FloorPlanningController::class,fn() => new FloorPlanningController($twig, $basePath));
+$container->set(GoogleReviewsController::class,fn() => new GoogleReviewsController());
 
 
 //APPLICATION ───────────────────────────────────────────────────────────
@@ -98,6 +112,42 @@ $app->add(new SecurityHeadersMiddleware());
 //HTML ROUTES ───────────────────────────────────────────────────────────
 $app->get('/', [PageController::class, 'showLandingPage']);
 
+// Public booking routes
+$app->get('/booking', [BookingController::class, 'showForm']);
+$app->post('/booking', [BookingController::class, 'submit']);
+$app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation']);
+
+// Event, client, menu and floor-planning (admin)
+$app->get('/events', [EventController::class, 'index']);
+$app->get('/events/{id}', [EventController::class, 'show']);
+$app->post('/events/{id}/status', [EventController::class, 'updateStatus']);
+$app->post('/events/{id}/delete', [EventController::class, 'delete']);
+
+$app->get('/clients', [ClientController::class, 'index']);
+$app->get('/clients/{id}', [ClientController::class, 'show']);
+$app->get('/clients/{id}/edit', [ClientController::class, 'edit']);
+$app->post('/clients/{id}/edit', [ClientController::class, 'update']);
+$app->post('/clients/{id}/delete', [ClientController::class, 'delete']);
+
+$app->get('/menus', [MenuController::class, 'index']);
+$app->get('/menus/{id}', [MenuController::class, 'show']);
+$app->get('/menus/{id}/edit', [MenuController::class, 'edit']);
+$app->post('/menus/{id}/edit', [MenuController::class, 'update']);
+
+$app->get('/floor-planning', [FloorPlanningController::class, 'index']);
+$app->get('/floor-planning/{id}', [FloorPlanningController::class, 'show']);
+$app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit']);
+$app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
+
+// Reviews: render via GoogleReviewsController helper
+$app->get('/review', function (Request $request, Response $response) use ($twig, $basePath) {
+    $reviewsCtrl = new GoogleReviewsController();
+    $data = $reviewsCtrl->getReviews();
+    $html = $twig->render('reviews.html.twig', ['reviews' => $data, 'base_path' => $basePath, 'app_lang' => $_SESSION['lang'] ?? 'en']);
+    $response->getBody()->write($html);
+    return $response;
+});
+
 
 //LANGUAGE ROUTE ────────────────────────────────────────────────────────
 $app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath) {
@@ -105,14 +155,14 @@ $app->get('/lang/{locale}', function (Request $request, Response $response, arra
     if (in_array($args['locale'], $allowed)) {
         $_SESSION['lang'] = $args['locale'];
     }
-    return $response->withHeader('Location', $basePath . '/todos')->withStatus(302); //REDIRECTION
+    return $response->withHeader('Location', $basePath . '/')->withStatus(302); //REDIRECTION
 });
 
 
 //AUTH ROUTES ───────────────────────────────────────────────────────────
 $app->get('/auth', [AuthController::class, 'showForm']);
 $app->post('/auth/request', [AuthController::class, 'requestOtp']);
-$app->get('auth/verify', [AuthController::class, 'showVerify']);
+$app->get('/auth/verify', [AuthController::class, 'showVerify']);
 $app->post('/auth/verify',  [AuthController::class, 'verifyOtp']);
 $app->post('/auth/logout',  [AuthController::class, 'logout']);
 
