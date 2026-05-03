@@ -24,8 +24,9 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . 'var/chateaubriand.db'; //THIS COULD CHANGE!!!
+$dbPath = __DIR__ . 'var/chateaubriand.sql'; 
 R::setup('sqlite', $dbPath);
+R::exec('PRAGMA foreign_keys = ON;');       
 R::freeze(false);
 
 

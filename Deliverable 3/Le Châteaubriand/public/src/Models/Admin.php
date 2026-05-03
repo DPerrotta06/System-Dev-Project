@@ -9,9 +9,9 @@ class Admin{
         public int $adminId,
         public string $username,
         public string $email,
-        public string $password,
+        public string $passwordHash,
         public string $twoFactorCode,
-        public DateTime $factorCodeExpiration 
+        public DateTime $codeExpiration 
     )
     {
         throw new \Exception('Not implemented');
@@ -19,11 +19,10 @@ class Admin{
     public static function fromBean(object $bean){
         return new self(
             adminId: (int) $bean-> id,
-            username: (string) $bean-> string,
             email: (string) $bean-> string,
-            password: (string) $bean-> string,
+            passwordHash: (string) $bean-> string,
             twoFactorCode: (string) $bean-> string,
-            factorCodeExpiration: new DateTime($bean->eventTime),
+            codeExpiration: new DateTime($bean->eventTime),
         );
     }
 
@@ -32,11 +31,10 @@ class Admin{
     {
         return (object)[
             'id'         => $this->adminId,
-            'username'   => $this->username,
-            'firstName'  => $this->email,
-            'lastName'   => $this->password,
-            'email'      => $this->twoFactorCode,
-            'phoneNumber'=> $this->factorCodeExpiration,
+            'email'  => $this->email,
+            'passwordHash'   => $this->passwordHash,
+            'twoFactorCode'      => $this->twoFactorCode,
+            'codeExpiration'=> $this->codeExpiration,
         ];
     }
 

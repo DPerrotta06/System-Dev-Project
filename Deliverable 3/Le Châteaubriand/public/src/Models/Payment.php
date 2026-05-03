@@ -9,12 +9,10 @@ class Payment {
         public int $paymentId,
         public int $eventId,
         public float $amountPaid,
-        public DateTime $paymentDate,
-        public float $amountLeft,
+        public DateTime $nextPaymentDue,
         public string $paymentMethod,
         public string $paymentPlan,
-        public float $depositAmount,
-        public float $depositPaid,
+        public float $depositRequired,
         public float $totalPrice
     )
     {
@@ -30,8 +28,7 @@ class Payment {
             amountLeft: (float) $bean->amountLeft,
             paymentMethod: (string) $bean->paymentMethod,
             paymentPlan: (string) $bean->paymentPlan,
-            depositAmount: (float) $bean->depositAmount,
-            depositPaid: (float) $bean->depositPaid,
+            depositRequired: (float) $bean->depositRequired,
             totalPrice: (float) $bean->totalPrice,
         );
     }
@@ -43,12 +40,11 @@ class Payment {
             'paymentId'     => $this->paymentId,
             'eventId'       => $this->eventId,
             'amountPaid'    => $this->amountPaid,
-            'paymentDate'   => $this->paymentDate->format('Y-m-d'),
+            'nextPaymentDue' => $this->nextPaymentDue->format('Y-m-d'),
             'amountLeft'    => $this->amountLeft,
             'paymentMethod' => $this->paymentMethod,
             'paymentPlan'   => $this->paymentPlan,
-            'depositAmount' => $this->depositAmount,
-            'depositPaid'   => $this->depositPaid,
+            'depositRequired' => $this->depositRequired,
             'totalPrice'    => $this->totalPrice,
         ];
     }

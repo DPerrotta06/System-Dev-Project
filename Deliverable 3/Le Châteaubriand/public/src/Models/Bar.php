@@ -7,10 +7,10 @@ use DateTime;
 class Bar {
     public function __construct(
         public int $barId,
-        public string $type,
+        public string $barType,
         public ?float $pricePerPerson,
-        public ?DateTime $barOpenTime,
-        public ?DateTime $barCloseTime
+        public ?DateTime $openTime,
+        public ?DateTime $closeTime
     )
     {
         throw new \Exception('Not implemented');
@@ -19,10 +19,10 @@ class Bar {
     public static function fromBean(object $bean){
         return new self(
             barId: (int) $bean->barId,
-            type: (string) $bean->type,
+            barType: (string) $bean->barType,
             pricePerPerson: isset($bean->pricePerPerson) ? (float) $bean->pricePerPerson : null,
-            barOpenTime: isset($bean->barOpenTime) ? new DateTime($bean->barOpenTime) : null,
-            barCloseTime: isset($bean->barCloseTime) ? new DateTime($bean->barCloseTime) : null,
+            openTime: isset($bean->openTime) ? new DateTime($bean->openTime) : null,
+            closeTime: isset($bean->closeTime) ? new DateTime($bean->closeTime) : null,
         );
     }
 
@@ -31,10 +31,10 @@ class Bar {
     {
         return (object)[
             'barId'          => $this->barId,
-            'type'           => $this->type,
+            'type'           => $this->barType,
             'pricePerPerson' => $this->pricePerPerson,
-            'barOpenTime'    => $this->barOpenTime?->format('Y-m-d H:i:s'),
-            'barCloseTime'   => $this->barCloseTime?->format('Y-m-d H:i:s'),
+            'openTime'       => $this->openTime?->format('Y-m-d H:i:s'),
+            'closeTime'      => $this->closeTime?->format('Y-m-d H:i:s'),
         ];
     }
 

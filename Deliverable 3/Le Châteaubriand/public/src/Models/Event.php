@@ -12,9 +12,9 @@ class Event {
         public ?int $menuId,
         public ?int $barId,
         public DateTime $eventDate,
-        public int $guestQuantity,
-        public string $eventDescription,
-        public string $eventStatus,
+        public int $guestCount,
+        public string $description,
+        public string $status,
         public DateTime $eventTime,
         public string $eventType
     )
@@ -29,9 +29,9 @@ class Event {
             menuId: $bean->menuId ? (int) $bean->menuId : null,
             barId: $bean->barId ? (int) $bean->barId : null,
             eventDate: new DateTime($bean->eventDate),
-            guestQuantity: (int) $bean->guestQuantity,
-            eventDescription: (string) $bean->eventDescription,
-            eventStatus: (string) $bean->eventStatus,
+            guestCount: (int) $bean->guestCount,
+            description: (string) $bean->description,
+            status: (string) $bean->status,
             eventTime: new DateTime($bean->eventTime),
             eventType: (string) $bean->eventType,
         );
@@ -48,9 +48,9 @@ class Event {
     $bean->menuId           = $this->menuId;
     $bean->barId            = $this->barId;
     $bean->eventDate        = $this->eventDate->format('Y-m-d');
-    $bean->guestQuantity    = $this->guestQuantity;
-    $bean->eventDescription = $this->eventDescription;
-    $bean->eventStatus      = $this->eventStatus;
+    $bean->guestCount       = $this->guestCount;
+    $bean->description      = $this->description;
+    $bean->status           = $this->status;
     $bean->eventTime        = $this->eventTime->format('H:i:s');
     $bean->eventType        = $this->eventType;
 
