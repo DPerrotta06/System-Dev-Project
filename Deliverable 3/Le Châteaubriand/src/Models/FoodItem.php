@@ -8,7 +8,7 @@ class FoodItem {
     public function __construct(
         public int $itemId,
         public string $itemName,
-        public int $itemCategory,
+        public int $categoryId,
         public float $itemPrice,
         public ?float $extraPrice
     )
@@ -20,7 +20,7 @@ class FoodItem {
         return new self(
             itemId: (int) $bean->itemId,
             itemName: (string) $bean->itemName,
-            itemCategory: (int) $bean->itemCategory,
+            categoryId: (int) $bean->categoryId,
             itemPrice: (float) $bean->itemPrice,
             extraPrice: isset($bean->extraPrice) ? (float) $bean->extraPrice : null,
         );
@@ -32,7 +32,7 @@ class FoodItem {
         return (object)[
             'itemId'      => $this->itemId,
             'itemName'    => $this->itemName,
-            'itemCategory'=> $this->itemCategory,
+            'categoryId'  => $this->categoryId,
             'itemPrice'   => $this->itemPrice,
             'extraPrice'  => $this->extraPrice,
         ];

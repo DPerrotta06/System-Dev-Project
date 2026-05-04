@@ -12,23 +12,25 @@ class Ballroom
 {
     public function __construct(
         public int    $ballroomId,
-        public string $name,
+        public string $roomName,
         public int $minCapacity,
         public int $maxCapacity,
         public int  $maxCapacity,
         public int $sizeSqFt,
-        public array $pictures,
+        public string $picturesPath,
+        public string $arrangementPath,
     ) {}
 
     public static function fromBean(object $bean): self
     {
         return new self(
             ballroomId:  (int)    $bean->id,
-            name:        (string) $bean->name,
+            roomName:        (string) $bean->roomName,
             minCapacity: (int)    $bean->minCapacity,
             maxCapacity: (int)    $bean->maxCapacity,
             sizeSqFt:   (int)    $bean->sizeSqFt,
-            pictures:   (array)  $bean->pictures,
+            picturesPath:   (string)  $bean->picturesPath,
+            arrangementPath: (string) $bean->arrangementPath,
         );
     }
 }
