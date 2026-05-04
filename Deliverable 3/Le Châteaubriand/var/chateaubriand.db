@@ -1,0 +1,209 @@
+PRAGMA foreign_keys = ON;
+
+-- ADMIN
+CREATE TABLE admin (
+  adminId INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL UNIQUE,
+  passwordHash BLOB NOT NULL,
+  twoFactorCode TEXT NOT NULL,
+  codeExpiration TEXT NOT NULL,
+  CHECK (twoFactorCode GLOB '[0-9][0-9][0-9][0-9][0-9][0-9]')
+);
+
+-- CLIENT
+CREATE TABLE client (
+  clientId INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstName TEXT NOT NULL,
+  lastName TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  phoneNumber TEXT NOT NULL
+);
+
+-- BALLROOM
+CREATE TABLE ballroom (
+  ballroomId INTEGER PRIMARY KEY AUTOINCREMENT,
+  roomName TEXT NOT NULL UNIQUE,
+  minCapacity INTEGER NOT NULL,
+  maxCapacity INTEGER NOT NULL,
+  sizeSqFt INTEGER NOT NULL,
+  picturesPath TEXT NOT NULL,
+  arrangementPath TEXT,
+  CHECK (maxCapacity >= minCapacity)
+);
+
+-- FOOD CATEGORY
+CREATE TABLE foodCategory (
+  categoryId INTEGER PRIMARY KEY AUTOINCREMENT,
+  categoryName TEXT NOT NULL UNIQUE
+);
+
+-- FOOD ITEM
+CREATE TABLE foodItem (
+  itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+  itemName TEXT NOT NULL UNIQUE,
+  itemPrice REAL NOT NULL,
+  extraPrice REAL NOT NULL DEFAULT 0.00,
+  categoryId INTEGER NOT NULL,
+  FOREIGN KEY (categoryId) REFERENCES foodCategory (categoryId)
+);
+
+-- MENU
+CREATE TABLE menu (
+  menuId INTEGER PRIMARY KEY AUTOINCREMENT,
+  menuName TEXT NOT NULL UNIQUE,
+  pricePerPerson REAL NOT NULL DEFAULT 0.00
+);
+
+-- MENU FOOD ITEM
+CREATE TABLE menuFoodItem (
+  menuId INTEGER NOT NULL,
+  itemId INTEGER NOT NULL,
+  PRIMARY KEY (menuId, itemId),
+  FOREIGN KEY (menuId) REFERENCES menu (menuId),
+  FOREIGN KEY (itemId) REFERENCES foodItem (itemId)
+);
+
+-- BAR
+CREATE TABLE bar (
+  barId INTEGER PRIMARY KEY AUTOINCREMENT,
+  barType TEXT NOT NULL CHECK (barType IN ('Free','Paid','Premium')),
+  pricePerPerson REAL NOT NULL DEFAULT 0.00,
+  openTime TEXT,
+  closeTime TEXT,
+  CHECK (
+    closeTime IS NULL OR openTime IS NULL OR closeTime > openTime
+  )
+);
+
+-- SERVICES
+CREATE TABLE services (
+  serviceId INTEGER PRIMARY KEY AUTOINCREMENT,
+  serviceName TEXT NOT NULL,
+  serviceEmail TEXT NOT NULL,
+  servicePhone TEXT NOT NULL,
+  serviceDescription TEXT NOT NULL,
+  serviceType TEXT NOT NULL
+);
+
+-- EVENT
+CREATE TABLE event (
+  eventId INTEGER PRIMARY KEY AUTOINCREMENT,
+  clientId INTEGER NOT NULL,
+  ballroomId INTEGER NOT NULL,
+  menuId INTEGER,
+  barId INTEGER,
+  eventDate TEXT NOT NULL,
+  eventTime TEXT NOT NULL,
+  guestCount INTEGER NOT NULL,
+  eventType TEXT NOT NULL,
+  description TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'Pending'
+    CHECK (status IN ('Pending','Confirmed','Cancelled','Completed','Declined')),
+  FOREIGN KEY (clientId) REFERENCES client (clientId),
+  FOREIGN KEY (ballroomId) REFERENCES ballroom (ballroomId),
+  FOREIGN KEY (menuId) REFERENCES menu (menuId),
+  FOREIGN KEY (barId) REFERENCES bar (barId)
+);
+
+-- EVENT SERVICE
+CREATE TABLE eventService (
+  eventId INTEGER NOT NULL,
+  serviceId INTEGER NOT NULL,
+  PRIMARY KEY (eventId, serviceId),
+  FOREIGN KEY (eventId) REFERENCES event (eventId),
+  FOREIGN KEY (serviceId) REFERENCES services (serviceId)
+);
+
+-- PAYMENT
+CREATE TABLE payment (
+  paymentId INTEGER PRIMARY KEY AUTOINCREMENT,
+  eventId INTEGER NOT NULL UNIQUE,
+  totalPrice REAL NOT NULL,
+  depositRequired REAL NOT NULL DEFAULT 0.00,
+  amountPaid REAL NOT NULL DEFAULT 0.00,
+  paymentPlan TEXT NOT NULL DEFAULT 'Full'
+    CHECK (paymentPlan IN ('Full','Installments')),
+  paymentMethod TEXT NOT NULL,
+  nextPaymentDue TEXT,
+  FOREIGN KEY (eventId) REFERENCES event (eventId),
+  CHECK (depositRequired <= totalPrice),
+  CHECK (amountPaid <= totalPrice)
+);
+
+-- VIEWS
+
+CREATE VIEW v_event_summary AS
+SELECT
+  e.eventId,
+  e.eventDate,
+  e.eventTime,
+  e.status,
+  e.eventType,
+  e.guestCount,
+  e.description,
+
+  c.firstName || ' ' || c.lastName AS clientName,
+  c.email AS clientEmail,
+  c.phoneNumber AS clientPhone,
+
+  b.roomName AS ballroom,
+  b.minCapacity,
+  b.maxCapacity,
+
+  m.menuName,
+  m.pricePerPerson AS menuPricePerPerson,
+
+  ba.barType,
+  ba.pricePerPerson AS barPricePerPerson,
+  ba.openTime AS barOpen,
+  ba.closeTime AS barClose,
+
+  p.totalPrice,
+  p.depositRequired,
+  p.amountPaid,
+  (p.totalPrice - p.amountPaid) AS amountLeft,
+  p.paymentPlan,
+  p.paymentMethod,
+  p.nextPaymentDue
+
+FROM event e
+JOIN client c ON c.clientId = e.clientId
+JOIN ballroom b ON b.ballroomId = e.ballroomId
+LEFT JOIN menu m ON m.menuId = e.menuId
+LEFT JOIN bar ba ON ba.barId = e.barId
+LEFT JOIN payment p ON p.eventId = e.eventId;
+
+CREATE VIEW v_event_services AS
+SELECT
+  es.eventId,
+  s.serviceId,
+  s.serviceName,
+  s.serviceType,
+  s.serviceEmail,
+  s.servicePhone,
+  s.serviceDescription
+FROM eventService es
+JOIN services s ON s.serviceId = es.serviceId;
+
+CREATE VIEW v_menu_items AS
+SELECT
+  m.menuId,
+  m.menuName,
+  m.pricePerPerson,
+  fc.categoryName,
+  fi.itemId,
+  fi.itemName,
+  fi.itemPrice,
+  fi.extraPrice
+FROM menu m
+JOIN menuFoodItem mfi ON mfi.menuId = m.menuId
+JOIN foodItem fi ON fi.itemId = mfi.itemId
+JOIN foodCategory fc ON fc.categoryId = fi.categoryId
+ORDER BY m.menuName, fc.categoryName, fi.itemName;
+
+-- INDEXES
+CREATE INDEX idx_event_date   ON event (eventDate);
+CREATE INDEX idx_event_status ON event (status);
+CREATE INDEX idx_event_client ON event (clientId);
+CREATE INDEX idx_client_name  ON client (lastName, firstName);
+CREATE INDEX idx_payment_due  ON payment (nextPaymentDue);

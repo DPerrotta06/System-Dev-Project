@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}2FA — Le Châteaubriand{% endblock %}
+{% block main_class %}p-0{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center"
+     style="min-height:100vh;">
+
+    <div class="cb-card" style="max-width:400px;width:100%;">
+
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="fw-bold mb-0">Two-Factor Authentication</h5>
+            <a href="{{ path_admin_login ?? (base_path|default('') ~ '/auth') }}"
+               class="text-muted">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+
+        {% if error is defined and error %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST"
+              action="{{ twofa_action ?? (base_path|default('') ~ '/auth/verify') }}">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token ?? '' }}">
+
+            <p class="text-muted small mb-3">
+                Enter the 6-digit code from your authenticator
+            </p>
+
+            <input type="text"
+                   name="code"
+                   class="form-control text-center mb-3"
+                   maxlength="6"
+                   placeholder="123456"
+                   required>
+
+            <button class="btn btn-cb-primary w-100">
+                Verify
+            </button>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}

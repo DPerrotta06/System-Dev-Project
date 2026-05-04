@@ -1,0 +1,60 @@
+{#
+    _admin_navbar.html.twig
+    Include this in admin pages: {% include 'admin/_admin_navbar.html.twig' %}
+#}
+<nav class="cb-navbar d-flex align-items-center justify-content-between">
+
+    {# Brand #}
+    <a href="{{ path_dashboard ?? (base_path|default('') ~ '/clients') }}" class="navbar-brand">
+        <i class="bi bi-building brand-icon"></i>
+        Le Châteaubriand
+    </a>
+
+    {# Right side links #}
+    <div class="d-flex align-items-center gap-1">
+        <a href="{{ path_calendar ?? (base_path|default('') ~ '/events') }}"
+           class="nav-link {% if active_page == 'calendar' %}active{% endif %}">
+            <i class="bi bi-calendar3"></i> Calendar
+        </a>
+
+        <a href="{{ path_reviews ?? (base_path|default('') ~ '/review') }}"
+           class="nav-link">
+            <i class="bi bi-star"></i> Reviews
+        </a>
+
+        {# Logout with confirmation modal trigger #}
+        <button type="button"
+                class="nav-link btn btn-link text-decoration-none d-flex align-items-center gap-1"
+                data-bs-toggle="modal" data-bs-target="#logoutModal"
+                style="color:var(--cb-text);">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+
+        <span class="nav-link text-muted" style="cursor:default;">
+            <i class="bi bi-person-circle"></i>
+            {{ admin_username ?? 'Admin User' }}
+        </span>
+    </div>
+</nav>
+
+{# Logout confirmation modal #}
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:380px;">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-muted" style="font-size:0.92rem;">
+                Are you sure you want to log out of the admin panel?
+            </div>
+            <div class="modal-footer border-0 pt-0 gap-2">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">No</button>
+                <form method="POST" action="{{ path_logout ?? (base_path|default('') ~ '/auth/logout') }}" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token ?? '' }}">
+                    <button type="submit" class="btn btn-cb-primary px-4">Yes, Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

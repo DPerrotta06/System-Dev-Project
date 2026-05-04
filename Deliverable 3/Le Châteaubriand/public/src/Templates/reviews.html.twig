@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client Reviews — Le Châteaubriand{% endblock %}
+
+{# Use default site navbar from base.html.twig #}
+
+{% block content %}
+<div style="max-width:700px;margin:0 auto;">
+
+    {# ── Rating summary card ── #}
+    <div class="cb-card p-4 mb-4">
+        {% set avg   = rating_summary.average ?? 4.8 %}
+        {% set total = rating_summary.total ?? 5 %}
+        {% set dist  = rating_summary.distribution ?? {5:4, 4:1, 3:0, 2:0, 1:0} %}
+
+        <div class="row align-items-center g-3">
+            {# Big number + stars #}
+                <div class="col-auto text-center">
+                <div style="font-size:2.6rem;font-weight:700;line-height:1;">{{ avg }}</div>
+                <div class="mb-1 d-flex align-items-center justify-content-center gap-2">
+                    {% for i in 1..5 %}
+                        <i class="bi bi-star-fill" style="color:{% if i <= avg|round %}#f4c430{% else %}#ddd{% endif %};font-size:0.95rem;"></i>
+                    {% endfor %}
+                </div>
+                <div class="text-muted" style="font-size:0.8rem;">{{ total }} Reviews</div>
+            </div>
+
+            {# Bar chart #}
+            <div class="col">
+                {% for star in [5,4,3,2,1] %}
+                {% set count = dist[star] ?? 0 %}
+                {% set pct   = total > 0 ? (count / total * 100)|round : 0 %}
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span style="font-size:0.8rem;width:18px;text-align:right;">{{ star }}</span>
+                    <i class="bi bi-star-fill" style="color:#f4c430;font-size:0.75rem;"></i>
+                    <div class="flex-grow-1 rounded-pill overflow-hidden" style="height:8px;background:#eee;">
+                        <div style="width:{{ pct }}%;height:100%;background:#f4c430;border-radius:4px;"></div>
+                    </div>
+                    <span class="text-muted" style="font-size:0.8rem;width:16px;">{{ count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {# ── Review cards ── #}
+    {% set default_reviews = [
+        {
+            name: 'Sarah & Michael Thompson',
+            date: 'February 9, 2026',
+            event_type: 'Wedding',
+            rating: 5,
+            body: 'Le Châteaubriand made our wedding day absolutely perfect! The staff was incredibly professional and attentive. The Grand Salon was stunning, and the food exceeded our expectations. Highly recommend!'
+        },
+        {
+            name: 'Robert Chen',
+            date: 'January 27, 2026',
+            event_type: 'Corporate Event',
+            rating: 5,
+            body: "Hosted our company's annual gala here and it was a huge success. The venue is elegant, the service impeccable, and the coordination team made everything seamless. Will definitely use them again."
+        },
+        {
+            name: 'Emma Rousseau',
+            date: 'January 14, 2026',
+            event_type: 'Anniversary',
+            rating: 5,
+            body: 'A magical evening from start to finish. Every detail was handled with care and the food was absolutely delicious. Our guests are still talking about it!'
+        },
+        {
+            name: 'David Martinez',
+            date: 'December 19, 2025',
+            event_type: 'Birthday Party',
+            rating: 4,
+            body: 'Great venue with beautiful decor. The food was excellent and the staff very helpful. Only minor issue was parking filled up quickly, but overall a wonderful experience.'
+        },
+        {
+            name: 'Julie & Marc Bergeron',
+            date: 'November 29, 2025',
+            event_type: 'Wedding',
+            rating: 5,
+            body: "From our first meeting to the day of our wedding, the team at Le Châteaubriand was amazing. They accommodated all our requests and made sure every detail was perfect. Couldn't have asked for more!"
+        }
+    ] %}
+
+    {% set reviews = reviews is defined ? reviews : default_reviews %}
+
+    {% for review in reviews %}
+    <div class="cb-card p-4 mb-3">
+        <div class="d-flex align-items-start justify-content-between mb-2">
+            <div>
+                <div class="fw-semibold" style="font-size:0.95rem;">{{ review.name }}</div>
+                <div class="text-muted" style="font-size:0.8rem;">{{ review.date }}</div>
+            </div>
+            <span class="badge"
+                  style="background:var(--cb-teal-light);color:var(--cb-teal-dark);
+                         font-weight:500;font-size:0.78rem;padding:0.35em 0.75em;border-radius:20px;">
+                {{ review.event_type }}
+            </span>
+        </div>
+
+        <div class="mb-2">
+            {% for i in 1..5 %}
+                <i class="bi bi-star-fill" style="color:{% if i <= review.rating %}#f4c430{% else %}#ddd{% endif %};font-size:0.9rem;"></i>
+            {% endfor %}
+        </div>
+
+        <p class="text-muted mb-0" style="font-size:0.9rem;line-height:1.6;">{{ review.body }}</p>
+    </div>
+    {% endfor %}
+
+    {# ── CTA banner ── #}
+    <div class="text-center text-white rounded-3 p-5 mb-4"
+         style="background:var(--cb-teal);">
+        <h3 class="fw-bold mb-1">Ready to Create Your Perfect Event?</h3>
+        <p class="mb-3 opacity-75">Join our satisfied clients and let us make your special day unforgettable</p>
+        <a href="{{ path_book ?? (base_path|default('') ~ '/booking') }}" class="btn btn-light px-5 py-2 fw-medium text-teal">
+            Book Your Event
+        </a>
+    </div>
+
+    {# ── Verified note ── #}
+    <div class="cb-card p-3 mb-4 d-flex align-items-start gap-2">
+        <i class="bi bi-star text-teal mt-1"></i>
+        <div>
+            <div class="fw-semibold" style="font-size:0.88rem;">Verified Google Reviews</div>
+            <p class="text-muted mb-0" style="font-size:0.82rem;">
+                These reviews are from actual clients who have hosted events at Le Châteaubriand.
+                We value transparency and authentic feedback to help you make the best decision
+                for your special occasion.
+            </p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

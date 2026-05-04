@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar — Le Châteaubriand{% endblock %}
+
+{% block navbar %}
+    {% include 'admin/_admin_navbar.html.twig' with { active_page: 'calendar' } %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="cb-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div class="d-flex align-items-center gap-2">
+                <a href="?month={{ prev_month ?? '' }}&view={{ view ?? 'week' }}" class="btn btn-light btn-sm">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+
+                <strong>{{ current_month_label ?? 'Month' }}</strong>
+
+                <a href="?month={{ next_month ?? '' }}&view={{ view ?? 'week' }}" class="btn btn-light btn-sm">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+
+            <div class="btn-group btn-group-sm">
+                <a href="?view=month" class="btn {% if view == 'month' %}btn-cb-primary{% else %}btn-light{% endif %}">
+                    Month
+                </a>
+                <a href="?view=week" class="btn {% if view != 'month' %}btn-cb-primary{% else %}btn-light{% endif %}">
+                    Week
+                </a>
+            </div>
+
+        </div>
+
+        {% if view == 'month' %}
+
+        <div class="row text-center fw-semibold text-muted mb-2">
+            {% for d in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}
+                <div class="col">{{ d }}</div>
+            {% endfor %}
+        </div>
+
+        {% for week in calendar_weeks %}
+        <div class="row g-1 mb-1">
+            {% for day in week %}
+            <div class="col border rounded p-2" style="min-height:90px;">
+
+                <div class="small mb-1">{{ day.number }}</div>
+
+                {% for event in day.events ?? [] %}
+                    <a href="{{ path_client_details ?? (base_path|default('') ~ '/clients') }}/{{ event.client_id }}"
+                       class="d-block text-white small px-1 mb-1 rounded"
+                       style="background:var(--cb-teal);">
+                        {{ event.client_name }}
+                    </a>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        {% else %}
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+
+                <thead class="table-light">
+                    <tr>
+                        {% for col in week_headers %}
+                            <th class="text-center">
+                                {{ col.weekday }}<br>
+                                <small class="text-muted">{{ col.date }}</small>
+                            </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        {% for col in week_headers %}
+                        <td style="min-height:120px;">
+                            {% for event in col.events %}
+                                <a href="{{ path_client_details ?? (base_path|default('') ~ '/clients') }}/{{ event.client_id }}"
+                                   class="d-block text-white small px-2 py-1 mb-1 rounded"
+                                   style="background:var(--cb-teal);">
+                                    {{ event.client_name }}
+                                </a>
+                            {% endfor %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

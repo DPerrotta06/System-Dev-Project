@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FAQ — Le Châteaubriand{% endblock %}
+
+{# Use default site navbar from base.html.twig #}
+
+{% block content %}
+<div style="max-width:700px;margin:0 auto;">
+
+    {# Hero banner #}
+        <div class="text-center text-white rounded-3 p-5 mb-4"
+            style="background:linear-gradient(90deg,var(--cb-teal) 0%, #63c2b1 100%); box-shadow: inset 0 -6px 18px rgba(0,0,0,0.06);">
+        <i class="bi bi-question-circle" style="font-size:2.5rem;"></i>
+        <h1 class="fw-bold mt-2 mb-1" style="font-size:1.6rem;">How Can We Help You?</h1>
+        <p class="mb-0 opacity-75">Find answers to common questions</p>
+    </div>
+
+    {# FAQ Accordion #}
+    <div class="cb-card p-1 mb-4">
+        <div class="accordion accordion-flush" id="faqAccordion">
+
+            {% set faqs = faq_items is defined ? faq_items : [
+                {
+                    q: 'What is included in the venue rental?',
+                    a: 'The venue rental includes use of your chosen ballroom, tables and chairs, basic linens, kitchen access, setup and teardown time, on-site coordinator support, and parking for your guests.'
+                },
+                {
+                    q: 'How far in advance should I book?',
+                    a: 'We recommend booking at least 6–12 months in advance for weddings, and 3–6 months for corporate events and other gatherings, especially for peak dates on weekends.'
+                },
+                {
+                    q: 'What is your cancellation policy?',
+                    a: 'Cancellations made more than 90 days before the event receive a full refund minus the reservation fee. Cancellations within 90 days are subject to a 50% charge, and within 30 days are non-refundable.'
+                },
+                {
+                    q: 'Do you provide catering services?',
+                    a: 'Yes! We offer a full in-house catering menu including cocktail stations, cold and hot stations, main course selections, dessert tables, and more. You can also choose from our third-party catering partners.'
+                },
+                {
+                    q: 'Can I bring my own caterer?',
+                    a: 'Yes, we allow approved third-party caterers. Please provide your caterer\'s information at least 30 days in advance so we can ensure kitchen compatibility and licensing.'
+                },
+                {
+                    q: 'What are the maximum capacities for each room?',
+                    a: 'The Grand Salon accommodates up to 250 guests, the Princesse Hall up to 150 guests, and the Royal Room up to 100 guests, depending on the seating arrangement.'
+                },
+                {
+                    q: 'Is there parking available?',
+                    a: 'Yes, we have a private parking lot adjacent to the venue with capacity for up to 200 vehicles. Parking is complimentary for all event guests.'
+                },
+                {
+                    q: 'Can we have our ceremony at the venue?',
+                    a: 'Absolutely! We offer ceremony setups in our ballrooms and, weather permitting, in our courtyard garden. Our coordinator will work with you to design the perfect ceremony space.'
+                }
+            ] %}
+
+            {% for i, faq in faqs %}
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button {% if i > 0 %}collapsed{% endif %} fw-medium"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq{{ i }}"
+                            style="font-size:0.92rem;background:transparent;">
+                        {{ faq.q }}
+                    </button>
+                </h2>
+                <div id="faq{{ i }}"
+                     class="accordion-collapse collapse {% if i == 0 %}show{% endif %}"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-muted" style="font-size:0.9rem;">
+                        {{ faq.a }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {# Still have questions #}
+    <div class="cb-card p-4 text-center mb-4">
+        <h4 class="fw-semibold mb-1">Still Have Questions?</h4>
+        <p class="text-muted mb-3" style="font-size:0.9rem;">
+            Our team is here to help. Contact us for personalized assistance with your event.
+        </p>
+        <div class="d-flex justify-content-center gap-2">
+            <a href="{{ path_book ?? (base_path|default('') ~ '/booking') }}" class="btn btn-cb-primary px-4">
+                Book a Consultation
+            </a>
+            <a href="mailto:{{ contact_email ?? 'info@lechateaubriand.com' }}" class="btn btn-cb-outline px-4">
+                Email Us
+            </a>
+        </div>
+    </div>
+
+    {# Venue preview cards #}
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="cb-card overflow-hidden">
+                {% if venue_image_grand is defined %}
+                    <img src="{{ venue_image_grand }}" alt="Grand Salon" class="img-fluid"
+                         style="height:180px;width:100%;object-fit:cover;">
+                {% else %}
+                    <div style="height:180px;background:#e0e0e0;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-image text-muted" style="font-size:2rem;"></i>
+                    </div>
+                {% endif %}
+                <div class="p-3">
+                    <div class="fw-semibold">Grand Salon</div>
+                    <div class="text-muted" style="font-size:0.83rem;">Capacity: 250 guests</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="cb-card overflow-hidden">
+                {% if venue_image_catering is defined %}
+                    <img src="{{ venue_image_catering }}" alt="Premium Catering" class="img-fluid"
+                         style="height:180px;width:100%;object-fit:cover;">
+                {% else %}
+                    <div style="height:180px;background:#e0e0e0;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-image text-muted" style="font-size:2rem;"></i>
+                    </div>
+                {% endif %}
+                <div class="p-3">
+                    <div class="fw-semibold">Premium Catering</div>
+                    <div class="text-muted" style="font-size:0.83rem;">Customizable menus for any occasion</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .accordion-button:not(.collapsed) {
+        color: var(--cb-teal);
+        box-shadow: none;
+    }
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+</style>
+{% endblock %}

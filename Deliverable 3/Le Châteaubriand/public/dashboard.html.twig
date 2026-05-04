@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'admin/_admin_navbar.html.twig' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="card cb-card p-4">
+
+        <h2 class="section-title">Clients</h2>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Event</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.firstName }} {{ client.lastName }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.eventType ?? '' }}</td>
+                    <td>
+                        <a href="{{ base_path }}/clients/{{ client.id }}"
+                           class="btn btn-sm btn-outline-primary">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+{% endblock %}

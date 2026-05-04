@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Le Châteaubriand{% endblock %}
+
+{% block content %}
+<div style="min-height:80vh;
+            background:url('{{ (base_path|default('')) ~ '/assets/images/venue-hero.jpg' }}') center/cover no-repeat;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;">
+
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);"></div>
+
+    <div class="cb-card text-center position-relative" style="z-index:2;max-width:700px;">
+
+        <h1 class="fw-bold mb-2">Le Châteaubriand</h1>
+        <p class="text-muted mb-4">Centre de Congrès et Réceptions</p>
+
+        <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+
+            <a href="{{ (base_path|default('')) ~ '/booking' }}"
+               class="btn btn-cb-primary">
+                Book Event
+            </a>
+
+            <a href="{{ (base_path|default('')) ~ '/faq' }}"
+               class="btn btn-light">
+                FAQ
+            </a>
+
+            <a href="{{ (base_path|default('')) ~ '/review' }}"
+               class="btn btn-light">
+                Reviews
+            </a>
+
+            <a href="{{ (base_path|default('')) ~ '/auth' }}"
+               class="btn btn-cb-outline">
+                Admin
+            </a>
+
+        </div>
+
+        <div class="text-muted small">
+            (514) 494-8585 • info@lechateaubriand.com
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height:80vh;">
+
+    <div class="card cb-card p-4" style="width:100%;max-width:420px;">
+
+        <h2 class="fw-bold mb-1">Le Châteaubriand</h2>
+        <p class="text-muted mb-4">Admin Login</p>
+
+        {% if error is defined and error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST"
+              action="{{ login_action ?? (base_path ~ '/auth/request') }}">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token ?? '' }}">
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email"
+                       value="{{ email ?? '' }}"
+                       class="form-control" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password"
+                       class="form-control" required>
+            </div>
+
+            <button class="btn btn-primary w-100">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

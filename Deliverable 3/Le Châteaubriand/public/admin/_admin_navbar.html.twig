@@ -1,0 +1,61 @@
+<nav class="cb-navbar d-flex align-items-center justify-content-between">
+
+    {# Brand #}
+    <a href="{{ path_dashboard ?? (base_path|default('') ~ '/clients') }}"
+       class="navbar-brand">
+        <i class="bi bi-building"></i>
+        Le Châteaubriand
+    </a>
+
+    {# Right side #}
+    <div class="d-flex align-items-center gap-2">
+
+        <a href="{{ path_calendar ?? (base_path|default('') ~ '/events') }}"
+           class="nav-link {% if active_page == 'calendar' %}active{% endif %}">
+            <i class="bi bi-calendar3"></i> Calendar
+        </a>
+
+        <a href="{{ path_reviews ?? (base_path|default('') ~ '/review') }}"
+           class="nav-link {% if active_page == 'reviews' %}active{% endif %}">
+            <i class="bi bi-star"></i> Reviews
+        </a>
+
+        {# User #}
+        <span class="nav-link text-muted" style="cursor:default;">
+            <i class="bi bi-person-circle"></i>
+            {{ admin_username ?? 'Admin' }}
+        </span>
+
+        {# Logout #}
+        <button class="btn btn-sm btn-light d-flex align-items-center gap-1"
+                data-bs-toggle="modal"
+                data-bs-target="#logoutModal">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+
+    </div>
+</nav>
+
+{# Logout Modal #}
+<div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:360px;">
+        <div class="modal-content">
+
+            <div class="modal-body text-center p-4">
+                <h5 class="fw-bold mb-2">Confirm Logout</h5>
+                <p class="text-muted mb-4">Are you sure you want to log out?</p>
+
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="POST"
+                          action="{{ path_logout ?? (base_path|default('') ~ '/auth/logout') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token ?? '' }}">
+                        <button class="btn btn-cb-primary px-4">Logout</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
