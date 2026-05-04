@@ -123,6 +123,7 @@ $app->get('', function ($req, $res) use ($basePath) {
 });
 $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/client-form', [ClientController::class, 'showClientForm']);
+$app->get('/faq', [PageController::class, 'showFaq']);
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);

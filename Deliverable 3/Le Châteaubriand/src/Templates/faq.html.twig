@@ -7,16 +7,14 @@
         <p>Answers to the most frequently asked questions about Le Châteaubriand.</p>
     </div>
     <div class="faq-questions">
-        {% for faq in faqs %}
         <div class="faq-question">
             <h3>{{ faq.question }}</h3>
             <p>{{ faq.answer }}</p>
         </div>
-        {% endfor %}
     </div>
     <div class="faq-footer">
         <h3>Still have questions?</h3>
-        <p>Contact us at <a href="mailto:le.chateaubriand@gmail.com">le.chateaubriand@gmail.com</a></p>
+        <p>Contact us at <a href="mailto:{{ 'site.email'|trans }}">le.chateaubriand@gmail.com</a></p>
     </div>
 </div>
 <script>
