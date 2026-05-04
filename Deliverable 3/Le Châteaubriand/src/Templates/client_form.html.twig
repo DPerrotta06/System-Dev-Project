@@ -1,50 +1,38 @@
 {% extends 'layout.html.twig' %}
-
-{% block title %}{{ trans('site.name') }}{% endblock %}
-
+{% block title %}Le Châteaubriand{% endblock %}
 {% block content %}
 <div class="client-form-container">
 
     <form action="/submit-form" method="post">
 
-        <h3>{{ trans('form.personal_info') }}</h3>
-        <input type="text" name="firstname" placeholder="{{ trans('form.firstname') }}" required>
-        <input type="text" name="lastname" placeholder="{{ trans('form.lastname') }}" required>
-        <input type="email" name="email" placeholder="{{ trans('form.email') }}" required>
-        <input type="text" name="phone" placeholder="{{ trans('form.phone') }}" required>
+        <h3>{{ form.personal_info }}</h3>
+        <input type="text" name="firstname" placeholder="First Name" required>
+        <input type="text" name="lastname" placeholder="Last Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone" required>
 
-        <h3>{{ trans('form.event_details') }}</h3>
+        <h3>Event Details</h3>
         <select name="event_type" required>
-            <option value="">{{ trans('form.select_event_type') }}</option>
-            <option value="Wedding">{{ trans('form.wedding') }}</option>
-            <option value="Corporate">{{ trans('form.corporate') }}</option>
-            <option value="Birthday">{{ trans('form.birthday') }}</option>
-            <option value="Anniversary">{{ trans('form.anniversary') }}</option>
-            <option value="Baby Shower">{{ trans('form.baby_shower') }}</option>
-            <option value="Other">{{ trans('form.other') }}</option>
+            <option value="">Select an Event Type</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Corporate">Corporate Event</option>
+            <option value="Birthday">Birthday Party</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Baby Shower">Baby Shower</option>
+            <option value="Other">Other</option>
         </select>
-
         <input type="date" name="event_date" required>
-        <input type="number" name="number_of_guests" placeholder="{{ trans('form.number_of_guests') }}" required>
+        <input type="number" name="number_of_guests" placeholder="Number of guests" required>
 
-        <h3>{{ trans('form.menu_selection') }}</h3>
-        <label>
-            <input type="checkbox" class="menu-toggle" data-target="mainMenu">
-            {{ trans('form.main_menu') }}
-        </label>
-        <label>
-            <input type="checkbox" class="menu-toggle" data-target="buffetMenu">
-            {{ trans('form.buffet') }}
-        </label>
-        <label>
-            <input type="checkbox" class="menu-toggle" data-target="midnightMenu">
-            {{ trans('form.midnight_table') }}
-        </label>
+        <h3>Menu Selection</h3>
+        <label><input type="checkbox" class="menu-toggle" data-target="mainMenu"> Main Menu</label>
+        <label><input type="checkbox" class="menu-toggle" data-target="buffetMenu"> Buffet</label>
+        <label><input type="checkbox" class="menu-toggle" data-target="midnightMenu"> Midnight Table</label>
 
         <div id="mainMenu" class="menu-section hidden">
             {% for key, items in menus.main %}
                 <div class="menu-category">
-                    <h4>{{ trans('menu.' ~ key) }}</h4>
+                    <h4>{{ key|replace({'_': ' '})|title }}</h4>
                     {% for item in items %}
                         <label>
                             <input type="checkbox" name="main_{{ key }}[]" value="{{ item }}">
@@ -58,7 +46,7 @@
         <div id="buffetMenu" class="menu-section hidden">
             {% for key, items in menus.buffet %}
                 <div class="menu-category">
-                    <h4>{{ trans('menu.' ~ key) }}</h4>
+                    <h4>{{ key|replace({'_': ' '})|title }}</h4>
                     {% for item in items %}
                         <label>
                             <input type="checkbox" name="buffet_{{ key }}[]" value="{{ item }}">
@@ -72,7 +60,7 @@
         <div id="midnightMenu" class="menu-section hidden">
             {% for key, items in menus.midnight %}
                 <div class="menu-category">
-                    <h4>{{ trans('menu.' ~ key) }}</h4>
+                    <h4>{{ key|replace({'_': ' '})|title }}</h4>
                     {% for item in items %}
                         <label>
                             <input type="checkbox" name="midnight_{{ key }}[]" value="{{ item }}">
@@ -83,11 +71,10 @@
             {% endfor %}
         </div>
 
-        <h3>{{ trans('form.additional_notes') }}</h3>
-        <textarea name="notes" placeholder="{{ trans('form.notes_placeholder') }}"></textarea>
+        <h3>Additional Notes</h3>
+        <textarea name="notes" placeholder="Special requests, allergies, etc."></textarea>
         <br><br>
-
-        <button type="submit">{{ trans('form.continue_floor') }}</button>
+        <button type="submit">Continue to floor planning</button>
 
     </form>
 </div>

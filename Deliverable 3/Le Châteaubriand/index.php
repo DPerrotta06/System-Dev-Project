@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+error_reporting(E_ALL & ~E_DEPRECATED);
 session_start();
 
 use App\Controllers\AuthController;
@@ -25,19 +26,20 @@ use App\Controllers\ClientController;
 use App\Controllers\MenuController;
 use App\Controllers\FloorPlanningController;
 use App\Controllers\GoogleReviewsController;
+use App\Services\OTPService as ServicesOTPService;
 
 require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . '/var/chateaubriand.db'; 
-R::setup('sqlite' . $dbPath);
-R::exec('PRAGMA foreign_keys = ON;');       
+$dbPath = __DIR__ . '/var/chateaubriand.db';
+R::setup('sqlite:' . $dbPath);
+R::exec('PRAGMA foreign_keys = ON;');
 R::freeze(false);
 
 
 //TEMPLATE ENGINE ───────────────────────────────────────────────────────
-$loader = new FilesystemLoader(__DIR__ . 'public/src/Templates');
+$loader = new FilesystemLoader(__DIR__ . '/src/Templates');
 $twig = new Environment($loader, ['cache' => false, 'auto_reload' => true,]);
 
 
@@ -50,10 +52,14 @@ $twig->addFunction(new TwigFunction('trans', function (string $key, array $param
     $locale = $_SESSION['lang'] ?? 'en';
     return $translator->trans($key, $params, null, $locale);
 }));
+$twig->addFilter(new \Twig\TwigFilter('trans', function (string $key, array $params = []) use ($translator) {
+    $locale = $_SESSION['lang'] ?? 'en';
+    return $translator->trans($key, $params, null, $locale);
+}));
 
 
 //DEPENDENCY INJECTION CONTAINER ───────────────────────────────────────
-$basePath = '/Le Châteaubriand';
+$basePath = '/Project/System-Dev-Project/Deliverable 3/Le Châteaubriand';
 $container = new \DI\Container();
 $container->set(Environment::class, $twig);
 $container->set(AuthController::class, fn() => new AuthController(
@@ -63,11 +69,14 @@ $container->set(AuthController::class, fn() => new AuthController(
 ));
 
 // Register other controllers in the container
-$container->set(EventController::class,        fn() => new EventController($twig, $basePath));
-$container->set(ClientController::class,       fn() => new ClientController($twig, $basePath));
-$container->set(BookingController::class,      fn() => new BookingController($twig, $basePath));
-$container->set(MenuController::class,         fn() => new MenuController($twig, $basePath));
-$container->set(FloorPlanningController::class,fn() => new FloorPlanningController($twig, $basePath));
+$container->set(AuthController::class, fn() => new AuthController($twig, new ServicesOTPService(), $basePath));
+$container->set(BookingController::class, fn() => new BookingController($twig, $basePath));
+$container->set(ClientController::class, fn() => new ClientController($twig, $basePath));
+$container->set(EventController::class, fn() => new EventController($twig, $basePath));
+$container->set(FloorPlanningController::class, fn() => new FloorPlanningController($twig, $basePath));
+$container->set(GoogleReviewsController::class, fn() => new GoogleReviewsController());
+$container->set(MenuController::class, fn() => new MenuController($twig, $basePath));
+$container->set(PageController::class, fn() => new PageController($twig, $basePath));
 
 
 //APPLICATION ───────────────────────────────────────────────────────────
@@ -109,7 +118,11 @@ $app->add(new SecurityHeadersMiddleware());
 
 
 //HTML ROUTES ───────────────────────────────────────────────────────────
+$app->get('', function ($req, $res) use ($basePath) {
+    return $res->withHeader('Location', $basePath . '/')->withStatus(302);
+});
 $app->get('/', [PageController::class, 'showLandingPage']);
+$app->get('/client-form', [ClientController::class, 'showClientForm']);
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);
@@ -121,6 +134,7 @@ $app->get('/events', [EventController::class, 'index']);
 $app->get('/events/{id}', [EventController::class, 'show']);
 $app->post('/events/{id}/status', [EventController::class, 'updateStatus']);
 $app->post('/events/{id}/delete', [EventController::class, 'delete']);
+
 
 $app->get('/clients', [ClientController::class, 'index']);
 $app->get('/clients/{id}', [ClientController::class, 'show']);

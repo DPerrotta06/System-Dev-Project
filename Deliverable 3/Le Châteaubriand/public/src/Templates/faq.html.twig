@@ -1,11 +1,13 @@
 {% extends 'layout.html.twig' %}
-{% block title %}FAQ - Le Châteaubriand{% endblock %}
+{% block title %}{{ trans('faq.title') }} - {{ trans('site.name') }}{% endblock %}
 {% block content %}
+
 <div class="faq-container">
     <div class="faq-header">
-        <h2>Frequently Asked Questions</h2>
-        <p>Answers to the most frequently asked questions about Le Châteaubriand.</p>
+        <h2>{{ trans('faq.title') }}</h2>
+        <p>{{ trans('faq.subtitle') }}</p>
     </div>
+
     <div class="faq-questions">
         {% for faq in faqs %}
         <div class="faq-question">
@@ -14,19 +16,26 @@
         </div>
         {% endfor %}
     </div>
+
     <div class="faq-footer">
-        <h3>Still have questions?</h3>
-        <p>Contact us at <a href="mailto:le.chateaubriand@gmail.com">le.chateaubriand@gmail.com</a></p>
+        <h3>{{ trans('faq.still_questions') }}</h3>
+        <p>
+            {{ trans('faq.contact') }}
+            <a href="mailto:le.chateaubriand@gmail.com">
+                le.chateaubriand@gmail.com
+            </a>
+        </p>
     </div>
 </div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const faqQuestions = document.querySelectorAll(".faq-question");
-        faqQuestions.forEach(question => {
-            question.addEventListener("click", () => {
-                question.classList.toggle("active");
-            });
+document.addEventListener("DOMContentLoaded", () => {
+    const faqQuestions = document.querySelectorAll(".faq-question");
+    faqQuestions.forEach(question => {
+        question.addEventListener("click", () => {
+            question.classList.toggle("active");
         });
     });
+});
 </script>
 {% endblock %}

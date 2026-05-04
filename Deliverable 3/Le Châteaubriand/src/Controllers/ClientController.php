@@ -68,7 +68,7 @@ class ClientController
             [(int) $args['id']]
         );
 
-        $html = $this->twig->render('clients/show.html.twig', [
+        $html = $this->twig->render('clients_show.html.twig', [
             'client'    => $client->export(),
             'events'    => $events,
             'base_path' => $this->basePath,
@@ -156,5 +156,15 @@ class ClientController
         return $response
             ->withHeader('Location', $this->basePath . '/clients')
             ->withStatus(302);
+    }
+
+    public function showClientForm(Request $request, Response $response): Response
+    {
+        $html = $this->twig->render('client_form.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+        ]);
+        $response->getBody()->write($html);
+        return $response;
     }
 }

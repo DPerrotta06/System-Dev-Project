@@ -15,21 +15,9 @@ class PageController
         private string $basePath
     ) {}
 
-    public function showLandPage(Request $request, Response $response): Response
-    {
+    public function showLandingPage(Request $request, Response $response) : Response{
         $html = $this->twig->render('landing_page.html.twig', [
-            'landing' => '/',
-            'base_path' => $this->basePath,
-            'app_lang' => $_SESSION['lang'] ?? 'en'
-        ]);
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    public function showFAQ(Request $request, Response $response): Response
-    {
-        $html = $this->twig->render('faq.html.twig', [
-            'faqs' => '/faq',
+            'step' => '/',
             'base_path' => $this->basePath,
             'app_lang' => $_SESSION['lang'] ?? 'en'
         ]);
