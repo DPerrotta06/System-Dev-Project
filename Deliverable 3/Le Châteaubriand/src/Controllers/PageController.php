@@ -35,4 +35,13 @@ class PageController
         $response->getBody()->write($html);
         return $response;
     }
+
+    public function reviews(Request $request, Response $response):Response{
+        $html = $this->twig->render('reviews.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang' => $_SESSION['lang'] ?? 'en'
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
 }

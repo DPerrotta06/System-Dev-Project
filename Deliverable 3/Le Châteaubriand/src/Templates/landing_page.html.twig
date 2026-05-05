@@ -69,40 +69,4 @@
     </div>
 
 </section>
-
-<script>
-    const translations = {
-        en: {
-            subtitle: '{{ 'hero.subtitle.en'|trans|e('js') }}',
-            book: '{{ 'hero.book.en'|trans|e('js') }}',
-            admin: '{{ 'hero.admin.en'|trans|e('js') }}',
-            faq: '{{ 'hero.faq'|trans|e('js') }}',
-            reviews: '{{ 'hero.reviews.en'|trans|e('js') }}',
-            discover: '{{ 'hero.discover.en'|trans|e('js') }}',
-            rights: '{{ 'hero.rights.en'|trans|e('js') }}'
-        },
-        fr: {
-            subtitle: '{{ 'hero.subtitle.fr'|trans|e('js') }}',
-            book: '{{ 'hero.book.fr'|trans|e('js') }}',
-            admin: '{{ 'hero.admin.fr'|trans|e('js') }}',
-            faq: '{{ 'hero.faq'|trans|e('js') }}',
-            reviews: '{{ 'hero.reviews.fr'|trans|e('js') }}',
-            discover: '{{ 'hero.discover.fr'|trans|e('js') }}',
-            rights: '{{ 'hero.rights.fr'|trans|e('js') }}'
-        }
-    };
-
-    function setLang(lang) {
-        const t = translations[lang];
-        document.getElementById('subtitle').textContent = t.subtitle;
-        document.getElementById('book-label').textContent = t.book;
-        document.getElementById('btn-admin').textContent = t.admin;
-        document.getElementById('btn-faq').textContent = t.faq;
-        document.getElementById('reviews-label').textContent = t.reviews;
-        document.getElementById('rights').textContent = t.rights;
-        document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-        document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
-        document.documentElement.lang = lang;
-    }
-</script>
 {% endblock %}

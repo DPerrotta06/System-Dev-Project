@@ -9,7 +9,7 @@ return [
     'hero.admin' => 'Admin Portal',
     'hero.faq' => 'FAQ',
     'hero.reviews' => 'Reviews',
-    'hero.rights' => '© 2025 Le Châteaubriand. All rights reserved.',
+    'hero.rights' => '© 2026 Le Châteaubriand. All rights reserved.',
 
     // Common
     'site.name' => 'Le Châteaubriand',

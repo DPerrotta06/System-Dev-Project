@@ -21,7 +21,10 @@
             <option value="Baby Shower">Baby Shower</option>
             <option value="Other">Other</option>
         </select>
-        <input type="date" name="event_date" required>
+            <div class="date-wrapper">
+                <input type="date" name="event_date" id="event_date" required>
+                <span class="date-placeholder">Date of your event</span>
+            </div>        
         <input type="number" name="number_of_guests" placeholder="Number of guests" required>
 
         <h3>Menu Selection</h3>

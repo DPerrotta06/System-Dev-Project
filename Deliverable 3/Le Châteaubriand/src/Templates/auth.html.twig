@@ -1,0 +1,34 @@
+{% extends "layout.html.twig" %}
+{% block title %}
+    {{ 'site.name'|trans }}
+{% endblock %}
+
+{% block content %}
+
+<div class="login-form-container">
+    <div class="login-card">
+        <!-- Icon -->
+        <div style="font-size: 36px; margin-bottom: 10px;">
+        </div>
+        <h2>Le Châteaubriand</h2>
+        <h3>Admin Login</h3>
+        <form action="/2fa" method="post">
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                    <input type="email" name="_username" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <input type="password" name="_password" required>
+                </div>
+            </div>
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
