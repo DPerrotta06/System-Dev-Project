@@ -121,9 +121,13 @@ $app->add(new SecurityHeadersMiddleware());
 $app->get('', function ($req, $res) use ($basePath) {
     return $res->withHeader('Location', $basePath . '/')->withStatus(302);
 });
+
+//PUBLIC ROUTES THAT ACCESSIBLE TO ANYONE
 $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/client-form', [ClientController::class, 'showClientForm']);
 $app->get('/faq', [PageController::class, 'showFaq']);
+$app->get('/client-form/submit-form', [ClientController::class, 'goToTablePlanning']);
+$app->get('/admin', [AuthController::class, 'showForm']);
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);
@@ -154,7 +158,7 @@ $app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit'])
 $app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
 
 // Reviews: render via GoogleReviewsController helper
-$app->get('/review', function (Request $request, Response $response) use ($twig, $basePath) {
+$app->get('/reviews', function (Request $request, Response $response) use ($twig, $basePath) {
     $reviewsCtrl = new GoogleReviewsController();
     $data = $reviewsCtrl->getReviews();
     $html = $twig->render('reviews.html.twig', ['reviews' => $data, 'base_path' => $basePath, 'app_lang' => $_SESSION['lang'] ?? 'en']);
