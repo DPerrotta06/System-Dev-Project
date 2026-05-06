@@ -3,7 +3,7 @@
 {% block content %}
 <div class="client-form-container">
 
-    <form action="/submit-form" method="post">
+    <form action="{{ base_path }}/table_plan" method="post">
 
         <h3>Personal Information</h3>
         <input type="text" name="firstname" placeholder="First Name" required>
@@ -25,7 +25,7 @@
                 <input type="date" name="event_date" id="event_date" required>
                 <span class="date-placeholder">Date of your event</span>
             </div>        
-        <input type="number" name="number_of_guests" placeholder="Number of guests" required>
+        <input type="number" name="number_of_guests" placeholder="Number of guests" min="1" required>
 
         <h3>Menu Selection</h3>
         <label><input type="checkbox" class="menu-toggle" data-target="mainMenu"> Main Menu</label>
@@ -81,16 +81,4 @@
 
     </form>
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const toggles = document.querySelectorAll(".menu-toggle");
-    toggles.forEach(toggle => {
-        toggle.addEventListener("change", function () {
-            const target = document.getElementById(this.dataset.target);
-            target.classList.toggle("hidden", !this.checked);
-        });
-    });
-});
-</script>
 {% endblock %}

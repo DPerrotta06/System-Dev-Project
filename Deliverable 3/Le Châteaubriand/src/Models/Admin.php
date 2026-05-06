@@ -3,25 +3,27 @@
 namespace App\Models;
 
 use DateTime;
+use RedBeanPHP\R;
 
-class Admin{
+class Admin
+{
     public function __construct(
         public int $adminId,
         public string $username,
         public string $email,
         public string $passwordHash,
         public string $twoFactorCode,
-        public DateTime $codeExpiration 
-    )
+        public DateTime $codeExpiration
+    ) {}
+
+    public static function fromBean(object $bean)
     {
-        throw new \Exception('Not implemented');
-    }
-    public static function fromBean(object $bean){
         return new self(
-            adminId: (int) $bean-> id,
-            email: (string) $bean-> string,
-            passwordHash: (string) $bean-> string,
-            twoFactorCode: (string) $bean-> string,
+            adminId: (int) $bean->id,
+            username: (string) $bean->string,
+            email: (string) $bean->string,
+            passwordHash: (string) $bean->string,
+            twoFactorCode: (string) $bean->string,
             codeExpiration: new DateTime($bean->eventTime),
         );
     }
@@ -34,7 +36,7 @@ class Admin{
             'email'  => $this->email,
             'passwordHash'   => $this->passwordHash,
             'twoFactorCode'      => $this->twoFactorCode,
-            'codeExpiration'=> $this->codeExpiration,
+            'codeExpiration' => $this->codeExpiration,
         ];
     }
 
@@ -50,7 +52,7 @@ class Admin{
     {
         $bean = R::load('admin', $adminId);
         if ($bean->id === 0) {
-            return null; 
+            return null;
         }
         return self::fromBean($bean);
     }
@@ -72,7 +74,8 @@ class Admin{
     }
 
     //Admin functions
-    public function login(string $email, string $password): bool{
+    public function login(string $email, string $password): bool
+    {
         $admin = R::findOne('admin', 'email = ?', [$email]);
 
         if (!$admin) {
@@ -93,12 +96,13 @@ class Admin{
         return true;
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_start();
-        
+
         // Clear all session data
         $_SESSION = [];
-        
+
         // Optional: delete the session cookie
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
@@ -112,22 +116,16 @@ class Admin{
                 $params['httponly']
             );
         }
-        
+
         // Destroy the session
         session_destroy();
-        
+
         // Redirect to login page
         header('Location: login.php');
         exit;
     }
 
-    public function makeContract(): void{
+    public function makeContract(): void {}
 
-    }
-
-    private function generateInvoice(): void{
-
-    }
-
+    private function generateInvoice(): void {}
 }
-

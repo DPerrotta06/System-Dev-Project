@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Admin;
 use App\Services\OtpService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -15,6 +16,7 @@ class AuthController
         private Environment $twig,
         private OtpService $otpService,
         private string $basePath,
+        //private Admin $admin
     ) {}
 
     public function showForm(Request $request, Response $response): Response
@@ -87,5 +89,15 @@ class AuthController
         return $response
             ->withHeader('Location', $this->basePath . '/auth')
             ->withStatus(302);
+    }
+
+    public function goToAdminDashboard(Response $response, Request $request): Response
+    {
+        $html = $this->twig->render('admin_dashboard.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+        ]);
+        $response->getBody()->write($html);
+        return $response;
     }
 }

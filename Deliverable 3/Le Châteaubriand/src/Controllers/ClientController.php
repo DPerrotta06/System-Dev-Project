@@ -158,24 +158,4 @@ class ClientController
             ->withStatus(302);
     }
 
-    public function showClientForm(Request $request, Response $response): Response
-    {
-        $html = $this->twig->render('client_form.html.twig', [
-            'base_path' => $this->basePath,
-            'app_lang'  => $_SESSION['lang'] ?? 'en',
-        ]);
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    public function goToTablePlanning(Request $request, Response $response, array $args): Response
-{
-    $html = $this->twig->render('floor_planning.html.twig', [
-        'base_path' => $this->basePath,
-        'app_lang'  => $_SESSION['lang'] ?? 'en',
-    ]);
-    $response->getBody()->write($html);
-    return $response;
-}
-
 }

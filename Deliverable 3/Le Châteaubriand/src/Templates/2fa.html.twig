@@ -1,0 +1,40 @@
+{% extends "layout.html.twig" %}
+{% block title %}
+    {{ 'site.name'|trans }}
+{% endblock %}
+
+{% block content %}
+{% if step == 'otp_display' %}
+<div class="2fa-container">
+    <div class="2fa-card"
+        <h2>{{ trans('auth.otp_sent') }}</h2>
+        <img src="{{ qr_code }}" alt="TOTP QR code" style="display:block;margin:1rem auto;width:200px;height:200px;">
+        <p class="otp-note">{{ trans('auth.otp_note') }}</p>
+        <a href="{{ base_path }}/auth/verify" class="btn btn-primary">{{ trans('auth.continue') }}</a>
+    </div>
+</div>
+{% elseif step == 'verify' %}
+    <div class="card auth-card">
+    <h2>{{ trans('auth.verify_title') }}</h2>
+
+    {% if error is defined %}
+        <p class="auth-error">{{ trans(error) }}</p>
+    {% endif %}
+
+    <form class="auth-form" action="{{ base_path }}/auth/verify" method="POST">
+        <label for="code">{{ trans('auth.otp_label') }}</label>
+        <input
+            type="text"
+            id="code"
+            name="code"
+            placeholder="{{ trans('auth.otp_ph') }}"
+            maxlength="6"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            required
+        >
+        <button type="submit" class="btn btn-primary">{{ trans('auth.verify') }}</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

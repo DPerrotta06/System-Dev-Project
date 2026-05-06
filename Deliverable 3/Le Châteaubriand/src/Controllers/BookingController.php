@@ -186,4 +186,55 @@ class BookingController
 
         return round($total, 2);
     }
+
+    public function showClientForm(Request $request, Response $response): Response
+    {
+        $html = $this->twig->render('client_form.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    public function goToTablePlanning(Request $request, Response $response): Response
+    {
+        $data = (array) $request->getParsedBody();
+        // Get form data
+        $numberOfGuests = (int) ($data['number_of_guests'] ?? 1);
+        $eventType = $data['event_type'] ?? 'Other';
+        // Determine hall based on guest count (simple logic - you can adjust)
+        $hall = 'princess'; // default
+        if ($numberOfGuests > 200) {
+            $hall = 'royal';
+        } elseif ($numberOfGuests > 100) {
+            $hall = 'grand_salon';
+        }
+        // Calculate approximate table quantity (assuming 10 guests per table)
+        $tableQuantity = (int) ceil($numberOfGuests / 10);
+        // Store data in session for use in floor planning
+        $_SESSION['floor_planning_data'] = [
+            'firstname' => $data['firstname'] ?? '',
+            'lastname' => $data['lastname'] ?? '',
+            'email' => $data['email'] ?? '',
+            'phone' => $data['phone'] ?? '',
+            'event_type' => $eventType,
+            'event_date' => $data['event_date'] ?? '',
+            'number_of_guests' => $numberOfGuests,
+            'notes' => $data['notes'] ?? '',
+            'hall' => $hall,
+            'table_quantity' => $tableQuantity,
+            'guest_quantity' => $numberOfGuests,
+        ];
+        //render the next page
+        $html = $this->twig->render('floor_planning.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'hall' => $hall,
+            'table_quantity' => $tableQuantity,
+            'guest_quantity' => $numberOfGuests,
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
 }

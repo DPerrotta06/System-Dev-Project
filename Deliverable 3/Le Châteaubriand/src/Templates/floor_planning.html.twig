@@ -4,6 +4,7 @@
 <h4>Make your event yours!</h4>
 <p>Select the tables for your event and specify the number of guests per table (Maximum: 12)</p>
 <div class="floor-planning-container">
+<form class="table-form" action="/submit-form">
     <p>
         Your Ballroom:
         <strong>
@@ -16,7 +17,7 @@
     <div class="floor-planning-summary">
         <p id="tableCount">{{ table_quantity }} Tables</p>
         <p id="guestCount">{{ guest_quantity }} Guests</p>
-    </div
+    </div>
     <div class="floor-planning-ui">
         <canvas id="floor-canvas" width="800" height="600"></canvas>
     </div>
@@ -33,6 +34,12 @@
             </div>
         </div>
         {%endfor%}
+        <br><br>
     </div>
+    <button type="submit">Submit event form</button>
+    </form>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ base_path }}/floor-planning.js"></script>
 {% endblock %}
