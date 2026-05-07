@@ -137,26 +137,81 @@ $app->post('/booking', [BookingController::class, 'submit']);
 $app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation']);
 
 // Event, client, menu and floor-planning (ADMIN) THESE ARE ALL PROTECTED BY THE MIDDLEWARE TO PREVENT ANYONE EXCEPT THE ADMINS FROM MANIPULATING AND ACCESSING THE DATA
-$app->get('/events', [EventController::class, 'index'])->add(new AuthMiddleware());
-$app->get('/events/{id}', [EventController::class, 'show'])->add(new AuthMiddleware());
-$app->post('/events/{id}/status', [EventController::class, 'updateStatus'])->add(new AuthMiddleware());
-$app->post('/events/{id}/delete', [EventController::class, 'delete'])->add(new AuthMiddleware());
+$app->get('/events', [EventController::class, 'index'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/events/{id}', [EventController::class, 'show'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/events/{id}/status', [EventController::class, 'updateStatus'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/events/{id}/delete', [EventController::class, 'delete'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
 
-$app->get('/clients', [ClientController::class, 'index'])->add(new AuthMiddleware());
-$app->get('/clients/{id}', [ClientController::class, 'show'])->add(new AuthMiddleware());
-$app->get('/clients/{id}/edit', [ClientController::class, 'edit'])->add(new AuthMiddleware());
-$app->post('/clients/{id}/edit', [ClientController::class, 'update'])->add(new AuthMiddleware());
-$app->post('/clients/{id}/delete', [ClientController::class, 'delete'])->add(new AuthMiddleware());
 
-$app->get('/menus', [MenuController::class, 'index'])->add(new AuthMiddleware());
-$app->get('/menus/{id}', [MenuController::class, 'show'])->add(new AuthMiddleware());
-$app->get('/menus/{id}/edit', [MenuController::class, 'edit'])->add(new AuthMiddleware());
-$app->post('/menus/{id}/edit', [MenuController::class, 'update'])->add(new AuthMiddleware());
+$app->get('/clients', [ClientController::class, 'index'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/clients/{id}', [ClientController::class, 'show'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/clients/{id}/edit', [ClientController::class, 'edit'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/clients/{id}/edit', [ClientController::class, 'update'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/clients/{id}/delete', [ClientController::class, 'delete'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
 
-$app->get('/floor-planning', [FloorPlanningController::class, 'index'])->add(new AuthMiddleware());
-$app->get('/floor-planning/{id}', [FloorPlanningController::class, 'show'])->add(new AuthMiddleware());
-$app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit'])->add(new AuthMiddleware());
-$app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update'])->add(new AuthMiddleware());
+
+$app->get('/menus', [MenuController::class, 'index'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/menus/{id}', [MenuController::class, 'show'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/menus/{id}/edit', [MenuController::class, 'edit'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/menus/{id}/edit', [MenuController::class, 'update'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+
+
+$app->get('/floor-planning', [FloorPlanningController::class, 'index'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/floor-planning/{id}', [FloorPlanningController::class, 'show'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+$app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+
 
 // Reviews: render via GoogleReviewsController helper
 $app->get('/reviews', function (Request $request, Response $response) use ($twig, $basePath) {

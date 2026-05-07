@@ -1501,3 +1501,619 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .login-btn:active {
     transform: translateY(0);
 }
+
+
+
+
+
+/* ADMIN DASHBOARD */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--black);
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: rgba(10, 9, 6, 0.85);
+    border-right: 1px solid rgba(201, 168, 76, 0.25);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+}
+
+.admin-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.admin-nav a {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.5);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-nav a:hover {
+    background: rgba(201, 168, 76, 0.05);
+    color: var(--gold-light);
+}
+
+.admin-nav a.active {
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--gold);
+}
+
+.admin-content {
+    flex: 1;
+    padding: 3rem 2.5rem;
+}
+
+.admin-section {
+    margin-bottom: 3rem;
+}
+
+.admin-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.admin-section h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 15px;
+    border: 1px solid rgba(201, 168, 76, 0.1);
+    text-align: left;
+}
+
+.admin-table th {
+    background: rgba(201, 168, 76, 0.05);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.admin-table td {
+    color: rgba(245, 240, 232, 0.8);
+}
+
+.admin-table tr:hover td {
+    background: rgba(201, 168, 76, 0.05);
+}
+
+.admin-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-btn {
+    padding: 6px 12px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-btn.edit {
+    background: var(--gold);
+    color: var(--black);
+}
+
+.admin-btn.edit:hover {
+    background: var(--gold-light);
+    color: var(--black);
+}
+
+.admin-btn.delete {
+    background: transparent;
+    color: #EA4335;
+    border: 1px solid rgba(234, 67, 53, 0.5);
+}
+
+.admin-btn.delete:hover {
+    background: rgba(234, 67, 53, 0.1);
+    color: #EA4335;
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem 0.5rem;
+    }
+
+    .admin-content {
+        padding: 2rem 1rem;
+    }
+}
+
+
+
+
+
+/* CALENDAR PAGE */
+.calendar-hero {
+    position: relative;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.calendar-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+}
+
+.calendar-hero-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+}
+
+.calendar-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.6rem;
+}
+
+.calendar-hero-sub {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.45);
+}
+
+/* CALENDAR CONTENT */
+.calendar-content {
+    background: var(--black);
+    padding: 3rem 1.5rem 4.5rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.calendar-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calendar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201, 168, 76, 0.15);
+}
+
+.calendar-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.calendar-event {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.4;
+}
+
+@media (max-width: 580px) {
+    .calendar-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+/*CLIENT DETAILS PAGE*/
+.client-details-hero {
+    position: relative;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.client-details-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+}
+
+.client-details-hero-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+}
+
+.client-details-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.6rem;
+}
+
+.client-details-hero-sub {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.45);
+}
+
+.client-details-content {
+    background: var(--black);
+    padding: 3rem 1.5rem 4.5rem;
+}
+
+.client-info {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.client-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.client-info h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.client-info p {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.6;
+}
+
+.client-events {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.client-events h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.client-events h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.client-events ul {
+    list-style: none;
+    padding: 0;
+}
+
+.client-events li {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.client-events li:last-child {
+    margin-bottom: 0;
+}
+
+.client-events li h4 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+}
+
+.client-events li p {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.4;
+}
+
+@media (max-width: 580px) {
+    .client-info,
+    .client-events {
+        padding: 1rem;
+    }
+}
+
+
+
+
+
+
+/*EDIT CLIENT PAGE*/
+.edit-client-hero {
+    position: relative;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.edit-client-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+}
+
+.edit-client-hero-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+}
+
+.edit-client-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.6rem;
+}
+
+.edit-client-hero-sub {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.45);
+}
+
+.edit-client-content {
+    background: var(--black);
+    padding: 3rem 1.5rem 4.5rem;
+}
+
+.edit-client-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.edit-client-form h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.edit-client-form h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.edit-client-form label {
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.55);
+    margin-bottom: 0.5rem;
+}
+
+.edit-client-form input,
+.edit-client-form textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 0;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.edit-client-form input::placeholder,
+.edit-client-form textarea::placeholder {
+    color: rgba(245, 240, 232, 0.25);
+}
+
+.edit-client-form input:focus,
+.edit-client-form textarea:focus {
+    border-color: var(--gold);
+    background: rgba(201, 168, 76, 0.05);
+}
+
+.edit-client-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.edit-client-form button {
+    margin-top: 1rem;
+    padding: 13px 28px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+.edit-client-form button:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201, 168, 76, 0.25);
+}
+
+.edit-client-form button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 580px) {
+    .edit-client-form {
+        padding: 1rem;
+    }
+}

@@ -11,12 +11,20 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 class AuthMiddleware
 {
+    public function __construct(
+        private ResponseFactoryInterface $responseFactory,
+        private string $basePath,
+    ) {}
+
+
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        if (!isset($_SESSION['admin'])) {
-            $response = new \Slim\Psr7\Response();
-            return $response->withHeader('Location', '/auth')->withStatus(302);
+        if ($_SESSION['authenticated'] === true) {
+            return $handler->handle($request);
+        } else {
+            return $this->responseFactory->createResponse(302)
+                ->withHeader('Location', $this->basePath . '/auth')
+                ->withStatus(302);
         }
-        return $handler->handle($request);
     }
 }

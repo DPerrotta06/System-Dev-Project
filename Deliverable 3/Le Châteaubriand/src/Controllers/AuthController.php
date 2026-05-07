@@ -10,13 +10,22 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Twig\Environment;
 
+
+/*
+Routes handled:
+ *   GET  /auth          → showForm()
+ *   POST /auth/request  → requestOtp()
+ *   GET  /auth/verify   → showVerify()
+ *   POST /auth/verify   → verifyOtp()
+ *   POST /auth/logout   → logout()
+*/
+
 class AuthController
 {
     public function __construct(
         private Environment $twig,
         private OtpService $otpService,
         private string $basePath,
-        //private Admin $admin
     ) {}
 
     public function showForm(Request $request, Response $response): Response
@@ -70,7 +79,7 @@ class AuthController
         if ($this->otpService->verify($code)) {
             $this->otpService->invalidate();
             $_SESSION['authenticated'] = true;
-            return $response->withHeader('Location', $this->basePath . '/todos')->withStatus(302);
+            return $response->withHeader('Location', $this->basePath . '/admin')->withStatus(302);
         } else {
             $html = $this->twig->render('auth.html.twig', [
                 'step' => 'verify',
@@ -89,15 +98,5 @@ class AuthController
         return $response
             ->withHeader('Location', $this->basePath . '/auth')
             ->withStatus(302);
-    }
-
-    public function goToAdminDashboard(Response $response, Request $request): Response
-    {
-        $html = $this->twig->render('admin_dashboard.html.twig', [
-            'base_path' => $this->basePath,
-            'app_lang'  => $_SESSION['lang'] ?? 'en',
-        ]);
-        $response->getBody()->write($html);
-        return $response;
     }
 }

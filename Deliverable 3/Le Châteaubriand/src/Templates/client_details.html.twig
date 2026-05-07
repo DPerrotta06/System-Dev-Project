@@ -1,8 +1,200 @@
 {% extends "layout.html.twig" %}
-{% block title %}
-    {{ 'site.name'|trans }}
-{% endblock %}
+{% block title %}{{ 'site.name'|trans }} – {{ client.first_name }} {{ client.last_name }}{% endblock %}
 
 {% block content %}
+{#
+  Expected variables:
+    - client (object): first_name, last_name, email, phone, event_date, event_type,
+                       guest_count, ballroom, budget, services (array), notes,
+                       status, floor_plan_name, floor_plan_pdf_url (signed/accessible URL)
+    - menu (object): appetizers (array), main_courses (array), desserts (array), bar_services (array)
+#}
 
+<div class="page-header">
+  <a href="{{ base_path }}/clients" class="back-link">← {{ 'nav.back'|trans }}</a>
+  <h1>{{ 'client.details_title'|trans }}</h1>
+  <a href="{{ base_path }}/client/{{ client.id }}/edit" class="btn btn-primary btn-sm ml-auto">
+    ✎ {{ 'client.edit'|trans }}
+  </a>
+</div>
+
+<div class="details-layout">
+
+  <!-- Left column: Client info + Menu -->
+  <div class="details-main">
+    <div class="card info-card">
+      <h2 class="client-name">{{ client.first_name }} {{ client.last_name }}</h2>
+
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="info-icon">✉</span>
+          <div>
+            <span class="info-label">{{ 'client.email'|trans }}</span>
+            <span class="info-value">{{ client.email }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.phone'|trans }}</span>
+            <span class="info-value">{{ client.phone }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.event_date'|trans }}</span>
+            <span class="info-value">{{ client.event_date }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.event_type'|trans }}</span>
+            <span class="info-value">{{ client.event_type }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.guest_count'|trans }}</span>
+            <span class="info-value">{{ client.guest_count }} {{ 'client.guests'|trans }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.ballroom'|trans }}</span>
+            <span class="info-value">{{ client.ballroom }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div>
+            <span class="info-label">{{ 'client.budget'|trans }}</span>
+            <span class="info-value">${{ client.budget|number_format(0, '.', ',') }}</span>
+          </div>
+        </div>
+      </div>
+
+      {% if client.services is defined and client.services|length > 0 %}
+        <div class="info-row services-row">
+          <span class="info-label">{{ 'client.services'|trans }}</span>
+          <div class="tag-list">
+            {% for service in client.services %}
+              <span class="tag">{{ service }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Menu Card -->
+    <div class="card menu-card">
+      <h3 class="section-title">{{ 'client.menu'|trans }}</h3>
+
+      {% if menu.appetizers is defined and menu.appetizers|length > 0 %}
+        <div class="menu-section">
+          <span class="menu-section-label">{{ 'menu.appetizers'|trans }}</span>
+          <div class="tag-list">
+            {% for item in menu.appetizers %}
+              <span class="tag">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if menu.main_courses is defined and menu.main_courses|length > 0 %}
+        <div class="menu-section">
+          <span class="menu-section-label">{{ 'menu.main_course'|trans }}</span>
+          <div class="tag-list">
+            {% for item in menu.main_courses %}
+              <span class="tag">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if menu.desserts is defined and menu.desserts|length > 0 %}
+        <div class="menu-section">
+          <span class="menu-section-label">{{ 'menu.dessert'|trans }}</span>
+          <div class="tag-list">
+            {% for item in menu.desserts %}
+              <span class="tag">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if menu.bar_services is defined and menu.bar_services|length > 0 %}
+        <div class="menu-section">
+          <span class="menu-section-label">{{ 'menu.bar_service'|trans }}</span>
+          <div class="tag-list">
+            {% for item in menu.bar_services %}
+              <span class="tag">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right column (deliberately empty – same as Figma layout, menu is left-side) -->
+  <div class="details-side">
+    <!-- intentionally blank right panel reserved for future use -->
+  </div>
+</div>
+
+<!-- Floor Plan section (full-width below) -->
+{% if client.floor_plan_pdf_url is defined and client.floor_plan_pdf_url %}
+<div class="card floor-plan-card">
+  <h3 class="section-title">
+    <span class="section-icon">📐</span>
+    {{ 'client.floor_plan'|trans }}
+  </h3>
+  {% if client.floor_plan_name is defined %}
+    <p class="floor-plan-name">{{ client.floor_plan_name }}</p>
+  {% endif %}
+
+  <!-- PDF rendered into canvas via PDF.js -->
+  <div class="floor-plan-canvas-wrapper">
+    <canvas id="floorPlanCanvas"></canvas>
+    <p class="floor-plan-loading" id="floorPlanLoading">{{ 'client.floor_plan_loading'|trans }}</p>
+    <p class="floor-plan-error" id="floorPlanError" style="display:none;">{{ 'client.floor_plan_error'|trans }}</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+  const url = {{ client.floor_plan_pdf_url|json_encode|raw }};
+  const canvas = document.getElementById('floorPlanCanvas');
+  const loadingEl = document.getElementById('floorPlanLoading');
+  const errorEl = document.getElementById('floorPlanError');
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  pdfjsLib.getDocument(url).promise
+    .then(function (pdf) {
+      return pdf.getPage(1);
+    })
+    .then(function (page) {
+      const viewport = page.getViewport({ scale: 1.5 });
+      const ctx = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      loadingEl.style.display = 'none';
+      return page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    })
+    .catch(function (err) {
+      console.error('PDF render error:', err);
+      loadingEl.style.display = 'none';
+      errorEl.style.display = 'block';
+    });
+})();
+</script>
+{% endif %}
+
+<!-- Notes Section -->
+{% if client.notes is defined and client.notes %}
+<div class="card notes-card">
+  <h3 class="section-title">{{ 'client.notes'|trans }}</h3>
+  <p class="notes-text">{{ client.notes }}</p>
+</div>
+{% endif %}
 {% endblock %}
