@@ -15,24 +15,18 @@ class OTPService
         $this->twoFactorAuth = new TwoFactorAuth(new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg'), 'Le Châteaubriand');
     }
 
-    public function generate(string $label): string
+     public function createSecret(): string
     {
-        $secret = $this->twoFactorAuth->createSecret();
-        $_SESSION['totp_secret'] = $secret;
+        return $this->twoFactorAuth->createSecret();
+    }
+
+    public function getQrCode(string $label, string $secret): string
+    {
         return $this->twoFactorAuth->getQRCodeImageAsDataUri($label, $secret);
     }
 
-    public function verify(string $input): bool
+    public function verify(string $secret, string $code): bool
     {
-        $secret = $_SESSION['totp_secret'] ?? null;
-        if (!$secret) {
-            return false;
-        }
-        return $this->twoFactorAuth->verifyCode($secret, $input);
-    }
-
-    public function invalidate(): void
-    {
-        unset($_SESSION['totp_secret']);
+        return $this->twoFactorAuth->verifyCode($secret, $code);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+/*This controller is for static pages that don't require database access, like the landing page, FAQ, and reviews. It just renders the appropriate Twig templates.*/
 declare(strict_types=1);
 
 namespace App\Controllers;

@@ -19,7 +19,7 @@ class AuthMiddleware
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        if ($_SESSION['authenticated'] === true) {
+        if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true) {
             return $handler->handle($request);
         } else {
             return $this->responseFactory->createResponse(302)

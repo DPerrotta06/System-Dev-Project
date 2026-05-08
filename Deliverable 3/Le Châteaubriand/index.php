@@ -1,8 +1,8 @@
 <?php
 
 declare(strict_types=1);
-error_reporting(E_ALL & ~E_DEPRECATED);
 session_start();
+error_reporting(E_ALL & ~E_DEPRECATED);
 
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
@@ -123,13 +123,17 @@ $app->get('', function ($req, $res) use ($basePath) {
     return $res->withHeader('Location', $basePath . '/')->withStatus(302);
 });
 
+//ADMIN ROUTES ─────────────────────────────────────────────────────────
+$app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
+
 //PUBLIC ROUTES THAT ACCESSIBLE TO ANYONE
 $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/client-form', [BookingController::class, 'showClientForm']);
 $app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
 $app->get('/faq', [PageController::class, 'showFaq']);
-$app->get('/admin', [AuthController::class, 'showForm']);
-
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);

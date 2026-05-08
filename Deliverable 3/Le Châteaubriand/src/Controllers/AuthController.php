@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\Admin;
 use App\Services\OtpService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -42,12 +41,32 @@ class AuthController
     public function requestOtp(Request $request, Response $response): Response
     {
         $data = (array) $request->getParsedBody();
+
         $username = trim($data['username'] ?? '');
-        if ($username === '') {
+        $password = trim($data['password'] ?? '');
+
+        if ($username === '' || $password === '') { // Missing username or password
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
-        $_SESSION['username'] = $username;
-        $qrCode = $this->otpService->generate($username);
+
+        $admin = \RedBeanPHP\R::findOne('admin', 'email = ?', [$username]); // Find admin by email
+        if (!$admin || !password_verify($password, $admin->password_hash)) { // No admin found with that email or invalid password
+            return $response
+                ->withHeader('Location', $this->basePath . '/auth')
+                ->withStatus(302);
+        }
+
+        /*var_dump($admin);
+        var_dump($admin->export());
+        var_dump(isset($admin['passwordHash']));
+        var_dump($admin['passwordHash']);
+        die();*/
+
+        $_SESSION['admin_id'] = $admin->id;
+        $_SESSION['totp_secret'] = $admin->totp_secret;
+        $secret = $this->otpService->createSecret();
+        $qrCode = $this->otpService->getQrCode($username, $secret);
+
         $html = $this->twig->render('auth.html.twig', [
             'step' => 'otp_display',
             'qr_code' => $qrCode,
@@ -76,8 +95,8 @@ class AuthController
         if ($code === '') {
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
-        if ($this->otpService->verify($code)) {
-            $this->otpService->invalidate();
+        $secret = $_SESSION['totp_secret'] ?? '';
+        if ($this->otpService->verify($secret, $code)) {
             $_SESSION['authenticated'] = true;
             return $response->withHeader('Location', $this->basePath . '/admin')->withStatus(302);
         } else {
