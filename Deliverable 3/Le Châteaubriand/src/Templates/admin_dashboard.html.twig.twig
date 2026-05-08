@@ -1,26 +1,27 @@
 {% extends "layout.html.twig" %}
 
 {% block title %}
-	{{ admin.dashboard.name }} – {{ site.name }}
+	{{ 'admin.dashboard.name'|trans }} – {{ 'site.name'|trans }}
 {% endblock %}
 
 {% block content %}
+
 	<div class="admin-container">
 
 		<div class="admin-top-nav">
 
 			<div class="admin-logo">
-				{{ admin.nav.logo }}
+				{{ 'admin.nav.logo'|trans }}
 			</div>
 
 			<div class="admin-nav-links">
 
 				<a href="{{ base_path }}/calendar">
-					{{ admin.nav.calendar }}
+					{{ 'admin.nav.calendar'|trans }}
 				</a>
 
 				<a href="{{ base_path }}/logout">
-					{{ admin.nav.logout }}
+					{{ 'admin.nav.logout'|trans }}
 				</a>
 
 				<div class="admin-user">
@@ -28,18 +29,19 @@
 				</div>
 
 			</div>
+
 		</div>
 
 		<h1 class="admin-page-title">
-			{{ admin.page.title }}
+			{{ 'admin.page.title'|trans }}
 		</h1>
 
 		<div class="admin-controls">
 
-			<input type="text" class="admin-search" placeholder="{{ admin.controls.search_placeholder }}">
+			<input type="text" class="admin-search" placeholder="{{ 'admin.controls.search_placeholder'|trans }}">
 
 			<button class="admin-filter-btn">
-				{{ admin.controls.filter }}
+				{{ 'admin.controls.filter'|trans }}
 			</button>
 
 		</div>
@@ -49,16 +51,18 @@
 			<table class="admin-table">
 
 				<thead>
+
 					<tr>
-						<th>{{ admin.table.phone }}</th>
-						<th>{{ admin.table.event_type }}</th>
-						<th>{{ admin.table.date }}</th>
-						<th>{{ admin.table.guests }}</th>
-						<th>{{ admin.table.budget }}</th>
-						<th>{{ admin.table.status }}</th>
-						<th>{{ admin.table.details }}</th>
-						<th>{{ admin.table.delete }}</th>
+						<th>{{ 'admin.table.phone'|trans }}</th>
+						<th>{{ 'admin.table.event_type'|trans }}</th>
+						<th>{{ 'admin.table.date'|trans }}</th>
+						<th>{{ 'admin.table.guests'|trans }}</th>
+						<th>{{ 'admin.table.budget'|trans }}</th>
+						<th>{{ 'admin.table.status'|trans }}</th>
+						<th>{{ 'admin.table.details'|trans }}</th>
+						<th>{{ 'admin.table.delete'|trans }}</th>
 					</tr>
+
 				</thead>
 
 				<tbody>
@@ -67,41 +71,56 @@
 
 						<tr>
 
-							<td>{{ client.phone }}</td>
+							<td>
+								{{ client.phone }}
+							</td>
 
-							<td>{{ client.event_type }}</td>
+							<td>
+								{{ client.event_type }}
+							</td>
 
-							<td>{{ client.date }}</td>
+							<td>
+								{{ client.date }}
+							</td>
 
-							<td>{{ client.guests }}</td>
+							<td>
+								{{ client.guests }}
+							</td>
 
 							<td>
 								${{ client.budget|number_format(0, '.', ',') }}
 							</td>
 
 							<td class="status {{ client.status|lower }}">
-								{{ client.status|capitalize }}
+								{{ ('status.' ~ client.status|lower)|trans }}
 							</td>
 
 							<td>
+
 								<a href="{{ base_path }}/admin/client/{{ client.id }}" class="details-link">
-									{{ admin.actions.view_details }}
+									{{ 'admin.actions.view_details'|trans }}
 								</a>
+
 							</td>
 
 							<td>
+
 								<a href="{{ base_path }}/admin/client/{{ client.id }}" class="delete-link">
-									{{ admin.actions.delete_client }}
+									{{ 'admin.actions.delete_client'|trans }}
 								</a>
+
 							</td>
+
 						</tr>
 
 					{% else %}
 
 						<tr>
+
 							<td colspan="8" class="no-results">
-								{{ admin.states.no_clients }}
+								{{ 'admin.states.no_clients'|trans }}
 							</td>
+
 						</tr>
 
 					{% endfor %}
@@ -113,4 +132,5 @@
 		</div>
 
 	</div>
+
 {% endblock %}
