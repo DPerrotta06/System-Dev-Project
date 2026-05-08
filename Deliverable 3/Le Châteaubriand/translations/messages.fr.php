@@ -53,4 +53,36 @@ return [
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
     'auth.invalid' => 'Identifiants invalides',
+
+    //Admin Block Title
+    'admin.dashboard.name' => 'Tableau de bord administrateur',
+
+    //Admin Navigation
+    'admin.nav.logo' => 'Le Châteaubriand',
+    'admin.nav.calendar' => 'Calendrier',
+    'admin.nav.logout' => 'Déconnexion',
+
+    //Admin Page
+    'admin.page.title' => 'Gestion des clients',
+
+    //Admin Controls
+    'admin.controls.search_placeholder' => 'Rechercher des clients...',
+    'admin.controls.filter' => 'Filtrer',
+
+    //Admin Table
+    'admin.table.phone' => 'Téléphone',
+    'admin.table.event_type' => 'Type d’événement',
+    'admin.table.date' => 'Date',
+    'admin.table.guests' => 'Invités',
+    'admin.table.budget' => 'Budget',
+    'admin.table.status' => 'Statut',
+    'admin.table.details' => 'Détails',
+    'admin.table.delete' => 'Supprimer',
+
+    //Admin Actions
+    'admin.actions.view_details' => 'Voir les détails',
+    'admin.actions.delete_client' => 'Supprimer le client',
+
+    //Admin States
+    'admin.states.no_clients' => 'Aucun client trouvé.',
 ];

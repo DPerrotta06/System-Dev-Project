@@ -1,65 +1,116 @@
 {% extends "layout.html.twig" %}
-{% block title %}
-    Admin Dashboard – Le Châteaubriand
-{% endblock %}
-{% block content %}
-<div class="admin-container">
-    <div class="admin-top-nav">
-        <div class="admin-logo">Le Châteaubriand</div>
-        <div class="admin-nav-links">
-            <a href="{{ base_path }}/calendar">Calendar</a>
-            <a href="{{ base_path }}/logout">Logout</a>
 
-            <div class="admin-user">
-                <span>{{ user.email }}</span>
-            </div>
-        </div>
-    </div>
-    <h1 class="admin-page-title">Client Management</h1>
-    <div class="admin-controls">
-        <input type="text" class="admin-search" placeholder="Search clients...">
-        <button class="admin-filter-btn">Filter</button>
-    </div>
-    <div class="admin-table-wrapper">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Phone #</th>
-                    <th>Event Type</th>
-                    <th>Date</th>
-                    <th>Guests</th>
-                    <th>Budget</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for client in clients %}
-                    <tr>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.event_type }}</td>
-                        <td>{{ client.date }}</td>
-                        <td>{{ client.guests }}</td>
-                        <td>${{ client.budget|number_format(0, '.', ',') }}</td>
-                        <td class="status {{ client.status|lower }}">{{ client.status|capitalize }}</td>
-                        <td>
-                            <a href="{{ base_path }}/admin/client/{{ client.id }}" class="details-link">
-                                View Details
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ base_path }}/admin/client/{{ client.id }}" class="delete-link">
-                                Delete Client
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7" class="no-results">No clients found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% block title %}
+	{{ admin.dashboard.name }} – {{ site.name }}
+{% endblock %}
+
+{% block content %}
+	<div class="admin-container">
+
+		<div class="admin-top-nav">
+
+			<div class="admin-logo">
+				{{ admin.nav.logo }}
+			</div>
+
+			<div class="admin-nav-links">
+
+				<a href="{{ base_path }}/calendar">
+					{{ admin.nav.calendar }}
+				</a>
+
+				<a href="{{ base_path }}/logout">
+					{{ admin.nav.logout }}
+				</a>
+
+				<div class="admin-user">
+					<span>{{ user.email }}</span>
+				</div>
+
+			</div>
+		</div>
+
+		<h1 class="admin-page-title">
+			{{ admin.page.title }}
+		</h1>
+
+		<div class="admin-controls">
+
+			<input type="text" class="admin-search" placeholder="{{ admin.controls.search_placeholder }}">
+
+			<button class="admin-filter-btn">
+				{{ admin.controls.filter }}
+			</button>
+
+		</div>
+
+		<div class="admin-table-wrapper">
+
+			<table class="admin-table">
+
+				<thead>
+					<tr>
+						<th>{{ admin.table.phone }}</th>
+						<th>{{ admin.table.event_type }}</th>
+						<th>{{ admin.table.date }}</th>
+						<th>{{ admin.table.guests }}</th>
+						<th>{{ admin.table.budget }}</th>
+						<th>{{ admin.table.status }}</th>
+						<th>{{ admin.table.details }}</th>
+						<th>{{ admin.table.delete }}</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					{% for client in clients %}
+
+						<tr>
+
+							<td>{{ client.phone }}</td>
+
+							<td>{{ client.event_type }}</td>
+
+							<td>{{ client.date }}</td>
+
+							<td>{{ client.guests }}</td>
+
+							<td>
+								${{ client.budget|number_format(0, '.', ',') }}
+							</td>
+
+							<td class="status {{ client.status|lower }}">
+								{{ client.status|capitalize }}
+							</td>
+
+							<td>
+								<a href="{{ base_path }}/admin/client/{{ client.id }}" class="details-link">
+									{{ admin.actions.view_details }}
+								</a>
+							</td>
+
+							<td>
+								<a href="{{ base_path }}/admin/client/{{ client.id }}" class="delete-link">
+									{{ admin.actions.delete_client }}
+								</a>
+							</td>
+						</tr>
+
+					{% else %}
+
+						<tr>
+							<td colspan="8" class="no-results">
+								{{ admin.states.no_clients }}
+							</td>
+						</tr>
+
+					{% endfor %}
+
+				</tbody>
+
+			</table>
+
+		</div>
+
+	</div>
 {% endblock %}
