@@ -54,8 +54,18 @@ return [
     'auth.password_placeholder' => '••••••••',
     'auth.invalid' => 'Invalid credentials',
 
+    //Auth 2FA
+    'auth.otp_sent' => 'QR Code Generated',
+    'auth.otp_note' => 'Scan this QR code using your authenticator app.',
+    'auth.continue' => 'Continue',
+
+    'auth.verify_title' => 'Verify Authentication Code',
+    'auth.otp_label' => 'Authentication Code',
+    'auth.otp_placeholder' => 'Enter 6-digit code',
+    'auth.verify' => 'Verify',
+
     //Admin Block Title
-    'admin.dashboard.name' => 'Admin Dashboard'
+    'admin.dashboard.name' => 'Admin Dashboard',
 
     //Admin Navigation
     'admin.nav.logo' => 'Le Châteaubriand',

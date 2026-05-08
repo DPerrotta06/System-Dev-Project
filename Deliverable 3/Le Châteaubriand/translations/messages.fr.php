@@ -48,14 +48,24 @@ return [
     //Auth
     'auth.title' => 'Connexion Admin',
     'auth.email' => 'Email',
-    'auth.password' => 'Mot de passe',
-    'auth.login' => 'Se connecter',
+    'auth.password' => 'Mot de Passe',
+    'auth.login' => 'Se Connecter',
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
-    'auth.invalid' => 'Identifiants invalides',
+    'auth.invalid' => 'Identifiants Invalides',
+
+    //Auth 2FA
+    'auth.otp_sent' => 'Code QR Généré',
+    'auth.otp_note' => 'Scannez ce Code QR avec votre Application d’Authentification.',
+    'auth.continue' => 'Continuer',
+
+    'auth.verify_title' => 'Vérifier le Code d’Authentification',
+    'auth.otp_label' => 'Code d’Authentification',
+    'auth.otp_placeholder' => 'Entrez le Code à 6 chiffres',
+    'auth.verify' => 'Vérifier',
 
     //Admin Block Title
-    'admin.dashboard.name' => 'Tableau de bord administrateur',
+    'admin.dashboard.name' => 'Tableau de Bord Administrateur',
 
     //Admin Navigation
     'admin.nav.logo' => 'Le Châteaubriand',
@@ -63,10 +73,10 @@ return [
     'admin.nav.logout' => 'Déconnexion',
 
     //Admin Page
-    'admin.page.title' => 'Gestion des clients',
+    'admin.page.title' => 'Gestion des Clients',
 
     //Admin Controls
-    'admin.controls.search_placeholder' => 'Rechercher des clients...',
+    'admin.controls.search_placeholder' => 'Rechercher des Clients...',
     'admin.controls.filter' => 'Filtrer',
 
     //Admin Table
@@ -80,9 +90,9 @@ return [
     'admin.table.delete' => 'Supprimer',
 
     //Admin Actions
-    'admin.actions.view_details' => 'Voir les détails',
-    'admin.actions.delete_client' => 'Supprimer le client',
+    'admin.actions.view_details' => 'Voir les Détails',
+    'admin.actions.delete_client' => 'Supprimer le Client',
 
     //Admin States
-    'admin.states.no_clients' => 'Aucun client trouvé.',
+    'admin.states.no_clients' => 'Aucun Client Trouvé.',
 ];
