@@ -16,6 +16,31 @@ return [
     'site.phone' => '514 · 494 · 8585',
     'site.email' => 'info@lechateaubriand.com',
 
+    //Client
+    'client.details_title' => 'Client Details',
+    'client.edit' => 'Edit',
+
+    'client.email' => 'Email',
+    'client.phone' => 'Phone',
+    'client.event_date' => 'Event Date',
+    'client.event_type' => 'Event Type',
+    'client.guest_count' => 'Guest Count',
+    'client.guests' => 'Guests',
+    'client.ballroom' => 'Ballroom',
+    'client.budget' => 'Budget',
+    'client.services' => 'Services',
+    'client.menu' => 'Menu',
+    'client.floor_plan' => 'Floor Plan',
+    'client.floor_plan_loading' => 'Loading floor plan...',
+    'client.floor_plan_error' => 'Unable to load floor plan.',
+    'client.notes' => 'Additional Notes',
+
+    //Menu
+    'menu.appetizers' => 'Appetizers',
+    'menu.main_course' => 'Main Course',
+    'menu.dessert' => 'Dessert',
+    'menu.bar_service' => 'Bar Service',
+
     //Client form
     'form.personal_info' => 'Personal Information',
     'form.firstname' => 'First Name',
@@ -106,4 +131,6 @@ return [
 
     //Admin States
     'admin.states.no_clients' => 'No clients found.',
+
+    
 ];

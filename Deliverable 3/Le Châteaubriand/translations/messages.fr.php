@@ -16,6 +16,31 @@ return [
     'site.phone' => '514 · 494 · 8585',
     'site.email' => 'info@lechateaubriand.com',
 
+    //Client
+    'client.details_title' => 'Détails du client',
+    'client.edit' => 'Modifier',
+
+    'client.email' => 'Courriel',
+    'client.phone' => 'Téléphone',
+    'client.event_date' => 'Date de l’événement',
+    'client.event_type' => 'Type d’événement',
+    'client.guest_count' => 'Nombre d’invités',
+    'client.guests' => 'invités',
+    'client.ballroom' => 'Salle',
+    'client.budget' => 'Budget',
+    'client.services' => 'Services',
+    'client.menu' => 'Menu',
+    'client.floor_plan' => 'Plan de salle',
+    'client.floor_plan_loading' => 'Chargement du plan de salle...',
+    'client.floor_plan_error' => 'Impossible de charger le plan de salle.',
+    'client.notes' => 'Notes supplémentaires',
+
+    // menu
+    'menu.appetizers' => 'Entrées',
+    'menu.main_course' => 'Plat principal',
+    'menu.dessert' => 'Dessert',
+    'menu.bar_service' => 'Service de bar',
+
     //Client form
     'form.personal_info' => 'Informations personnelles',
     'form.firstname' => 'Prénom',
