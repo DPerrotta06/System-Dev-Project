@@ -45,6 +45,17 @@ return [
     'faq.still_questions' => 'Still have questions?',
     'faq.contact' => 'Contact us at',
 
+    //Calendar
+    'calendar.title' => 'Calendar',
+    'calendar.prev' => 'Previous month',
+    'calendar.next' => 'Next month',
+    'calendar.has_events' => 'Has events',
+    'calendar.guests' => 'Guests',
+    'calendar.no_events' => 'No events scheduled for this day.',
+
+    //Navigation
+    'nav.back' => 'Back',
+
     //Auth
     'auth.title' => 'Admin Login',
     'auth.email' => 'Email',

@@ -45,6 +45,17 @@ return [
     'faq.still_questions' => 'Vous avez encore des questions ?',
     'faq.contact' => 'Contactez-nous à',
 
+    //Calendar
+    'calendar.title' => 'Calendrier',
+    'calendar.prev' => 'Mois précédent',
+    'calendar.next' => 'Mois suivant',
+    'calendar.has_events' => 'Événements prévus',
+    'calendar.guests' => 'invités',
+    'calendar.no_events' => 'Aucun événement prévu pour cette journée.',
+
+    //Navigation
+    'nav.back' => 'Retour',
+
     //Auth
     'auth.title' => 'Connexion Admin',
     'auth.email' => 'Email',

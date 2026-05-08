@@ -1,5 +1,8 @@
 {% extends "layout.html.twig" %}
-{% block title %}{{ 'site.name'|trans }} – {{ 'calendar.title'|trans }}{% endblock %}
+
+{% block title %}
+	{{ 'site.name'|trans }} – {{ 'calendar.title'|trans }}
+{% endblock %}
 
 {% block content %}
 {#
@@ -17,32 +20,80 @@
     - selected_date_label (string|null) e.g. "May 19, 2026"
 #}
 <div class="page-header">
-  <a href="{{ base_path }}/dashboard" class="back-link">← {{ 'nav.back'|trans }}</a>
-  <h1>{{ 'calendar.title'|trans }}</h1>
+
+  <a href="{{ base_path }}/dashboard" class="back-link">
+    ←
+    {{ 'nav.back'|trans }}
+  </a>
+
+  <h1>
+    {{ 'calendar.title'|trans }}
+  </h1>
+
 </div>
 
-<div class="calendar-layout">
+<div
+  class="calendar-layout">
+
   <!-- Left: Calendar Panel -->
   <div class="calendar-panel">
+
     <div class="calendar-nav">
-      <span class="calendar-month-label">{{ month_name }}</span>
+
+      <span class="calendar-month-label">
+        {{ month_name }}
+      </span>
+
       <div class="calendar-nav-buttons">
-        <a href="{{ prev_month_url }}" class="nav-btn" aria-label="{{ 'calendar.prev'|trans }}">‹</a>
-        <a href="{{ next_month_url }}" class="nav-btn" aria-label="{{ 'calendar.next'|trans }}">›</a>
+
+        <a href="{{ prev_month_url }}" class="nav-btn" aria-label="{{ 'calendar.prev'|trans }}">
+          ‹
+        </a>
+
+        <a href="{{ next_month_url }}" class="nav-btn" aria-label="{{ 'calendar.next'|trans }}">
+          ›
+        </a>
+
       </div>
+
     </div>
 
     <div class="calendar-inner">
+
       <div class="calendar-sub-nav">
-        <a href="{{ prev_month_url }}" class="sub-nav-btn">‹</a>
-        <span>{{ month_name }}</span>
-        <a href="{{ next_month_url }}" class="sub-nav-btn">›</a>
+
+        <a href="{{ prev_month_url }}" class="sub-nav-btn">
+          ‹
+        </a>
+
+        <span>
+          {{ month_name }}
+        </span>
+
+        <a href="{{ next_month_url }}" class="sub-nav-btn">
+          ›
+        </a>
+
       </div>
 
-      <div class="calendar-grid">
+      <div
+        class="calendar-grid">
+
         <!-- Day headers -->
-        {% for day_label in ['Su','Mo','Tu','We','Th','Fr','Sa'] %}
-          <div class="cal-header">{{ day_label }}</div>
+        {% for day_label in [
+                  'calendar.days.sun',
+                  'calendar.days.mon',
+                  'calendar.days.tue',
+                  'calendar.days.wed',
+                  'calendar.days.thu',
+                  'calendar.days.fri',
+                  'calendar.days.sat'
+              ] %}
+
+          <div class="cal-header">
+            {{ day_label|trans }}
+          </div>
+
         {% endfor %}
 
         <!-- Leading blank cells -->
@@ -52,48 +103,88 @@
 
         <!-- Days of the month -->
         {% for d in 1..days_in_month %}
+
           {% set has_events = events_by_day[d] is defined and events_by_day[d]|length > 0 %}
           {% set is_selected = selected_day == d %}
-          <a
-            href="{{ base_path }}/calendar?year={{ year }}&month={{ month }}&day={{ d }}"
-            class="cal-day{% if has_events %} has-events{% endif %}{% if is_selected %} selected{% endif %}"
-          >{{ d }}</a>
+
+          <a href="{{ base_path }}/calendar?year={{ year }}&month={{ month }}&day={{ d }}" class="cal-day{% if has_events %} has-events{% endif %}{% if is_selected %} selected{% endif %}">
+            {{ d }}
+          </a>
+
         {% endfor %}
 
-        <!-- Trailing blank cells to complete last row -->
+        <!-- Trailing blank cells -->
         {% set total_cells = first_day_of_week + days_in_month %}
         {% set trailing = (7 - (total_cells % 7)) % 7 %}
+
         {% for i in 1..trailing %}
           <div class="cal-day other-month"></div>
         {% endfor %}
+
       </div>
+
     </div>
 
     <div class="calendar-legend">
+
       <span class="legend-dot"></span>
-      <span>{{ 'calendar.has_events'|trans }}</span>
+
+      <span>
+        {{ 'calendar.has_events'|trans }}
+      </span>
+
     </div>
+
   </div>
 
   <!-- Right: Event Details Panel -->
   <div class="event-detail-panel">
+
     {% if selected_date_label %}
-      <h2 class="event-detail-date">{{ selected_date_label }}</h2>
+
+      <h2 class="event-detail-date">
+        {{ selected_date_label }}
+      </h2>
+
     {% endif %}
 
     {% if selected_events is defined and selected_events|length > 0 %}
+
       {% for event in selected_events %}
+
         <div class="event-card">
-          <span class="event-status-badge status-{{ event.status|lower }}">{{ event.status|capitalize }}</span>
-          <p class="event-card-title">{{ event.title }}</p>
+
+          <span class="event-status-badge status-{{ event.status|lower }}">
+            {{ event.status|capitalize }}
+          </span>
+
+          <p class="event-card-title">
+            {{ event.title }}
+          </p>
+
           {% if event.guest_count is defined %}
-            <p class="event-card-guests">{{ event.guest_count }} {{ 'calendar.guests'|trans }}</p>
+
+            <p class="event-card-guests">
+              {{ event.guest_count }}
+              {{ 'calendar.guests'|trans }}
+            </p>
+
           {% endif %}
+
         </div>
+
       {% endfor %}
+
     {% elseif selected_date_label %}
-      <p class="no-events">{{ 'calendar.no_events'|trans }}</p>
+
+      <p class="no-events">
+        {{ 'calendar.no_events'|trans }}
+      </p>
+
     {% endif %}
+
   </div>
+
 </div>
+
 {% endblock %}
