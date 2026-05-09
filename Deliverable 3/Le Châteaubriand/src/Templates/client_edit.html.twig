@@ -1,11 +1,13 @@
 {% extends "layout.html.twig" %}
-{% block title %}{{ 'site.name'|trans }} – {{ 'client.edit_title'|trans }}{% endblock %}
+{% block title %}
+	{{ 'site.name'|trans }} – {{ 'client.edit_title'|trans }}
+{% endblock %}
 
 {% block content %}
 {#
   Expected variables:
     - client (object): id, first_name, last_name, email, phone, event_type,
-                       event_date, guest_count, budget, ballroom, status, notes
+                        event_date, guest_count, budget, ballroom, status, notes
     - event_types (array of strings) e.g. ['Wedding','Birthday','Corporate Event',…]
     - ballrooms (array of strings) e.g. ['Grand Salon','Petit Salon',…]
     - statuses (array of strings) e.g. ['Pending','Confirmed','Cancelled']
@@ -13,7 +15,8 @@
 #}
 
 <div class="page-header">
-  <a href="{{ base_path }}/client/{{ client.id }}" class="back-link">← {{ 'nav.back'|trans }}</a>
+  <a href="{{ base_path }}/client/{{ client.id }}" class="back-link">←
+    {{ 'nav.back'|trans }}</a>
   <h1>{{ 'client.edit_title'|trans }}</h1>
 </div>
 
@@ -26,8 +29,7 @@
       <div class="form-row">
         <div class="form-group{% if errors.first_name is defined %} has-error{% endif %}">
           <label for="first_name">{{ 'client.first_name'|trans }}</label>
-          <input type="text" id="first_name" name="first_name"
-                 value="{{ client.first_name }}" required>
+          <input type="text" id="first_name" name="first_name" value="{{ client.first_name }}" required>
           {% if errors.first_name is defined %}
             <span class="field-error">{{ errors.first_name|trans }}</span>
           {% endif %}
@@ -35,8 +37,7 @@
 
         <div class="form-group{% if errors.last_name is defined %} has-error{% endif %}">
           <label for="last_name">{{ 'client.last_name'|trans }}</label>
-          <input type="text" id="last_name" name="last_name"
-                 value="{{ client.last_name }}" required>
+          <input type="text" id="last_name" name="last_name" value="{{ client.last_name }}" required>
           {% if errors.last_name is defined %}
             <span class="field-error">{{ errors.last_name|trans }}</span>
           {% endif %}
@@ -46,8 +47,7 @@
       <div class="form-row">
         <div class="form-group{% if errors.email is defined %} has-error{% endif %}">
           <label for="email">{{ 'client.email'|trans }}</label>
-          <input type="email" id="email" name="email"
-                 value="{{ client.email }}" required>
+          <input type="email" id="email" name="email" value="{{ client.email }}" required>
           {% if errors.email is defined %}
             <span class="field-error">{{ errors.email|trans }}</span>
           {% endif %}
@@ -55,8 +55,7 @@
 
         <div class="form-group{% if errors.phone is defined %} has-error{% endif %}">
           <label for="phone">{{ 'client.phone'|trans }}</label>
-          <input type="tel" id="phone" name="phone"
-                 value="{{ client.phone }}">
+          <input type="tel" id="phone" name="phone" value="{{ client.phone }}">
           {% if errors.phone is defined %}
             <span class="field-error">{{ errors.phone|trans }}</span>
           {% endif %}
@@ -69,7 +68,7 @@
           <div class="select-wrapper">
             <select id="event_type" name="event_type">
               {% for type in event_types %}
-                <option value="{{ type }}"{% if client.event_type == type %} selected{% endif %}>
+                <option value="{{ type }}" {% if client.event_type == type %} selected {% endif %}>
                   {{ type }}
                 </option>
               {% endfor %}
@@ -83,8 +82,7 @@
 
         <div class="form-group{% if errors.event_date is defined %} has-error{% endif %}">
           <label for="event_date">{{ 'client.event_date'|trans }}</label>
-          <input type="date" id="event_date" name="event_date"
-                 value="{{ client.event_date }}" required>
+          <input type="date" id="event_date" name="event_date" value="{{ client.event_date }}" required>
           {% if errors.event_date is defined %}
             <span class="field-error">{{ errors.event_date|trans }}</span>
           {% endif %}
@@ -94,8 +92,7 @@
       <div class="form-row">
         <div class="form-group{% if errors.guest_count is defined %} has-error{% endif %}">
           <label for="guest_count">{{ 'client.guest_count'|trans }}</label>
-          <input type="number" id="guest_count" name="guest_count"
-                 value="{{ client.guest_count }}" min="1">
+          <input type="number" id="guest_count" name="guest_count" value="{{ client.guest_count }}" min="1">
           {% if errors.guest_count is defined %}
             <span class="field-error">{{ errors.guest_count|trans }}</span>
           {% endif %}
@@ -103,8 +100,7 @@
 
         <div class="form-group{% if errors.budget is defined %} has-error{% endif %}">
           <label for="budget">{{ 'client.budget'|trans }}</label>
-          <input type="number" id="budget" name="budget"
-                 value="{{ client.budget }}" min="0" step="100">
+          <input type="number" id="budget" name="budget" value="{{ client.budget }}" min="0" step="100">
           {% if errors.budget is defined %}
             <span class="field-error">{{ errors.budget|trans }}</span>
           {% endif %}
@@ -117,7 +113,7 @@
           <div class="select-wrapper">
             <select id="ballroom" name="ballroom">
               {% for room in ballrooms %}
-                <option value="{{ room }}"{% if client.ballroom == room %} selected{% endif %}>
+                <option value="{{ room }}" {% if client.ballroom == room %} selected {% endif %}>
                   {{ room }}
                 </option>
               {% endfor %}
@@ -134,8 +130,8 @@
           <div class="select-wrapper">
             <select id="status" name="status">
               {% for s in statuses %}
-                <option value="{{ s }}"{% if client.status == s %} selected{% endif %}>
-                  {{ s }}
+                <option value="{{ s }}" {% if client.status == s %} selected {% endif %}>
+                  {{ ('status.' ~ s|lower)|trans }}
                 </option>
               {% endfor %}
             </select>
@@ -159,8 +155,7 @@
         <a href="{{ base_path }}/client/{{ client.id }}" class="btn btn-cancel">
           {{ 'client.cancel'|trans }}
         </a>
-        <button type="submit" class="btn btn-primary">
-        </button>
+        <button type="submit" class="btn btn-primary"></button>
       </div>
 
     </form>

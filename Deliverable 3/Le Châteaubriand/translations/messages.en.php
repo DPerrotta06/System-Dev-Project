@@ -64,6 +64,15 @@ return [
     'form.notes_placeholder' => 'Allergies, Religious dietary restrictions, etc.',
     'form.continue_floor' => 'Continue to Table Planning',
 
+    //Client edit
+    'client.edit_title' => 'Edit Client',
+    'client.info_section' => 'Client Information',
+    'client.first_name' => 'First Name',
+    'client.last_name' => 'Last Name',
+    'client.status' => 'Status',
+    'client.cancel' => 'Cancel',
+    'client.save' => 'Save Changes',
+
     //FAQ STUFF
     'faq.title' => 'Frequently Asked Questions',
     'faq.subtitle' => 'Answers to the most frequently asked questions about Le Châteaubriand.',
@@ -80,6 +89,12 @@ return [
 
     //Navigation
     'nav.back' => 'Back',
+
+    //Status
+    'status.pending' => 'Pending',
+    'status.confirmed' => 'Confirmed',
+    'status.cancelled' => 'Cancelled',
+    'status.completed' => 'Completed',
 
     //Auth
     'auth.title' => 'Admin Login',

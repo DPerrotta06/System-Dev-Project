@@ -64,6 +64,15 @@ return [
     'form.notes_placeholder' => 'Allergies, restrictions alimentaires religieuses, etc.',
     'form.continue_floor' => 'Passer à la planification des tables',
 
+    //Client edit
+    'client.edit_title' => 'Modifier le client',
+    'client.info_section' => 'Informations du client',
+    'client.first_name' => 'Prénom',
+    'client.last_name' => 'Nom',
+    'client.status' => 'Statut',
+    'client.cancel' => 'Annuler',
+    'client.save' => 'Enregistrer les modifications',
+
     //FAQ Stuff
     'faq.title' => 'Questions fréquentes',
     'faq.subtitle' => 'Réponses aux questions les plus fréquentes sur Le Châteaubriand.',
@@ -80,6 +89,12 @@ return [
 
     //Navigation
     'nav.back' => 'Retour',
+
+    //Status
+    'status.pending' => 'En attente',
+    'status.confirmed' => 'Confirmé',
+    'status.cancelled' => 'Annulé',
+    'status.completed' => 'Terminé',
 
     //Auth
     'auth.title' => 'Connexion Admin',
