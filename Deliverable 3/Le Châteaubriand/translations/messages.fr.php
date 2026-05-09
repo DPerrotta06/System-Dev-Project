@@ -53,4 +53,14 @@ return [
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
     'auth.invalid' => 'Identifiants invalides',
+
+    //2FA
+    'auth.otp_sent'      => 'Scannez ce code QR avec votre application d\'authentification',
+    'auth.otp_note'      => 'Utilisez Google Authenticator ou Authy pour scanner le code, puis cliquez sur Continuer.',
+    'auth.continue'      => 'Continuer',
+    'auth.verify_title'  => 'Vérification en deux étapes',
+    'auth.otp_label'     => 'Code à 6 chiffres',
+    'auth.otp_ph'        => '000000',
+    'auth.verify'        => 'Vérifier',
+    'auth.error_invalid' => 'Code invalide. Veuillez réessayer.',
 ];
