@@ -81,31 +81,31 @@ return [
     // FAQ Question 1
     'faq.q1' => 'What is included in the venue rental?',
     'faq.a1' => 'Our venue rental includes the use of selected halls (Grand Salon, Princess, or Royal) along with food options and amenities such as a bridal suite.',
-    
+
     // FAQ Question 2
     'faq.q2' => 'How far in advance should I book?',
     'faq.a2' => 'We recommend booking 3 to 6 months in advance, especially for weekends and peak seasons.',
-    
+
     // FAQ Question 3
     'faq.q3' => 'What is your cancellation policy?',
     'faq.a3' => 'Cancellation fees range from 30% to 85% depending on how close the event date is.',
-    
+
     // FAQ Question 4
     'faq.q4' => 'Do you provide catering services?',
     'faq.a4' => 'Yes, we offer in-house catering with a variety of menu options.',
-    
+
     // FAQ Question 5
     'faq.q5' => 'Can I bring my own caterer?',
     'faq.a5' => 'Outside catering is allowed with prior approval.',
-    
+
     // FAQ Question 6
     'faq.q6' => 'What are the maximum capacities for each room?',
     'faq.a6' => 'Grand Salon: up to 220 guests, Royal: up to 125, Princess: up to 50 guests.',
-    
+
     // FAQ Question 7
     'faq.q7' => 'Is there parking available?',
     'faq.a7' => 'Yes, complimentary on-site parking is available.',
-    
+
     // FAQ Question 8
     'faq.q8' => 'Can we have our ceremony at the venue?',
     'faq.a8' => 'Yes, we offer indoor and outdoor ceremony spaces.',
@@ -182,4 +182,18 @@ return [
 
     //Admin States
     'admin.states.no_clients' => 'No clients found.',
+
+
+    //Reviews
+    'reviews.page_title'     => 'Guest Reviews',
+    'reviews.page_subtitle'  => 'What our guests are saying',
+    'reviews.view_all_google' => 'View All on Google',
+    'reviews.loading'        => 'Loading reviews...',
+    'reviews.error_loading'  => 'Could not load reviews.',
+    'reviews.retry'          => 'Retry',
+    'reviews.more_on_google' => 'More Reviews on Google',
+    'reviews.more_on_google_desc' => 'Read all our reviews directly on Google Maps.',
+    'reviews.this_month'     => 'This month',
+    'reviews.month_ago'      => '1 month ago',
+    'reviews.months_ago'     => '%count% months ago',
 ];

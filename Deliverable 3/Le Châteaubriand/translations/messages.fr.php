@@ -182,4 +182,18 @@ return [
 
     //Admin States
     'admin.states.no_clients' => 'Aucun Client Trouvé.',
+
+
+    //Reviews
+    'reviews.page_title'     => 'Avis des clients',
+    'reviews.page_subtitle'  => 'Ce que disent nos clients',
+    'reviews.view_all_google' => 'Voir tout sur Google',
+    'reviews.loading'        => 'Chargement des avis...',
+    'reviews.error_loading'  => 'Impossible de charger les avis.',
+    'reviews.retry'          => 'Réessayer',
+    'reviews.more_on_google' => 'Plus d\'avis sur Google',
+    'reviews.more_on_google_desc' => 'Lisez tous nos avis directement sur Google Maps.',
+    'reviews.this_month'     => 'Ce mois-ci',
+    'reviews.month_ago'      => 'Il y a 1 mois',
+    'reviews.months_ago'     => 'Il y a %count% mois',
 ];
