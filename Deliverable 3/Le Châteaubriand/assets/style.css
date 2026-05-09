@@ -2262,3 +2262,138 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     border: 1px solid rgba(234, 67, 53, 0.3);
     background: rgba(234, 67, 53, 0.05);
 }
+
+
+
+
+/*ADMIN DASHBOARD*/
+.admin-page-header {
+    margin-bottom: 2rem;
+}
+
+.admin-page-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+}
+
+.admin-page-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.35);
+}
+
+.admin-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.admin-search {
+    flex: 1;
+    max-width: 320px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.admin-search::placeholder {
+    color: rgba(245, 240, 232, 0.25);
+}
+
+.admin-search:focus {
+    border-color: var(--gold);
+}
+
+.admin-filter-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-filter-btn:hover {
+    background: rgba(201, 168, 76, 0.08);
+    border-color: var(--gold);
+}
+
+.admin-table-wrapper {
+    overflow-x: auto;
+}
+
+.no-results {
+    text-align: center;
+    color: rgba(245, 240, 232, 0.35);
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.85rem;
+    padding: 2rem !important;
+    letter-spacing: 0.06em;
+}
+
+/* STATUS BADGES */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 2px;
+}
+
+.status-badge.confirmed {
+    background: rgba(72, 187, 120, 0.12);
+    color: #68d391;
+    border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.status-badge.pending {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+}
+
+.status-badge.cancelled {
+    background: rgba(234, 67, 53, 0.1);
+    color: #fc8181;
+    border: 1px solid rgba(234, 67, 53, 0.3);
+}
+
+/* LOGOUT BUTTON */
+.admin-logout-btn {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid rgba(234, 67, 53, 0.4);
+    color: rgba(234, 67, 53, 0.7);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-logout-btn:hover {
+    background: rgba(234, 67, 53, 0.08);
+    color: #fc8181;
+    border-color: rgba(234, 67, 53, 0.6);
+}

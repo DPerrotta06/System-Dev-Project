@@ -52,7 +52,7 @@ class AdminController
               ORDER BY eventDate ASC"
         );
 
-        $html = $this->twig->render('admin/admin_dashboard.html.twig', [
+        $html = $this->twig->render('admin_dashboard.html.twig', [
             'stats'     => $stats,
             'upcoming'  => $upcoming,
             'pending'   => $pending,
