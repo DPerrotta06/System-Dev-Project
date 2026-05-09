@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Services;
 
 use RobThree\Auth\TwoFactorAuth;
-use RobThree\Auth\Providers\Qr\BaconQrCodeProvider;
+use RobThree\Auth\Providers\Qr\EndroidQrCodeProvider;;
 
 class OTPService
 {
     private TwoFactorAuth $twoFactorAuth;
     public function __construct()
     {
-        $this->twoFactorAuth = new TwoFactorAuth(new BaconQrCodeProvider(4, '#ffffff', '#000000', 'svg'), 'Le Châteaubriand');
+        $this->twoFactorAuth = new TwoFactorAuth(new EndroidQrCodeProvider(), 'Le Châteaubriand');
     }
 
      public function createSecret(): string
