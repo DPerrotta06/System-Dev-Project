@@ -1,111 +1,98 @@
 {% extends "layout.html.twig" %}
 
 {% block title %}
-	{{ 'site.name'|trans }}
+    {{ 'site.name'|trans }}
 {% endblock %}
 
 {% block content %}
 
-	<div class="login-form-container">
+<div class="login-form-container">
 
-		{% if step == 'login' %}
+    {% if step == 'login' %}
 
-			<div class="login-card">
+        <div class="login-card">
+            <h2>Le Châteaubriand</h2>
+            <h3>Admin Login</h3>
 
-				<div style="font-size: 36px; margin-bottom: 10px;"></div>
+            <form action="{{ base_path }}/auth/request" method="POST">
 
-				<h2>{{ 'site.name'|trans }}</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" name="username" autocomplete="username" required>
+                    </div>
+                </div>
 
-				<h3>{{ 'auth.title'|trans }}</h3>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" name="password" required>
+                    </div>
+                </div>
 
-				<form action="{{ base_path }}/auth/2fa" method="post">
+                <button type="submit" class="login-btn">
+                    Login
+                </button>
 
-					<div class="form-group">
+            </form>
+        </div>
 
-						<label>
-							{{ 'auth.email'|trans }}
-						</label>
+    {% elseif step == 'otp_display' %}
 
-						<div class="input-wrapper">
-							<input type="email" name="_username" autocomplete="_username" placeholder="{{ 'auth.email_placeholder'|trans }}" required>
-						</div>
+        <div class="twofa-card">
+            <h2>{{ trans('auth.otp_sent') }}</h2>
 
-					</div>
+            <img
+                src="{{ qr_code }}"
+                alt="TOTP QR code"
+                style="display:block;margin:1rem auto;width:200px;height:200px;"
+            >
 
-					<div class="form-group">
+            <p class="otp-note">
+                {{ trans('auth.otp_note') }}
+            </p>
 
-						<label>
-							{{ 'auth.password'|trans }}
-						</label>
+            <a href="{{ base_path }}/auth/verify" class="btn btn-primary">
+                {{ trans('auth.continue') }}
+            </a>
+        </div>
 
-						<div class="input-wrapper">
-							<input type="password" name="_password" placeholder="{{ 'auth.password_placeholder'|trans }}" required>
-						</div>
+    {% elseif step == 'verify' %}
 
-					</div>
+        <div class="card auth-card">
 
-					<button type="submit" class="login-btn">
-						{{ 'auth.login'|trans }}
-					</button>
+            <h2>{{ trans('auth.verify_title') }}</h2>
 
-				</form>
+            {% if error is defined %}
+                <p class="auth-error">{{ trans(error) }}</p>
+            {% endif %}
 
-			</div>
+            <form class="auth-form" action="{{ base_path }}/auth/verify" method="POST">
 
-		</div>
+                <label for="code">
+                    {{ trans('auth.otp_label') }}
+                </label>
 
-	{% elseif step == 'otp_display' %}
+                <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    placeholder="{{ trans('auth.otp_ph') }}"
+                    maxlength="6"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    required
+                >
 
-		<div class="twofa-container">
+                <button type="submit" class="btn btn-primary">
+                    {{ trans('auth.verify') }}
+                </button>
 
-			<div class="twofa-card">
+            </form>
+        </div>
 
-				<h2>{{ 'auth.otp_sent'|trans }}</h2>
+    {% endif %}
 
-				<img src="{{ qr_code }}" alt="TOTP QR code" style="display:block;margin:1rem auto;width:200px;height:200px;">
-
-				<p class="otp-note">
-					{{ 'auth.otp_note'|trans }}
-				</p>
-
-				<a href="{{ base_path }}/auth/verify" class="btn btn-primary">
-					{{ 'auth.continue'|trans }}
-				</a>
-
-			</div>
-
-		</div>
-
-	{% elseif step == 'verify' %}
-
-		<div class="card auth-card">
-
-			<h2>
-				{{ 'auth.verify_title'|trans }}
-			</h2>
-
-			{% if error is defined %}
-				<p class="auth-error">
-					{{ error|trans }}
-				</p>
-			{% endif %}
-
-			<form class="auth-form" action="{{ base_path }}/auth/verify" method="POST">
-
-				<label for="code">
-					{{ 'auth.otp_label'|trans }}
-				</label>
-
-				<input type="text" id="code" name="code" placeholder="{{ 'auth.otp_placeholder'|trans }}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required>
-
-				<button type="submit" class="btn btn-primary">
-					{{ 'auth.verify'|trans }}
-				</button>
-
-			</form>
-
-		</div>
-
-	{% endif %}
+</div>
 
 {% endblock %}

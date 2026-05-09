@@ -26,14 +26,14 @@ class AdminController
 
         // Stats bar
         $stats = [
-            'pending'        => R::getCell("SELECT COUNT(*) FROM event WHERE status = 'Pending'"),
+            'pending' => R::getCell("SELECT COUNT(*) FROM event WHERE status = 'Pending'"),
             'confirmedMonth' => R::getCell(
                 "SELECT COUNT(*) FROM event
                   WHERE status = 'Confirmed'
                     AND strftime('%Y-%m', eventDate) = strftime('%Y-%m', 'now')"
             ),
-            'totalClients'   => R::getCell("SELECT COUNT(*) FROM client"),
-            'totalEvents'    => R::getCell("SELECT COUNT(*) FROM event"),
+            'totalClients' => R::getCell("SELECT COUNT(*) FROM client"),
+            'totalEvents' => R::getCell("SELECT COUNT(*) FROM event"),
         ];
 
         //  Upcoming confirmed events (next 10) 
@@ -52,7 +52,7 @@ class AdminController
               ORDER BY eventDate ASC"
         );
 
-        $html = $this->twig->render('admin/dashboard.html.twig', [
+        $html = $this->twig->render('admin/admin_dashboard.html.twig', [
             'stats'     => $stats,
             'upcoming'  => $upcoming,
             'pending'   => $pending,
@@ -78,8 +78,14 @@ class AdminController
         $month = (int) ($params['month'] ?? date('m'));
 
         // Clamp month to valid range
-        if ($month < 1)  { $month = 12; $year--; }
-        if ($month > 12) { $month = 1;  $year++; }
+        if ($month < 1) {
+            $month = 12;
+            $year--;
+        }
+        if ($month > 12) {
+            $month = 1;
+            $year++;
+        }
 
         $from = sprintf('%04d-%02d-01', $year, $month);
         $to   = date('Y-m-t', strtotime($from)); // last day of the month

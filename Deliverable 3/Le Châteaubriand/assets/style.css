@@ -2117,3 +2117,148 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
         padding: 1rem;
     }
 }
+
+/* ── 2FA QR display ── */
+.twofa-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../assets/images/auth.webp');
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.twofa-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(5,8,20,0.55) 0%, rgba(5,8,20,0.75) 100%);
+}
+
+.twofa-card {
+    position: relative;
+    background: rgba(10, 9, 6, 0.88);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    backdrop-filter: blur(8px);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+}
+
+.twofa-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 2rem; right: 2rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.twofa-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+}
+
+.twofa-card img {
+    display: block;
+    margin: 1.5rem auto;
+    width: 200px;
+    height: 200px;
+    background: white;
+    padding: 10px;
+    border: 2px solid rgba(201, 168, 76, 0.4);
+}
+
+.otp-note {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.55);
+    text-align: center;
+    margin: 1rem 0 1.5rem;
+    line-height: 1.7;
+}
+
+/* ── Verify step ── */
+.auth-card {
+    position: relative;
+    background: rgba(10, 9, 6, 0.88);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    backdrop-filter: blur(8px);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    margin: auto;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 2rem; right: 2rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.auth-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 1.8rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
+.auth-form label {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.55);
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 13px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.auth-form input:focus {
+    border-color: var(--gold);
+    background: rgba(201, 168, 76, 0.05);
+}
+
+.auth-error {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.8rem;
+    color: #EA4335;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid rgba(234, 67, 53, 0.3);
+    background: rgba(234, 67, 53, 0.05);
+}
