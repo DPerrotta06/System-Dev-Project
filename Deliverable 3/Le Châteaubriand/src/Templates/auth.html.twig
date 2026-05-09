@@ -32,7 +32,7 @@
     <div class="twofa-container">
         <div class="twofa-card">
             <h2>{{ trans('auth.otp_sent') }}</h2>
-            <img src="{{ qr_code }}" alt="TOTP QR code">
+            <img src="{{ qr_code | raw }}" alt="TOTP QR code">
             <p class="otp-note">{{ trans('auth.otp_note') }}</p>
             <a href="{{ base_path }}/auth/verify" class="btn btn-primary">{{ trans('auth.continue') }}</a>
         </div>
