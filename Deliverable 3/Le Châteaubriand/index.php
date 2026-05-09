@@ -4,6 +4,7 @@ declare(strict_types=1);
 error_reporting(E_ALL & ~E_DEPRECATED);
 session_start();
 
+
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\PageController;
@@ -125,9 +126,11 @@ $app->get('', function ($req, $res) use ($basePath) {
 
 //PUBLIC ROUTES THAT ACCESSIBLE TO ANYONE
 $app->get('/', [PageController::class, 'showLandingPage']);
-$app->get('/client-form', [BookingController::class, 'showClientForm']);
-$app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
 $app->get('/faq', [PageController::class, 'showFaq']);
+
+$app->get('/client-form', [BookingController::class, 'showClientForm']);
+
+$app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
 $app->get('/admin', [AuthController::class, 'showForm']);
 
 
@@ -223,13 +226,18 @@ $app->get('/reviews', function (Request $request, Response $response) use ($twig
 });
 
 
-//LANGUAGE ROUTE ────────────────────────────────────────────────────────
+/* ───────── LANGUAGE SWITCH ───────── */
 $app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath) {
+
     $allowed = ['en', 'fr'];
+
     if (in_array($args['locale'], $allowed)) {
         $_SESSION['lang'] = $args['locale'];
     }
-    return $response->withHeader('Location', $basePath . '/')->withStatus(302); //REDIRECTION
+
+    return $response
+        ->withHeader('Location', $basePath . '/')
+        ->withStatus(302);
 });
 
 
