@@ -74,10 +74,46 @@ return [
     'client.save' => 'Save Changes',
 
     //FAQ STUFF
-    'faq.title' => 'Frequently Asked Questions',
-    'faq.subtitle' => 'Answers to the most frequently asked questions about Le Châteaubriand.',
-    'faq.still_questions' => 'Still have questions?',
-    'faq.contact' => 'Contact us at',
+    'faq.title' => 'FAQ',
+    'faq.hero_title' => 'How Can We Help You?',
+    'faq.hero_subtitle' => 'Find answers to common questions',
+
+    // FAQ Question 1
+    'faq.q1' => 'What is included in the venue rental?',
+    'faq.a1' => 'Our venue rental includes the use of selected halls (Grand Salon, Princess, or Royal) along with food options and amenities such as a bridal suite.',
+    
+    // FAQ Question 2
+    'faq.q2' => 'How far in advance should I book?',
+    'faq.a2' => 'We recommend booking 3 to 6 months in advance, especially for weekends and peak seasons.',
+    
+    // FAQ Question 3
+    'faq.q3' => 'What is your cancellation policy?',
+    'faq.a3' => 'Cancellation fees range from 30% to 85% depending on how close the event date is.',
+    
+    // FAQ Question 4
+    'faq.q4' => 'Do you provide catering services?',
+    'faq.a4' => 'Yes, we offer in-house catering with a variety of menu options.',
+    
+    // FAQ Question 5
+    'faq.q5' => 'Can I bring my own caterer?',
+    'faq.a5' => 'Outside catering is allowed with prior approval.',
+    
+    // FAQ Question 6
+    'faq.q6' => 'What are the maximum capacities for each room?',
+    'faq.a6' => 'Grand Salon: up to 220 guests, Royal: up to 125, Princess: up to 50 guests.',
+    
+    // FAQ Question 7
+    'faq.q7' => 'Is there parking available?',
+    'faq.a7' => 'Yes, complimentary on-site parking is available.',
+    
+    // FAQ Question 8
+    'faq.q8' => 'Can we have our ceremony at the venue?',
+    'faq.a8' => 'Yes, we offer indoor and outdoor ceremony spaces.',
+
+    //More FAQ stuff
+    'faq.still_title' => 'Still Have Questions?',
+    'faq.still_subtitle' => 'Our team is here to help. Contact us for assistance.',
+    'faq.email_us' => 'Email Us',
 
     //Calendar
     'calendar.title' => 'Calendar',
@@ -146,6 +182,4 @@ return [
 
     //Admin States
     'admin.states.no_clients' => 'No clients found.',
-
-    
 ];

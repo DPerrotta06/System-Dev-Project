@@ -1,129 +1,170 @@
 {% extends 'layout.html.twig' %}
-{% block title %}FAQ - Le Châteaubriand{% endblock %}
+
+{% block title %}
+	{{ 'faq.title'|trans }} - {{ 'site.name'|trans }}
+{% endblock %}
+
 {% block content %}
 
-<div class="faq-hero">
-    <div class="faq-hero-icon">?</div>
-    <h1 class="faq-hero-title">How Can We Help You?</h1>
-    <p class="faq-hero-sub">Find answers to common questions</p>
-</div>
+	<div class="faq-hero">
 
-<div class="faq-body">
-    <div class="faq-list">
+		<div class="faq-hero-icon">?</div>
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>What is included in the venue rental?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Our venue rental includes the use of selected halls (Grand Salon, Princess, or Royal) along with delicious food choices and menus to choose from (Some are included!). Other amenities such as a bridle suite are also there!</p>
-            </div>
-        </div>
+		<h1 class="faq-hero-title">
+			{{ 'faq.hero_title'|trans }}
+		</h1>
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>How far in advance should I book?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>We recommend booking at least 3 to 6 months in advance, especially for weekend events and peak seasons. Popular dates can fill up quickly, so early reservation is encouraged.</p>
-            </div>
-        </div>
+		<p class="faq-hero-sub">
+			{{ 'faq.hero_subtitle'|trans }}
+		</p>
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>What is your cancellation policy?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Depending on how close the date of the event, you could be charged a cancellation fee from 30% to 85% of your event's total cost.</p>
-            </div>
-        </div>
+	</div>
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>Do you provide catering services?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Yes, we offer in-house catering with a variety of menu items for you to take home the next day.</p>
-            </div>
-        </div>
+	<div class="faq-body">
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>Can I bring my own caterer?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Outside catering is permitted with prior approval. However this not included with the cost of your event and is your responsibility.</p>
-            </div>
-        </div>
+		<div class="faq-list">
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>What are the maximum capacities for each room?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>The Grand Salon accommodates up to a minimum 220 guests, the Royal accommodates for a maximum of 125 and smaller rooms such as the Princess are also available for more intimate gatherings of up to 50 guests.</p>
-            </div>
-        </div>
+			<div class="faq-item">
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>Is there parking available?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Yes, complimentary parking is available on-site.</p>
-            </div>
-        </div>
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q1'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
 
-        <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">
-                <span>Can we have our ceremony at the venue?</span>
-                <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-                <p>Absolutely. Le Châteaubriand offers both indoor and outdoor ceremony spaces. Our team will work with you to set up and coordinate the ceremony seamlessly alongside your reception.</p>
-            </div>
-        </div>
+				<div class="faq-answer">
+					<p>{{ 'faq.a1'|trans }}</p>
+				</div>
 
-    </div>
-</div>
+			</div>
 
-<div class="faq-still">
-    <h2>Still Have Questions?</h2>
-    <p>Our team is here to help. Contact us for personalized assistance with your event.</p>
-    <div class="faq-still-btns">
-        <a href="mailto:{{ 'site.email'|trans }}" class="faq-btn-outline">Email Us</a>
-    </div>
-</div>
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q2'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a2'|trans }}</p>
+				</div>
+			</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".faq-question").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const item = btn.closest(".faq-item");
-            const isOpen = item.classList.contains("open");
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q3'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a3'|trans }}</p>
+				</div>
+			</div>
 
-            document.querySelectorAll(".faq-item.open").forEach(el => {
-                el.classList.remove("open");
-                el.querySelector(".faq-question").setAttribute("aria-expanded", "false");
-                el.querySelector(".faq-answer").style.maxHeight = null;
-            });
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q4'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a4'|trans }}</p>
+				</div>
+			</div>
 
-            if (!isOpen) {
-                item.classList.add("open");
-                btn.setAttribute("aria-expanded", "true");
-                const answer = item.querySelector(".faq-answer");
-                answer.style.maxHeight = answer.scrollHeight + "px";
-            }
-        });
-    });
-});
-</script>
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q5'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a5'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q6'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a6'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q7'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a7'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q8'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a8'|trans }}</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="faq-still">
+
+		<h2>{{ 'faq.still_title'|trans }}</h2>
+
+		<p>{{ 'faq.still_subtitle'|trans }}</p>
+
+		<div class="faq-still-btns">
+
+			<a href="mailto:{{ 'site.email'|trans }}" class="faq-btn-outline">
+				{{ 'faq.email_us'|trans }}
+			</a>
+
+		</div>
+
+	</div>
+
+	 <script>
+	document.addEventListener("DOMContentLoaded", () => {
+	    document.querySelectorAll(".faq-question").forEach(btn => {
+	        btn.addEventListener("click", () => {
+	            const item = btn.closest(".faq-item");
+	            const isOpen = item.classList.contains("open");
+	
+	            document.querySelectorAll(".faq-item.open").forEach(el => {
+	                el.classList.remove("open");
+	                el.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+	                el.querySelector(".faq-answer").style.maxHeight = null;
+	            });
+	
+	            if (!isOpen) {
+	                item.classList.add("open");
+	                btn.setAttribute("aria-expanded", "true");
+	                const answer = item.querySelector(".faq-answer");
+	                answer.style.maxHeight = answer.scrollHeight + "px";
+	            }
+	        });
+	    });
+	});
+	</script>
 
 {% endblock %}

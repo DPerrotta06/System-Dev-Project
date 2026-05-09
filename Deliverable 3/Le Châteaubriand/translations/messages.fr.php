@@ -73,11 +73,47 @@ return [
     'client.cancel' => 'Annuler',
     'client.save' => 'Enregistrer les modifications',
 
-    //FAQ Stuff
-    'faq.title' => 'Questions fréquentes',
-    'faq.subtitle' => 'Réponses aux questions les plus fréquentes sur Le Châteaubriand.',
-    'faq.still_questions' => 'Vous avez encore des questions ?',
-    'faq.contact' => 'Contactez-nous à',
+    // FAQ STUFF
+    'faq.title' => 'FAQ',
+    'faq.hero_title' => 'Comment pouvons-nous vous aider?',
+    'faq.hero_subtitle' => 'Trouvez les réponses aux questions fréquentes',
+
+    // FAQ Question 1
+    'faq.q1' => 'Qu’est-ce qui est inclus dans la location de la salle?',
+    'faq.a1' => 'La location inclut l’accès aux salles (Grand Salon, Princess ou Royal) ainsi que des options de menus et certaines commodités comme la suite nuptiale.',
+
+    // FAQ Question 2
+    'faq.q2' => 'Combien de temps à l’avance dois-je réserver?',
+    'faq.a2' => 'Nous recommandons de réserver 3 à 6 mois à l’avance, surtout pour les fins de semaine et les périodes de forte demande.',
+
+    // FAQ Question 3
+    'faq.q3' => 'Quelle est votre politique d’annulation?',
+    'faq.a3' => 'Des frais d’annulation de 30 % à 85 % peuvent s’appliquer selon la proximité de la date de l’événement.',
+
+    // FAQ Question 4
+    'faq.q4' => 'Offrez-vous des services de traiteur?',
+    'faq.a4' => 'Oui, nous offrons un service de traiteur sur place avec plusieurs options de menus.',
+
+    // FAQ Question 5
+    'faq.q5' => 'Puis-je apporter mon propre traiteur?',
+    'faq.a5' => 'Le traiteur externe est permis avec approbation préalable.',
+
+    // FAQ Question 6
+    'faq.q6' => 'Quelles sont les capacités maximales des salles?',
+    'faq.a6' => 'Grand Salon : jusqu’à 220 invités, Royal : jusqu’à 125, Princess : jusqu’à 50 invités.',
+
+    // FAQ Question 7
+    'faq.q7' => 'Y a-t-il un stationnement?',
+    'faq.a7' => 'Oui, un stationnement gratuit sur place est disponible.',
+
+    // FAQ Question 8
+    'faq.q8' => 'Peut-on faire la cérémonie sur place?',
+    'faq.a8' => 'Oui, nous offrons des espaces intérieurs et extérieurs pour les cérémonies.',
+
+    // More FAQ stuff
+    'faq.still_title' => 'Vous avez encore des questions?',
+    'faq.still_subtitle' => 'Notre équipe est là pour vous aider. Contactez-nous pour plus d’assistance.',
+    'faq.email_us' => 'Envoyez-nous un courriel',
 
     //Calendar
     'calendar.title' => 'Calendrier',
