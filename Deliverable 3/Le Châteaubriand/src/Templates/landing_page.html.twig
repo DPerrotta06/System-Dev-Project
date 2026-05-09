@@ -60,9 +60,9 @@
         <div class="bottom-row">
             <a href="mailto:{{ 'site.email'|trans }}" class="bottom-contact">{{ 'site.email'|trans }}</a>
             <div class="bottom-lang">
-                <a id="lang-en" class="active" onclick="setLang('en')">EN</a>
+                <a href="{{ base_path }}/lang/en">EN</a>
                 <span class="sep">|</span>
-                <a id="lang-fr" onclick="setLang('fr')">FR</a>
+                <a href="{{ base_path }}/lang/fr">FR</a>
             </div>
         </div>
         <p class="bottom-rights" id="rights">{{ 'hero.rights'|trans }}</p>
