@@ -127,11 +127,12 @@ $app->get('', function ($req, $res) use ($basePath) {
 //PUBLIC ROUTES THAT ACCESSIBLE TO ANYONE
 $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/faq', [PageController::class, 'showFaq']);
-
 $app->get('/client-form', [BookingController::class, 'showClientForm']);
-
 $app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
-$app->get('/admin', [AuthController::class, 'showForm']);
+$app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
 
 
 // Public booking routes
