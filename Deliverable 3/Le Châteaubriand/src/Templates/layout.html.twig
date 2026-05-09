@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app_locale ?? 'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,12 @@
 </head>
 
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="lang-switcher">
+        <a href="{{ base_path }}/lang/en">EN</a> |
+        <a href="{{ base_path }}/lang/fr">FR</a>
+    </div>
+    
+    {% block content %}{% endblock %}
+
 </body>
 </html>

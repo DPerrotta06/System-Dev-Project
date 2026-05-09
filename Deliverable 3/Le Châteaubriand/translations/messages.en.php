@@ -16,6 +16,31 @@ return [
     'site.phone' => '514 · 494 · 8585',
     'site.email' => 'info@lechateaubriand.com',
 
+    //Client
+    'client.details_title' => 'Client Details',
+    'client.edit' => 'Edit',
+
+    'client.email' => 'Email',
+    'client.phone' => 'Phone',
+    'client.event_date' => 'Event Date',
+    'client.event_type' => 'Event Type',
+    'client.guest_count' => 'Guest Count',
+    'client.guests' => 'Guests',
+    'client.ballroom' => 'Ballroom',
+    'client.budget' => 'Budget',
+    'client.services' => 'Services',
+    'client.menu' => 'Menu',
+    'client.floor_plan' => 'Floor Plan',
+    'client.floor_plan_loading' => 'Loading floor plan...',
+    'client.floor_plan_error' => 'Unable to load floor plan.',
+    'client.notes' => 'Additional Notes',
+
+    //Menu
+    'menu.appetizers' => 'Appetizers',
+    'menu.main_course' => 'Main Course',
+    'menu.dessert' => 'Dessert',
+    'menu.bar_service' => 'Bar Service',
+
     //Client form
     'form.personal_info' => 'Personal Information',
     'form.firstname' => 'First Name',
@@ -39,11 +64,73 @@ return [
     'form.notes_placeholder' => 'Allergies, Religious dietary restrictions, etc.',
     'form.continue_floor' => 'Continue to Table Planning',
 
+    //Client edit
+    'client.edit_title' => 'Edit Client',
+    'client.info_section' => 'Client Information',
+    'client.first_name' => 'First Name',
+    'client.last_name' => 'Last Name',
+    'client.status' => 'Status',
+    'client.cancel' => 'Cancel',
+    'client.save' => 'Save Changes',
+
     //FAQ STUFF
-    'faq.title' => 'Frequently Asked Questions',
-    'faq.subtitle' => 'Answers to the most frequently asked questions about Le Châteaubriand.',
-    'faq.still_questions' => 'Still have questions?',
-    'faq.contact' => 'Contact us at',
+    'faq.title' => 'FAQ',
+    'faq.hero_title' => 'How Can We Help You?',
+    'faq.hero_subtitle' => 'Find answers to common questions',
+
+    // FAQ Question 1
+    'faq.q1' => 'What is included in the venue rental?',
+    'faq.a1' => 'Our venue rental includes the use of selected halls (Grand Salon, Princess, or Royal) along with food options and amenities such as a bridal suite.',
+    
+    // FAQ Question 2
+    'faq.q2' => 'How far in advance should I book?',
+    'faq.a2' => 'We recommend booking 3 to 6 months in advance, especially for weekends and peak seasons.',
+    
+    // FAQ Question 3
+    'faq.q3' => 'What is your cancellation policy?',
+    'faq.a3' => 'Cancellation fees range from 30% to 85% depending on how close the event date is.',
+    
+    // FAQ Question 4
+    'faq.q4' => 'Do you provide catering services?',
+    'faq.a4' => 'Yes, we offer in-house catering with a variety of menu options.',
+    
+    // FAQ Question 5
+    'faq.q5' => 'Can I bring my own caterer?',
+    'faq.a5' => 'Outside catering is allowed with prior approval.',
+    
+    // FAQ Question 6
+    'faq.q6' => 'What are the maximum capacities for each room?',
+    'faq.a6' => 'Grand Salon: up to 220 guests, Royal: up to 125, Princess: up to 50 guests.',
+    
+    // FAQ Question 7
+    'faq.q7' => 'Is there parking available?',
+    'faq.a7' => 'Yes, complimentary on-site parking is available.',
+    
+    // FAQ Question 8
+    'faq.q8' => 'Can we have our ceremony at the venue?',
+    'faq.a8' => 'Yes, we offer indoor and outdoor ceremony spaces.',
+
+    //More FAQ stuff
+    'faq.still_title' => 'Still Have Questions?',
+    'faq.still_subtitle' => 'Our team is here to help. Contact us for assistance.',
+    'faq.email_us' => 'Email Us',
+
+    //Calendar
+    'calendar.title' => 'Calendar',
+    'calendar.prev' => 'Previous month',
+    'calendar.next' => 'Next month',
+    'calendar.has_events' => 'Has events',
+    'calendar.guests' => 'Guests',
+    'calendar.no_events' => 'No events scheduled for this day.',
+
+    //Navigation
+    'nav.back' => 'Back',
+
+    //Status
+    'status.pending' => 'Pending',
+    'status.confirmed' => 'Confirmed',
+    'status.cancelled' => 'Cancelled',
+    'status.completed' => 'Completed',
 
     //Auth
     'auth.title' => 'Admin Login',
@@ -53,4 +140,46 @@ return [
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
     'auth.invalid' => 'Invalid credentials',
+
+    //Auth 2FA
+    'auth.otp_sent' => 'QR Code Generated',
+    'auth.otp_note' => 'Scan this QR code using your authenticator app.',
+    'auth.continue' => 'Continue',
+
+    'auth.verify_title' => 'Verify Authentication Code',
+    'auth.otp_label' => 'Authentication Code',
+    'auth.otp_placeholder' => 'Enter 6-digit code',
+    'auth.verify' => 'Verify',
+
+    //Admin Block Title
+    'admin.dashboard.name' => 'Admin Dashboard',
+
+    //Admin Navigation
+    'admin.nav.logo' => 'Le Châteaubriand',
+    'admin.nav.calendar' => 'Calendar',
+    'admin.nav.logout' => 'Logout',
+
+    //Admin Page
+    'admin.page.title' => 'Client Management',
+
+    //Admin Controls
+    'admin.controls.search_placeholder' => 'Search clients...',
+    'admin.controls.filter' => 'Filter',
+
+    //Admin Table
+    'admin.table.phone' => 'Phone #',
+    'admin.table.event_type' => 'Event Type',
+    'admin.table.date' => 'Date',
+    'admin.table.guests' => 'Guests',
+    'admin.table.budget' => 'Budget',
+    'admin.table.status' => 'Status',
+    'admin.table.details' => 'Details',
+    'admin.table.delete' => 'Delete',
+
+    //Admin Actions
+    'admin.actions.view_details' => 'View Details',
+    'admin.actions.delete_client' => 'Delete Client',
+
+    //Admin States
+    'admin.states.no_clients' => 'No clients found.',
 ];
