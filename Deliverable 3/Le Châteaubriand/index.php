@@ -146,6 +146,7 @@ $app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation
 $app->group('', function($group) {  
 
     $group->get('/admin', [AdminController::class, 'dashboard']);
+    $group->get('/calendar', [AdminController::class, 'calendar']);
     $group->get('/events', [EventController::class, 'index']);
     $group->get('/events/{id}', [EventController::class, 'show']);
     $group->post('/events/{id}/status', [EventController::class, 'updateStatus']);

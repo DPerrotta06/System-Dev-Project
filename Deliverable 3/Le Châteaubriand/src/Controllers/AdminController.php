@@ -16,7 +16,7 @@ class AdminController
         private string $basePath,
     ) {}
 
-    // GET /admin 
+    // GET /admin
     // Main dashboard: stats + upcoming events + pending queue.
     public function dashboard(Request $request, Response $response): Response
     {
@@ -33,10 +33,10 @@ class AdminController
                     AND strftime('%Y-%m', eventDate) = strftime('%Y-%m', 'now')"
             ),
             'totalClients' => R::getCell("SELECT COUNT(*) FROM client"),
-            'totalEvents' => R::getCell("SELECT COUNT(*) FROM event"),
+            'totalEvents'  => R::getCell("SELECT COUNT(*) FROM event"),
         ];
 
-        //  Upcoming confirmed events (next 10) 
+        // Upcoming confirmed events (next 10)
         $upcoming = R::getAll(
             "SELECT * FROM v_event_summary
               WHERE status = 'Confirmed'
@@ -45,7 +45,7 @@ class AdminController
               LIMIT 10"
         );
 
-        //  Pending bookings needing a decision
+        // Pending bookings needing a decision
         $pending = R::getAll(
             "SELECT * FROM v_event_summary
               WHERE status = 'Pending'
@@ -129,7 +129,7 @@ class AdminController
         return $response;
     }
 
-    //  GET /admin/payments 
+    // GET /admin/payments
     // Payment overview — all events with outstanding balances.
     public function payments(Request $request, Response $response): Response
     {

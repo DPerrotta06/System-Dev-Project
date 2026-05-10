@@ -9,11 +9,12 @@ return [
     'hero.admin' => 'Portail Admin',
     'hero.faq' => 'FAQ',
     'hero.reviews' => 'Avis',
-    'hero.rights' => '© 2025 Le Châteaubriand. Tous droits réservés.',
+    'hero.rights' => '© 2026 Le Châteaubriand. Tous droits réservés.',
 
     // Common
     'site.name' => 'Le Châteaubriand',
     'site.phone' => '514 · 494 · 8585',
+    'site.phone_raw' => '5144948585',
     'site.email' => 'info@lechateaubriand.com',
 
     //Client
@@ -22,9 +23,9 @@ return [
 
     'client.email' => 'Courriel',
     'client.phone' => 'Téléphone',
-    'client.event_date' => 'Date de l’événement',
-    'client.event_type' => 'Type d’événement',
-    'client.guest_count' => 'Nombre d’invités',
+    'client.event_date' => 'Date de l\'événement',
+    'client.event_type' => 'Type d\'événement',
+    'client.guest_count' => 'Nombre d\'invités',
     'client.guests' => 'invités',
     'client.ballroom' => 'Salle',
     'client.budget' => 'Budget',
@@ -47,15 +48,15 @@ return [
     'form.lastname' => 'Nom de famille',
     'form.email' => 'Courriel',
     'form.phone' => 'Téléphone',
-    'form.event_details' => 'Détails de l’événement',
-    'form.select_event_type' => 'Sélectionnez un type d’événement',
+    'form.event_details' => 'Détails de l\'événement',
+    'form.select_event_type' => 'Sélectionnez un type d\'événement',
     'form.wedding' => 'Mariage',
     'form.corporate' => 'Événement corporatif',
     'form.birthday' => 'Anniversaire',
     'form.anniversary' => 'Anniversaire de mariage',
     'form.baby_shower' => 'Fête prénatale',
     'form.other' => 'Autre',
-    'form.number_of_guests' => 'Nombre d’invités',
+    'form.number_of_guests' => 'Nombre d\'invités',
     'form.menu_selection' => 'Sélection du menu',
     'form.main_menu' => 'Menu principal',
     'form.buffet' => 'Buffet',
@@ -79,16 +80,16 @@ return [
     'faq.hero_subtitle' => 'Trouvez les réponses aux questions fréquentes',
 
     // FAQ Question 1
-    'faq.q1' => 'Qu’est-ce qui est inclus dans la location de la salle?',
-    'faq.a1' => 'La location inclut l’accès aux salles (Grand Salon, Princess ou Royal) ainsi que des options de menus et certaines commodités comme la suite nuptiale.',
+    'faq.q1' => 'Qu\'est-ce qui est inclus dans la location de la salle?',
+    'faq.a1' => 'La location inclut l\'accès aux salles (Grand Salon, Princess ou Royal) ainsi que des options de menus et certaines commodités comme la suite nuptiale.',
 
     // FAQ Question 2
-    'faq.q2' => 'Combien de temps à l’avance dois-je réserver?',
-    'faq.a2' => 'Nous recommandons de réserver 3 à 6 mois à l’avance, surtout pour les fins de semaine et les périodes de forte demande.',
+    'faq.q2' => 'Combien de temps à l\'avance dois-je réserver?',
+    'faq.a2' => 'Nous recommandons de réserver 3 à 6 mois à l\'avance, surtout pour les fins de semaine et les périodes de forte demande.',
 
     // FAQ Question 3
-    'faq.q3' => 'Quelle est votre politique d’annulation?',
-    'faq.a3' => 'Des frais d’annulation de 30 % à 85 % peuvent s’appliquer selon la proximité de la date de l’événement.',
+    'faq.q3' => 'Quelle est votre politique d\'annulation?',
+    'faq.a3' => 'Des frais d\'annulation de 30 % à 85 % peuvent s\'appliquer selon la proximité de la date de l\'événement.',
 
     // FAQ Question 4
     'faq.q4' => 'Offrez-vous des services de traiteur?',
@@ -100,7 +101,7 @@ return [
 
     // FAQ Question 6
     'faq.q6' => 'Quelles sont les capacités maximales des salles?',
-    'faq.a6' => 'Grand Salon : jusqu’à 220 invités, Royal : jusqu’à 125, Princess : jusqu’à 50 invités.',
+    'faq.a6' => 'Grand Salon : jusqu\'à 220 invités, Royal : jusqu\'à 125, Princess : jusqu\'à 50 invités.',
 
     // FAQ Question 7
     'faq.q7' => 'Y a-t-il un stationnement?',
@@ -112,7 +113,7 @@ return [
 
     // More FAQ stuff
     'faq.still_title' => 'Vous avez encore des questions?',
-    'faq.still_subtitle' => 'Notre équipe est là pour vous aider. Contactez-nous pour plus d’assistance.',
+    'faq.still_subtitle' => 'Notre équipe est là pour vous aider. Contactez-nous pour plus d\'assistance.',
     'faq.email_us' => 'Envoyez-nous un courriel',
 
     //Calendar
@@ -134,25 +135,26 @@ return [
 
     //Auth
     'auth.title' => 'Connexion Admin',
-    'auth.email' => 'Email',
-    'auth.password' => 'Mot de Passe',
-    'auth.login' => 'Se Connecter',
+    'auth.email' => 'Courriel',
+    'auth.password' => 'Mot de passe',
+    'auth.login' => 'Se connecter',
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
-    'auth.invalid' => 'Identifiants Invalides',
+    'auth.invalid' => 'Identifiants invalides',
+    'auth.error_invalid' => 'Code d\'authentification invalide. Veuillez réessayer.',
 
     //Auth 2FA
-    'auth.otp_sent' => 'Code QR Généré',
-    'auth.otp_note' => 'Scannez ce Code QR avec votre Application d’Authentification.',
+    'auth.otp_sent' => 'Code QR généré',
+    'auth.otp_note' => 'Scannez ce code QR avec votre application d\'authentification.',
     'auth.continue' => 'Continuer',
 
-    'auth.verify_title' => 'Vérifier le Code d’Authentification',
-    'auth.otp_label' => 'Code d’Authentification',
-    'auth.otp_placeholder' => 'Entrez le Code à 6 chiffres',
+    'auth.verify_title' => 'Vérifier le code d\'authentification',
+    'auth.otp_label' => 'Code d\'authentification',
+    'auth.otp_placeholder' => 'Entrez le code à 6 chiffres',
     'auth.verify' => 'Vérifier',
 
     //Admin Block Title
-    'admin.dashboard.name' => 'Tableau de Bord Administrateur',
+    'admin.dashboard.name' => 'Tableau de bord administrateur',
 
     //Admin Navigation
     'admin.nav.logo' => 'Le Châteaubriand',
@@ -160,29 +162,46 @@ return [
     'admin.nav.logout' => 'Déconnexion',
 
     //Admin Page
-    'admin.page.title' => 'Gestion des Clients',
+    'admin.page.title' => 'Gestion des clients',
 
     //Admin Controls
-    'admin.controls.search_placeholder' => 'Rechercher des Clients...',
+    'admin.controls.search_placeholder' => 'Rechercher des clients...',
     'admin.controls.filter' => 'Filtrer',
 
+    //Admin Stats Bar
+    'admin.stats.pending' => 'En attente',
+    'admin.stats.confirmed_month' => 'Confirmés ce mois-ci',
+    'admin.stats.total_clients' => 'Clients au total',
+    'admin.stats.total_events' => 'Événements au total',
+
+    //Admin Sections
+    'admin.sections.pending' => '⏳ Réservations en attente',
+    'admin.sections.upcoming' => '📅 Événements confirmés à venir',
+
     //Admin Table
+    'admin.table.client' => 'Client',
     'admin.table.phone' => 'Téléphone',
-    'admin.table.event_type' => 'Type d’événement',
+    'admin.table.event_type' => 'Type d\'événement',
     'admin.table.date' => 'Date',
+    'admin.table.time' => 'Heure',
     'admin.table.guests' => 'Invités',
     'admin.table.budget' => 'Budget',
     'admin.table.status' => 'Statut',
     'admin.table.details' => 'Détails',
     'admin.table.delete' => 'Supprimer',
+    'admin.table.ballroom' => 'Salle',
+    'admin.table.actions' => 'Actions',
 
     //Admin Actions
-    'admin.actions.view_details' => 'Voir les Détails',
-    'admin.actions.delete_client' => 'Supprimer le Client',
+    'admin.actions.view_details' => 'Voir les détails',
+    'admin.actions.delete_client' => 'Supprimer le client',
+    'admin.actions.confirm' => '✓ Confirmer',
+    'admin.actions.cancel' => '✕ Annuler',
 
     //Admin States
-    'admin.states.no_clients' => 'Aucun Client Trouvé.',
-
+    'admin.states.no_clients' => 'Aucun client trouvé.',
+    'admin.states.no_pending' => 'Aucune réservation en attente.',
+    'admin.states.no_upcoming' => 'Aucun événement à venir.',
 
     //Reviews
     'reviews.page_title'     => 'Avis des clients',
@@ -196,4 +215,31 @@ return [
     'reviews.this_month'     => 'Ce mois-ci',
     'reviews.month_ago'      => 'Il y a 1 mois',
     'reviews.months_ago'     => 'Il y a %count% mois',
+
+    //Admin — client detail events section
+    'admin.sections.events' => '📋 Événements',
+
+    //Admin — confirm dialogs
+    'admin.confirm.delete_client' => 'Êtes-vous sûr de vouloir supprimer ce client et tous ses événements?',
+    'admin.confirm.delete_event'  => 'Êtes-vous sûr de vouloir supprimer cet événement?',
+
+    //Menu
+    'menu.per_person'  => '/ personne',
+    'menu.category'    => 'Catégorie',
+    'menu.item'        => 'Article',
+    'menu.extra_price' => 'Prix supplémentaire',
+    'menu.no_items'    => 'Aucun article dans ce menu.',
+    'menu.no_menus'    => 'Aucun menu trouvé.',
+
+    //Calendar — day headers
+    'calendar.days.sun' => 'Dim',
+    'calendar.days.mon' => 'Lun',
+    'calendar.days.tue' => 'Mar',
+    'calendar.days.wed' => 'Mer',
+    'calendar.days.thu' => 'Jeu',
+    'calendar.days.fri' => 'Ven',
+    'calendar.days.sat' => 'Sam',
+
+    //Calendar — misc
+    'calendar.select_day' => 'Sélectionnez un jour pour voir les événements.',
 ];

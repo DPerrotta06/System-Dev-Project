@@ -15,7 +15,7 @@ class ClientController
         private string $basePath,
     ) {}
 
-    // GET /clients 
+    // GET /clients
     // list all clients, with optional name search.
     public function index(Request $request, Response $response): Response
     {
@@ -38,7 +38,7 @@ class ClientController
             $clients = R::getAll('SELECT * FROM client ORDER BY lastName, firstName');
         }
 
-        $html = $this->twig->render('clients/index.html.twig', [
+        $html = $this->twig->render('clients_index.html.twig', [
             'clients'   => $clients,
             'search'    => $search,
             'base_path' => $this->basePath,
@@ -48,8 +48,8 @@ class ClientController
         return $response;
     }
 
-    // GET /clients/{id} 
-    // client detail — profile + all their events + payment info.
+    // GET /clients/{id}
+    // client detail — profile + all their events.
     public function show(Request $request, Response $response, array $args): Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
@@ -67,7 +67,7 @@ class ClientController
             [(int) $args['id']]
         );
 
-        $html = $this->twig->render('clients_show.html.twig', [
+        $html = $this->twig->render('client_details.html.twig', [
             'client'    => $client->export(),
             'events'    => $events,
             'base_path' => $this->basePath,
@@ -77,7 +77,7 @@ class ClientController
         return $response;
     }
 
-    // GET /clients/{id}/edit 
+    // GET /clients/{id}/edit
     // show edit form for a client.
     public function edit(Request $request, Response $response, array $args): Response
     {
@@ -91,7 +91,7 @@ class ClientController
             return $response->withStatus(404);
         }
 
-        $html = $this->twig->render('clients/edit.html.twig', [
+        $html = $this->twig->render('client_edit.html.twig', [
             'client'    => $client->export(),
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
@@ -100,7 +100,7 @@ class ClientController
         return $response;
     }
 
-    // POST /clients/{id}/edit 
+    // POST /clients/{id}/edit
     // save edits to a client record.
     public function update(Request $request, Response $response, array $args): Response
     {
@@ -128,7 +128,7 @@ class ClientController
             ->withStatus(302);
     }
 
-    //  POST /clients/{id}/delete 
+    // POST /clients/{id}/delete
     // delete a client and cascade their events/payments.
     public function delete(Request $request, Response $response, array $args): Response
     {
@@ -156,5 +156,4 @@ class ClientController
             ->withHeader('Location', $this->basePath . '/clients')
             ->withStatus(302);
     }
-
 }

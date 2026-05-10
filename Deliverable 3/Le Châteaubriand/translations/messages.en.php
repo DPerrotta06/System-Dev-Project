@@ -14,6 +14,7 @@ return [
     // Common
     'site.name' => 'Le Châteaubriand',
     'site.phone' => '514 · 494 · 8585',
+    'site.phone_raw' => '5144948585',
     'site.email' => 'info@lechateaubriand.com',
 
     //Client
@@ -140,6 +141,7 @@ return [
     'auth.email_placeholder' => 'admin@lechateaubriand.com',
     'auth.password_placeholder' => '••••••••',
     'auth.invalid' => 'Invalid credentials',
+    'auth.error_invalid' => 'Invalid authentication code. Please try again.',
 
     //Auth 2FA
     'auth.otp_sent' => 'QR Code Generated',
@@ -166,23 +168,40 @@ return [
     'admin.controls.search_placeholder' => 'Search clients...',
     'admin.controls.filter' => 'Filter',
 
+    //Admin Stats Bar
+    'admin.stats.pending' => 'Pending',
+    'admin.stats.confirmed_month' => 'Confirmed This Month',
+    'admin.stats.total_clients' => 'Total Clients',
+    'admin.stats.total_events' => 'Total Events',
+
+    //Admin Sections
+    'admin.sections.pending' => '⏳ Pending Bookings',
+    'admin.sections.upcoming' => '📅 Upcoming Confirmed Events',
+
     //Admin Table
+    'admin.table.client' => 'Client',
     'admin.table.phone' => 'Phone #',
     'admin.table.event_type' => 'Event Type',
     'admin.table.date' => 'Date',
+    'admin.table.time' => 'Time',
     'admin.table.guests' => 'Guests',
     'admin.table.budget' => 'Budget',
     'admin.table.status' => 'Status',
     'admin.table.details' => 'Details',
     'admin.table.delete' => 'Delete',
+    'admin.table.ballroom' => 'Ballroom',
+    'admin.table.actions' => 'Actions',
 
     //Admin Actions
     'admin.actions.view_details' => 'View Details',
     'admin.actions.delete_client' => 'Delete Client',
+    'admin.actions.confirm' => '✓ Confirm',
+    'admin.actions.cancel' => '✕ Cancel',
 
     //Admin States
     'admin.states.no_clients' => 'No clients found.',
-
+    'admin.states.no_pending' => 'No pending bookings.',
+    'admin.states.no_upcoming' => 'No upcoming events.',
 
     //Reviews
     'reviews.page_title'     => 'Guest Reviews',
@@ -196,4 +215,31 @@ return [
     'reviews.this_month'     => 'This month',
     'reviews.month_ago'      => '1 month ago',
     'reviews.months_ago'     => '%count% months ago',
+
+    //Admin — client detail events section
+    'admin.sections.events' => '📋 Events',
+
+    //Admin — confirm dialogs
+    'admin.confirm.delete_client' => 'Are you sure you want to delete this client and all their events?',
+    'admin.confirm.delete_event'  => 'Are you sure you want to delete this event?',
+
+    //Menu
+    'menu.per_person'  => '/ person',
+    'menu.category'    => 'Category',
+    'menu.item'        => 'Item',
+    'menu.extra_price' => 'Extra Price',
+    'menu.no_items'    => 'No items in this menu.',
+    'menu.no_menus'    => 'No menus found.',
+
+    //Calendar — day headers
+    'calendar.days.sun' => 'Sun',
+    'calendar.days.mon' => 'Mon',
+    'calendar.days.tue' => 'Tue',
+    'calendar.days.wed' => 'Wed',
+    'calendar.days.thu' => 'Thu',
+    'calendar.days.fri' => 'Fri',
+    'calendar.days.sat' => 'Sat',
+
+    //Calendar — misc
+    'calendar.select_day' => 'Select a day to view events.',
 ];
