@@ -32,10 +32,10 @@ class MenuController
             $mid = $row['menuId'];
             if (!isset($grouped[$mid])) {
                 $grouped[$mid] = [
-                    'menuId'        => $mid,
-                    'menuName'      => $row['menuName'],
+                    'menuId'         => $mid,
+                    'menuName'       => $row['menuName'],
                     'pricePerPerson' => $row['pricePerPerson'],
-                    'items'         => [],
+                    'items'          => [],
                 ];
             }
             $grouped[$mid]['items'][] = [
@@ -47,7 +47,7 @@ class MenuController
             ];
         }
 
-        $html = $this->twig->render('menus/index.html.twig', [
+        $html = $this->twig->render('menu_index.html.twig', [
             'menus'     => array_values($grouped),
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
@@ -87,8 +87,8 @@ class MenuController
             ], $rows),
         ];
 
-        $html = $this->twig->render('menus/show.html.twig', [
-            'menu'      => $menu,
+        $html = $this->twig->render('menu_index.html.twig', [
+            'menus'     => [$menu],
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
@@ -104,16 +104,16 @@ class MenuController
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
-        $menu       = R::load('menu', (int) $args['id']);
-        $allItems   = R::getAll('SELECT fi.*, fc.categoryName FROM foodItem fi JOIN foodCategory fc ON fc.categoryId = fi.categoryId ORDER BY fc.categoryName, fi.itemName');
-        $linkedIds  = R::getCol('SELECT itemId FROM menuFoodItem WHERE menuId = ?', [(int) $args['id']]);
+        $menu      = R::load('menu', (int) $args['id']);
+        $allItems  = R::getAll('SELECT fi.*, fc.categoryName FROM foodItem fi JOIN foodCategory fc ON fc.categoryId = fi.categoryId ORDER BY fc.categoryName, fi.itemName');
+        $linkedIds = R::getCol('SELECT itemId FROM menuFoodItem WHERE menuId = ?', [(int) $args['id']]);
 
         if (!$menu->id) {
             $response->getBody()->write('Menu not found.');
             return $response->withStatus(404);
         }
 
-        $html = $this->twig->render('menus/edit.html.twig', [
+        $html = $this->twig->render('menu_index.html.twig', [
             'menu'      => $menu->export(),
             'allItems'  => $allItems,
             'linkedIds' => $linkedIds,
@@ -124,7 +124,7 @@ class MenuController
         return $response;
     }
 
-    // POST /menus/{id}/edit 
+    // POST /menus/{id}/edit
     // save menu edits and re-sync food item links.
     public function update(Request $request, Response $response, array $args): Response
     {
