@@ -9,6 +9,7 @@ use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\PageController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\SessionTimeoutMiddleware;
 use App\Middleware\MaintenanceMiddleware;
 use App\Middleware\SecurityHeadersMiddleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -129,10 +130,10 @@ $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/faq', [PageController::class, 'showFaq']);
 $app->get('/client-form', [BookingController::class, 'showClientForm']);
 $app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
-$app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
+// $app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
+//     responseFactory: $app->getResponseFactory(),
+//     basePath: $basePath
+// ));
 
 
 // Public booking routes
@@ -141,77 +142,30 @@ $app->post('/booking', [BookingController::class, 'submit']);
 $app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation']);
 
 // Event, client, menu and floor-planning (ADMIN) THESE ARE ALL PROTECTED BY THE MIDDLEWARE TO PREVENT ANYONE EXCEPT THE ADMINS FROM MANIPULATING AND ACCESSING THE DATA
-$app->get('/events', [EventController::class, 'index'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/events/{id}', [EventController::class, 'show'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/events/{id}/status', [EventController::class, 'updateStatus'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/events/{id}/delete', [EventController::class, 'delete'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
+// grouped the admin routes for better organization and security 
+$app->group('', function($group) {  
 
+    $group->get('/admin', [AdminController::class, 'dashboard']);
+    $group->get('/events', [EventController::class, 'index']);
+    $group->get('/events/{id}', [EventController::class, 'show']);
+    $group->post('/events/{id}/status', [EventController::class, 'updateStatus']);
+    $group->post('/events/{id}/delete', [EventController::class, 'delete']);
+    $group->get('/clients', [ClientController::class, 'index']);
+    $group->get('/clients/{id}', [ClientController::class, 'show']);
+    $group->get('/clients/{id}/edit', [ClientController::class, 'edit']);
+    $group->post('/clients/{id}/edit', [ClientController::class, 'update']);
+    $group->post('/clients/{id}/delete', [ClientController::class, 'delete']);
+    $group->get('/menus', [MenuController::class, 'index']);
+    $group->get('/menus/{id}', [MenuController::class, 'show']);
+    $group->get('/menus/{id}/edit', [MenuController::class, 'edit']);
+    $group->post('/menus/{id}/edit', [MenuController::class, 'update']);
+    $group->get('/floor-planning', [FloorPlanningController::class, 'index']);
+    $group->get('/floor-planning/{id}', [FloorPlanningController::class, 'show']);
+    $group->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit']);
+    $group->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
 
-$app->get('/clients', [ClientController::class, 'index'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/clients/{id}', [ClientController::class, 'show'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/clients/{id}/edit', [ClientController::class, 'edit'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/clients/{id}/edit', [ClientController::class, 'update'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/clients/{id}/delete', [ClientController::class, 'delete'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-
-
-$app->get('/menus', [MenuController::class, 'index'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/menus/{id}', [MenuController::class, 'show'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/menus/{id}/edit', [MenuController::class, 'edit'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/menus/{id}/edit', [MenuController::class, 'update'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-
-
-$app->get('/floor-planning', [FloorPlanningController::class, 'index'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/floor-planning/{id}', [FloorPlanningController::class, 'show'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit'])->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
-$app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update'])->add(new AuthMiddleware(
+})->add(new SessionTimeoutMiddleware($basePath))
+  ->add(new AuthMiddleware(
     responseFactory: $app->getResponseFactory(),
     basePath: $basePath
 ));

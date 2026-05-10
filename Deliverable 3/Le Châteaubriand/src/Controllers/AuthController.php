@@ -40,7 +40,7 @@ class AuthController
         $_SESSION['totp_secret'] = $admin->totp_secret;
         $qrCode = $this->otpService->getQrCode($username, $admin->totp_secret);
         $qrCode = str_replace(["\n", "\r", " "], '', $qrCode);
-        html = $this->twig->render('auth.html.twig', ['step' => 'otp_display', 'qr_code' => $qrCode, 'base_path' => $this->basePath, 'app_lang' => $_SESSION['lang'] ?? 'en',]);
+        $html = $this->twig->render('auth.html.twig', ['step' => 'otp_display', 'qr_code' => $qrCode, 'base_path' => $this->basePath, 'app_lang' => $_SESSION['lang'] ?? 'en',]);
         $response->getBody()->write($html);
         return $response;
     }
