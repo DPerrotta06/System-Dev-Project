@@ -189,9 +189,30 @@ class BookingController
 
     public function showClientForm(Request $request, Response $response): Response
     {
+        $foodItems = R::getAll('
+        SELECT fi.itemName, fi.extraPrice, fc.categoryName, m.menuName
+        FROM fooditem fi
+        JOIN foodcategory fc ON fi.itemCategory = fc.categoryId
+        JOIN menufooditem mfi ON fi.itemId = mfi.itemId
+        JOIN menu m ON mfi.menuId = m.menuId
+        ORDER BY m.menuId, fc.categoryName, fi.itemName
+        ');
+        $menus = ['main' => [], 'buffet' => [], 'midnight' => []];
+        foreach ($foodItems as $item) {
+            $menuType = match (strtolower(trim($item['menuName']))) {
+                'main menu' => 'main',
+                'buffet' => 'buffet',
+                'midnight table' => 'midnight',
+                default => null,
+            };
+            if ($menuType) {
+                $menus[$menuType][$item['categoryName']][] = $item['itemName'];
+            }
+        }
         $html = $this->twig->render('client_form.html.twig', [
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'menus'     => $menus,
         ]);
         $response->getBody()->write($html);
         return $response;

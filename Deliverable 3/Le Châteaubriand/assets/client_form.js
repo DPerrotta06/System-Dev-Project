@@ -1,9 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
     const toggles = document.querySelectorAll(".menu-toggle");
     toggles.forEach(toggle => {
-        toggle.addEventListener("change", function () {
+        toggle.addEventListener("click", function () {
             const target = document.getElementById(this.dataset.target);
-            target.classList.toggle("hidden", !this.checked);
+            if (!target) {
+                return;
+            }
+            const isHidden = target.classList.contains("hidden");
+            target.classList.toggle("hidden", !isHidden);
+
+            this.textContent = isHidden
+                ? this.textContent.replace("▼", "▲")
+                : this.textContent.replace("▲", "▼");
         });
     });
 });

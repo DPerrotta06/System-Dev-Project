@@ -72,6 +72,6 @@ class AuthController
     public function logout(Request $request, Response $response): Response
     {
         session_destroy();
-        return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        return $response->withHeader('Location', $this->basePath . '/')->withStatus(302);
     }
 }
