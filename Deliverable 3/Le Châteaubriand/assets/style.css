@@ -48,6 +48,8 @@ body {
     color: var(--cream);
     min-height: 100vh;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .hero {
@@ -293,24 +295,44 @@ body {
     transform: translateY(0);
 }
 
-.top-phone {
-    position: absolute;
+.top-bar {
+    position: fixed;
     top: 2rem;
-    left: 2.5rem;
-    z-index: 3;
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.8rem;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 2.5rem;
+    pointer-events: none;
+}
+
+.top-bar a, .top-bar div {
+    pointer-events: all; 
+}
+
+.top-lang {
+    font-family: 'Cinzel', serif;
+    font-size: 0.67rem;
     font-weight: 300;
     letter-spacing: 0.18em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.top-lang a {
     color: rgba(245, 240, 232, 0.4);
     text-decoration: none;
-    opacity: 0;
-    animation: fadeIn 1s ease 1.1s forwards;
     transition: color 0.2s ease;
 }
 
-.top-phone:hover {
+.top-lang a:hover {
     color: var(--gold);
+}
+
+.top-lang .sep {
+    color: rgba(245, 240, 232, 0.4);
 }
 
 .scroll-arrow {
@@ -321,7 +343,6 @@ body {
 }
 
 .bottom-bar {
-    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
@@ -329,10 +350,23 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 1.4rem 3rem;
+    gap: 0.5px;
+    padding: 1.5rem;
+    opacity: 0;
+    margin-top: auto;
+    background: linear-gradient(to bottom, transparent, rgba(5, 8, 20, 0.85));
+    animation: fadeIn 1.2s ease 1s forwards;
+}
+
+.hero .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
     opacity: 0;
     animation: fadeIn 1.2s ease 1s forwards;
+    margin-top: 0;
 }
 
 /* Legacy hero-footer alias */
@@ -352,24 +386,26 @@ body {
     font-family: 'Raleway', sans-serif;
     font-size: 0.8rem;
     font-weight: 300;
-    letter-spacing: 0.15em;
-    color: rgba(245, 240, 232, 0.38);
+    letter-spacing: 0.18em;
+    color: rgba(245, 240, 232, 0.4);
     text-transform: uppercase;
 }
 
 .bottom-row {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 1.5rem;
 }
 
+
 .bottom-contact {
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.8rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.67rem;
     font-weight: 300;
-    letter-spacing: 0.15em;
-    color: rgba(245, 240, 232, 0.38);
+    letter-spacing: 0.18em;
+    color: rgba(245, 240, 232, 0.4);
     text-transform: uppercase;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -379,45 +415,14 @@ body {
     color: var(--gold);
 }
 
-.bottom-lang {
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.bottom-lang a {
-    text-decoration: none;
-    color: rgba(245, 240, 232, 0.35);
-    cursor: pointer;
-    transition: color 0.2s ease;
-    padding: 2px 4px;
-}
-
-.bottom-lang a:hover {
-    color: var(--gold-light);
-}
-
-.bottom-lang a.active {
-    color: var(--gold);
-}
-
-.bottom-lang .sep {
-    color: rgba(245, 240, 232, 0.2);
-}
-
 .bottom-rights {
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.9rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.67rem;
     font-weight: 300;
-    letter-spacing: 0.14em;
-    color: rgba(245, 240, 232, 0.22);
+    letter-spacing: 0.18em;
+    color: rgba(245, 240, 232, 0.4);
     text-transform: uppercase;
     text-align: center;
-    width: 100%;
 }
 
 @keyframes fadeUp {
@@ -476,10 +481,6 @@ body {
         display: none;
     }
 }
-
-
-
-
 
 /*CLIENT FORM STUFF*/
 .client-form-container {

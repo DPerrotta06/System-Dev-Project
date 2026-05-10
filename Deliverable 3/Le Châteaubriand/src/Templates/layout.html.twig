@@ -8,8 +8,20 @@
 </head>
 
 <body>
-    
+    <div class="top-bar">
+    <div class="top-lang">
+        <a href="{{ base_path }}/lang/en">EN</a>
+        <span class="sep">|</span>
+        <a href="{{ base_path }}/lang/fr">FR</a>
+    </div>
+</div>
     {% block content %}{% endblock %}
-
+<footer class="bottom-bar">
+    <div class="bottom-row">
+        <a href="mailto:{{ 'site.email'|trans }}" class="bottom-contact">{{ 'site.email'|trans }}</a>
+        <p class="bottom-rights" id="rights"> {{ 'hero.rights'|trans }}</p>
+        <a href="tel:{{ 'site.phone_raw'|trans }}" class="bottom-contact"> &nbsp;{{ 'site.phone'|trans }}</a>
+    </div>
+</footer>
 </body>
 </html>

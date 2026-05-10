@@ -236,8 +236,11 @@ $app->get('/lang/{locale}', function (Request $request, Response $response, arra
         $_SESSION['lang'] = $args['locale'];
     }
 
+    $referer = $request->getHeaderLine('Referer');
+    $redirect = $referer ?: $basePath . '/';
+
     return $response
-        ->withHeader('Location', $basePath . '/')
+        ->withHeader('Location', $redirect)
         ->withStatus(302);
 });
 
