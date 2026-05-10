@@ -63,8 +63,8 @@ class AdminController
         return $response;
     }
 
-    //  GET /admin/calendar 
-    // Monthly calendar view of all events.
+    // GET /calendar
+    // Monthly calendar view of all events, with optional ?day= for detail panel.
     public function calendar(Request $request, Response $response): Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
@@ -87,19 +87,22 @@ class AdminController
             $year++;
         }
 
+        // Optional selected day for the detail panel
+        $selectedDay = isset($params['day']) ? (int) $params['day'] : null;
+
         $from = sprintf('%04d-%02d-01', $year, $month);
         $to   = date('Y-m-t', strtotime($from)); // last day of the month
 
         $events = R::getAll(
             "SELECT eventId, eventDate, eventTime, eventType, clientName,
-                    ballroom, guestCount, status
+                    clientId, ballroom, guestCount, status
                FROM v_event_summary
               WHERE eventDate BETWEEN ? AND ?
               ORDER BY eventDate ASC, eventTime ASC",
             [$from, $to]
         );
 
-        // Group events by date for easy rendering in the template
+        // Group events by full date string (YYYY-MM-DD) for easy template lookup
         $byDate = [];
         foreach ($events as $event) {
             $byDate[$event['eventDate']][] = $event;
@@ -111,19 +114,20 @@ class AdminController
         $nextMonth = $month === 12 ? 1  : $month + 1;
         $nextYear  = $month === 12 ? $year + 1 : $year;
 
-        $html = $this->twig->render('admin/calendar.html.twig', [
-            'byDate'    => $byDate,
-            'year'      => $year,
-            'month'     => $month,
-            'monthName' => date('F', mktime(0, 0, 0, $month, 1, $year)),
-            'daysInMonth' => (int) date('t', strtotime($from)),
+        $html = $this->twig->render('calendar.html.twig', [
+            'byDate'         => $byDate,
+            'year'           => $year,
+            'month'          => $month,
+            'monthName'      => date('F', mktime(0, 0, 0, $month, 1, $year)),
+            'daysInMonth'    => (int) date('t', strtotime($from)),
             'firstDayOfWeek' => (int) date('N', strtotime($from)), // 1=Mon, 7=Sun
-            'prevYear'  => $prevYear,
-            'prevMonth' => $prevMonth,
-            'nextYear'  => $nextYear,
-            'nextMonth' => $nextMonth,
-            'base_path' => $this->basePath,
-            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'selectedDay'    => $selectedDay,
+            'prevYear'       => $prevYear,
+            'prevMonth'      => $prevMonth,
+            'nextYear'       => $nextYear,
+            'nextMonth'      => $nextMonth,
+            'base_path'      => $this->basePath,
+            'app_lang'       => $_SESSION['lang'] ?? 'en',
         ]);
         $response->getBody()->write($html);
         return $response;
