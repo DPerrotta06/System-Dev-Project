@@ -25,7 +25,7 @@ class BookingController
         $bars      = R::getAll('SELECT barId, barType, pricePerPerson FROM bar');
         $services  = R::getAll('SELECT serviceId, serviceName, serviceType FROM services');
 
-        $html = $this->twig->render('booking/form.html.twig', [
+        $html = $this->twig->render('booking/client_form.html.twig', [
             'ballrooms'  => $ballrooms,
             'menus'      => $menus,
             'bars'       => $bars,
@@ -51,7 +51,7 @@ class BookingController
             $bars      = R::getAll('SELECT barId, barType, pricePerPerson FROM bar');
             $services  = R::getAll('SELECT serviceId, serviceName, serviceType FROM services');
 
-            $html = $this->twig->render('booking/form.html.twig', [
+            $html = $this->twig->render('booking/client_form.html.twig', [
                 'errors'     => $errors,
                 'old'        => $data,
                 'ballrooms'  => $ballrooms,
