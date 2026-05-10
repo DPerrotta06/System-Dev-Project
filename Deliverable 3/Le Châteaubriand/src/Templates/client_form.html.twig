@@ -43,8 +43,8 @@
                 <h4>{{ key|replace({'_': ' '})|title }}</h4>
                 {% for item in items %}
                     <label class="menu-item-label">
+                        <span>{{ item }}</span>
                         <input type="checkbox" name="main_{{ key }}[]" value="{{ item }}">
-                        {{ item }}
                     </label>
                 {% endfor %}
             </div>
@@ -59,8 +59,8 @@
                 <h4>{{ key|replace({'_': ' '})|title }}</h4>
                 {% for item in items %}
                     <label class="menu-item-label">
+                        <span>{{ item }}</span>
                         <input type="checkbox" name="buffet_{{ key }}[]" value="{{ item }}">
-                        {{ item }}
                     </label>
                 {% endfor %}
             </div>
@@ -75,8 +75,8 @@
                 <h4>{{ key|replace({'_': ' '})|title }}</h4>
                 {% for item in items %}
                     <label class="menu-item-label">
+                        <span>{{ item }}</span>
                         <input type="checkbox" name="midnight_{{ key }}[]" value="{{ item }}">
-                        {{ item }}
                     </label>
                 {% endfor %}
             </div>

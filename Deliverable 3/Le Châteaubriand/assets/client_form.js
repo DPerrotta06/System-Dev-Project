@@ -7,11 +7,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
             const isHidden = target.classList.contains("hidden");
-            target.classList.toggle("hidden", !isHidden);
-
-            this.textContent = isHidden
-                ? this.textContent.replace("▼", "▲")
-                : this.textContent.replace("▲", "▼");
+            toggles.forEach(t => {
+                const otherId = t.dataset.target;
+                const other  = document.getElementById(otherId);
+                if(other){
+                    other.classList.add("hidden");
+                    t.textContent = t.textContent.replace("▲", "▼");
+                }
+            });
+            if(isHidden){
+                target.classList.remove("hidden");
+                this.textContent = this.textContent.replace("▼", "▲");
+            }
         });
     });
 });

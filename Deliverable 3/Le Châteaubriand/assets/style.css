@@ -307,8 +307,9 @@ body {
     pointer-events: none;
 }
 
-.top-bar a, .top-bar div {
-    pointer-events: all; 
+.top-bar a,
+.top-bar div {
+    pointer-events: all;
 }
 
 .top-lang {
@@ -484,7 +485,7 @@ body {
 
 /*CLIENT FORM STUFF*/
 .client-form-container {
-    max-width: 680px;
+    max-width: 960px;
     margin: 4rem auto;
     padding: 3rem 2.5rem;
     background: rgba(10, 9, 6, 0.82);
@@ -492,7 +493,7 @@ body {
     color: var(--cream);
     position: relative;
 }
- 
+
 /* Gold top accent line */
 .client-form-container::before {
     content: '';
@@ -503,7 +504,7 @@ body {
     height: 1px;
     background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
- 
+
 /* SECTION HEADERS */
 .client-form-container h3 {
     margin-top: 2.2rem;
@@ -517,11 +518,11 @@ body {
     padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .client-form-container h3:first-of-type {
     margin-top: 0;
 }
- 
+
 /* LABELS */
 .client-form-container label {
     display: block;
@@ -534,7 +535,7 @@ body {
     margin: 6px 0;
     cursor: pointer;
 }
- 
+
 /* INPUTS */
 .client-form-container input:not([type="checkbox"]),
 .client-form-container select,
@@ -551,19 +552,19 @@ body {
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .client-form-container input:not([type="checkbox"])::placeholder,
 .client-form-container textarea::placeholder {
     color: rgba(245, 240, 232, 0.25);
 }
- 
+
 .client-form-container input:not([type="checkbox"]):focus,
 .client-form-container select:focus,
 .client-form-container textarea:focus {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
 }
- 
+
 /* SELECT arrow color fix */
 .client-form-container select {
     appearance: none;
@@ -573,19 +574,19 @@ body {
     padding-right: 36px;
     cursor: pointer;
 }
- 
+
 .client-form-container select option {
     background: var(--black);
     color: var(--cream);
 }
- 
+
 /* MENU SECTIONS */
 .menu-section {
     margin-left: 1rem;
     padding: 0.5rem 0 0.5rem 1rem;
     border-left: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .menu-category h4 {
     margin-top: 1rem;
     margin-bottom: 0.4rem;
@@ -596,12 +597,12 @@ body {
     color: var(--gold);
     font-weight: 400;
 }
- 
+
 /* DATE WRAPPER */
 .date-wrapper {
     position: relative;
 }
- 
+
 .date-wrapper input[type="date"] {
     width: 100%;
     padding: 11px 40px 11px 14px;
@@ -613,16 +614,16 @@ body {
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .date-wrapper input[type="date"]:valid {
     color: var(--cream);
 }
- 
+
 .date-wrapper input[type="date"]:focus {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
 }
- 
+
 .date-wrapper .date-placeholder {
     position: absolute;
     left: 14px;
@@ -634,12 +635,12 @@ body {
     font-size: 0.9rem;
     transition: opacity 0.2s ease;
 }
- 
-.date-wrapper input[type="date"]:valid + .date-placeholder,
-.date-wrapper input[type="date"]:focus + .date-placeholder {
+
+.date-wrapper input[type="date"]:valid+.date-placeholder,
+.date-wrapper input[type="date"]:focus+.date-placeholder {
     opacity: 0;
 }
- 
+
 input[type="date"]::-webkit-calendar-picker-indicator {
     position: absolute;
     right: 10px;
@@ -649,7 +650,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
     opacity: 0.7;
 }
- 
+
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
 }
@@ -657,7 +658,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .time-wrapper {
     position: relative;
 }
- 
+
 .time-wrapper input[type="time"] {
     width: 100%;
     padding: 11px 40px 11px 14px;
@@ -669,16 +670,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .time-wrapper input[type="time"]:valid {
     color: var(--cream);
 }
- 
+
 .time-wrapper input[type="time"]:focus {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
 }
- 
+
 .time-wrapper .time-placeholder {
     position: absolute;
     left: 14px;
@@ -690,12 +691,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     font-size: 0.9rem;
     transition: opacity 0.2s ease;
 }
- 
-.time-wrapper input[type="time"]:valid + .time-placeholder,
-.time-wrapper input[type="time"]:focus + .time-placeholder {
+
+.time-wrapper input[type="time"]:valid+.time-placeholder,
+.time-wrapper input[type="time"]:focus+.time-placeholder {
     opacity: 0;
 }
- 
+
 input[type="time"]::-webkit-calendar-picker-indicator {
     position: absolute;
     right: 10px;
@@ -705,7 +706,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
     opacity: 0.7;
 }
- 
+
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
 }
@@ -740,7 +741,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem 2rem;
+    gap: 1.5rem 2rem;
     padding: 1rem 0;
 }
 
@@ -755,6 +756,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .menu-category {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .menu-category h4 {
@@ -770,15 +772,22 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding-bottom: 0.4rem;
 }
 
-.menu-category label {
+.menu-item-label {
+    display: grid;
+    grid-template-columns: 1fr 16px;
+    align-items: start;
+    gap: 6px;
+    padding: 3px 0;
     font-size: 0.78rem;
     letter-spacing: 0.04em;
     text-transform: none;
     color: rgba(245, 240, 232, 0.7);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 0;
+    cursor: pointer;
+}
+
+.menu-item-label span {
+    line-height: 1.4;
+    word-break: break-word;
 }
 
 .menu-category label,
@@ -789,24 +798,39 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: rgba(245, 240, 232, 0.7);
     display: flex;
     align-items: center;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    gap: 6px;
+    justify-content: space-between;
+    gap: 8px;
     padding: 3px 0;
     width: 100%;
 }
 
+.menu-category label input[type="checkbox"],
 .menu-item-label input[type="checkbox"] {
     margin: 0;
     flex-shrink: 0;
+    accent-color: var(--gold);
 }
- 
+
+.menu-category label span,
+.menu-item-label span {
+    flex: 1;
+    text-align: left;
+}
+
+.menu-item-label input[type="checkbox"] {
+    margin: 2px 0 0 0;
+    flex-shrink: 0;
+    accent-color: var(--gold);
+    width: 13px;
+    height: 13px;
+}
+
 /* TEXTAREA */
 .client-form-container textarea {
     resize: vertical;
     min-height: 100px;
 }
- 
+
 /* SUBMIT BUTTON */
 .client-form-container button[type="submit"] {
     display: flex;
@@ -827,17 +851,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     cursor: pointer;
     transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
- 
+
 .client-form-container button[type="submit"]:hover {
     background: var(--gold-light);
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(201, 168, 76, 0.25);
 }
- 
+
 .client-form-container button[type="submit"]:active {
     transform: translateY(0);
 }
- 
+
 @media (max-width: 580px) {
     .client-form-container {
         margin: 2rem 1rem;
@@ -860,7 +884,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-align: center;
     border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .floor-hero::after {
     content: '';
     position: absolute;
@@ -871,7 +895,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     height: 1px;
     background: var(--gold);
 }
- 
+
 .floor-hero-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -880,7 +904,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     letter-spacing: 0.04em;
     margin-bottom: 0.6rem;
 }
- 
+
 .floor-hero-sub {
     font-family: 'Raleway', sans-serif;
     font-size: 0.75rem;
@@ -889,18 +913,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-transform: uppercase;
     color: rgba(245, 240, 232, 0.4);
 }
- 
+
 /* ── MAIN CONTAINER ── */
- 
+
 .floor-planning-container {
     background: var(--black);
     padding: 2.5rem 1.5rem 4rem;
     max-width: 1000px;
     margin: 0 auto;
 }
- 
+
 /* ── META BAR ── */
- 
+
 .floor-meta {
     display: flex;
     align-items: center;
@@ -911,14 +935,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     margin-bottom: 2.5rem;
     flex-wrap: wrap;
 }
- 
+
 .floor-meta-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
 }
- 
+
 .floor-meta-label {
     font-family: 'Cinzel', serif;
     font-size: 0.55rem;
@@ -926,7 +950,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-transform: uppercase;
     color: rgba(245, 240, 232, 0.35);
 }
- 
+
 .floor-meta-value {
     font-family: 'Playfair Display', serif;
     font-size: 1rem;
@@ -934,15 +958,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: var(--gold-light);
     letter-spacing: 0.04em;
 }
- 
+
 .floor-meta-divider {
     width: 1px;
     height: 32px;
     background: rgba(201, 168, 76, 0.2);
 }
- 
+
 /* ── CANVAS ── */
- 
+
 .floor-planning-ui {
     border: 1px solid rgba(201, 168, 76, 0.2);
     margin-bottom: 2.5rem;
@@ -950,40 +974,40 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background: rgba(255, 255, 255, 0.02);
     height: auto;
 }
- 
+
 #floor-canvas {
     display: block;
     width: 100%;
     height: auto;
 }
- 
+
 /* ── TABLE GRID ── */
- 
+
 .table-selection-grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 10px;
 }
- 
+
 .table-card {
     border: 1px solid rgba(201, 168, 76, 0.2);
     background: rgba(255, 255, 255, 0.02);
     padding: 0.9rem 1rem;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .table-card:has(.table-card-checkbox:checked) {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.06);
 }
- 
+
 .table-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.6rem;
 }
- 
+
 .table-card-header span {
     font-family: 'Cinzel', serif;
     font-size: 0.65rem;
@@ -991,7 +1015,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-transform: uppercase;
     color: var(--gold);
 }
- 
+
 .table-card-checkbox {
     width: auto !important;
     margin: 0 !important;
@@ -1000,20 +1024,20 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     width: 15px;
     height: 15px;
 }
- 
+
 .card-body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
- 
+
 .card-body small {
     font-family: 'Raleway', sans-serif;
     font-size: 0.7rem;
     color: rgba(245, 240, 232, 0.3);
     letter-spacing: 0.06em;
 }
- 
+
 .table-card-guest-input {
     width: 100% !important;
     padding: 7px 10px !important;
@@ -1027,38 +1051,38 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .table-card-guest-input::placeholder {
     color: rgba(245, 240, 232, 0.2) !important;
 }
- 
+
 .table-card-guest-input:focus {
     border-color: var(--gold) !important;
     background: rgba(201, 168, 76, 0.05) !important;
 }
- 
+
 .table-card-guest-input:disabled {
     opacity: 0.35;
     cursor: not-allowed;
 }
- 
+
 /* Remove number input arrows */
 .table-card-guest-input::-webkit-inner-spin-button,
 .table-card-guest-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
- 
+
 @media (max-width: 580px) {
     .floor-meta {
         gap: 1.2rem;
         padding: 1rem;
     }
- 
+
     .floor-meta-divider {
         display: none;
     }
- 
+
     .table-selection-grid-container {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     }
@@ -1068,7 +1092,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 
 /* ── FAQ PAGE ── */
- 
+
 .faq-hero {
     position: relative;
     background: var(--black);
@@ -1080,7 +1104,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-align: center;
     border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .faq-hero::after {
     content: '';
     position: absolute;
@@ -1091,7 +1115,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     height: 1px;
     background: var(--gold);
 }
- 
+
 .faq-hero-icon {
     width: 50px;
     height: 50px;
@@ -1106,7 +1130,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: var(--gold);
     margin-bottom: 1.4rem;
 }
- 
+
 .faq-hero-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -1115,7 +1139,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     letter-spacing: 0.04em;
     margin-bottom: 0.6rem;
 }
- 
+
 .faq-hero-sub {
     font-family: 'Raleway', sans-serif;
     font-size: 0.75rem;
@@ -1124,28 +1148,28 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-transform: uppercase;
     color: rgba(245, 240, 232, 0.45);
 }
- 
+
 /* ── ACCORDION ── */
- 
+
 .faq-body {
     background: var(--black);
     padding: 3rem 1.5rem;
 }
- 
+
 .faq-list {
     max-width: 680px;
     margin: 0 auto;
     border: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .faq-item {
     border-bottom: 1px solid rgba(201, 168, 76, 0.12);
 }
- 
+
 .faq-item:last-child {
     border-bottom: none;
 }
- 
+
 .faq-question {
     width: 100%;
     background: none;
@@ -1164,16 +1188,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     gap: 12px;
     transition: background 0.2s ease, color 0.2s ease;
 }
- 
+
 .faq-question:hover {
     background: rgba(201, 168, 76, 0.05);
     color: var(--gold-light);
 }
- 
+
 .faq-item.open .faq-question {
     color: var(--gold);
 }
- 
+
 .faq-chevron {
     width: 16px;
     height: 16px;
@@ -1181,18 +1205,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: var(--gold-dim);
     transition: transform 0.3s ease, color 0.2s ease;
 }
- 
+
 .faq-item.open .faq-chevron {
     transform: rotate(180deg);
     color: var(--gold);
 }
- 
+
 .faq-answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.35s ease;
 }
- 
+
 .faq-answer p {
     margin: 0;
     padding: 0 1.5rem 1.3rem 1.5rem;
@@ -1204,16 +1228,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     margin-left: 1.5rem;
     padding-left: 1rem;
 }
- 
+
 /* ── STILL HAVE QUESTIONS ── */
- 
+
 .faq-still {
     background: var(--black);
     text-align: center;
     padding: 3rem 1.5rem 4.5rem;
     border-top: 1px solid rgba(201, 168, 76, 0.2);
 }
- 
+
 .faq-still h2 {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
@@ -1222,7 +1246,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     letter-spacing: 0.04em;
     margin-bottom: 0.7rem;
 }
- 
+
 .faq-still p {
     font-family: 'Raleway', sans-serif;
     font-size: 0.8rem;
@@ -1233,14 +1257,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     margin-left: auto;
     margin-right: auto;
 }
- 
+
 .faq-still-btns {
     display: flex;
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
 }
- 
+
 .faq-btn-outline {
     display: flex;
     align-items: center;
@@ -1258,24 +1282,24 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     cursor: pointer;
     transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.15s ease;
 }
- 
+
 .faq-btn-outline:hover {
     border-color: var(--gold);
     color: var(--gold-light);
     background: rgba(201, 168, 76, 0.07);
     transform: translateY(-2px);
 }
- 
+
 .faq-btn-outline:active {
     transform: translateY(0);
 }
- 
+
 @media (max-width: 580px) {
     .faq-still-btns {
         flex-direction: column;
         align-items: center;
     }
- 
+
     .faq-btn-outline {
         width: 100%;
         max-width: 280px;
@@ -1491,21 +1515,20 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background-repeat: no-repeat;
     position: relative;
 }
- 
+
 /* Dark overlay so the card reads clearly over the photo */
 .login-form-container::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(5, 8, 20, 0.55) 0%,
-        rgba(5, 8, 20, 0.75) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(5, 8, 20, 0.55) 0%,
+            rgba(5, 8, 20, 0.75) 100%);
 }
- 
+
 .login-card {
-    position: relative;         /* sit above the overlay */
+    position: relative;
+    /* sit above the overlay */
     background: rgba(10, 9, 6, 0.82);
     border: 1px solid rgba(201, 168, 76, 0.35);
     backdrop-filter: blur(8px);
@@ -1516,7 +1539,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     text-align: center;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
- 
+
 /* Gold top accent line */
 .login-card::before {
     content: '';
@@ -1527,7 +1550,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     height: 1px;
     background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
- 
+
 .login-card h2 {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
@@ -1537,7 +1560,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     letter-spacing: 0.04em;
     margin-bottom: 0.3rem;
 }
- 
+
 .login-card h3 {
     font-family: 'Cinzel', serif;
     font-size: 0.6rem;
@@ -1547,7 +1570,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: rgba(245, 240, 232, 0.4);
     margin-bottom: 2.2rem;
 }
- 
+
 /* Gold divider between title and form */
 .login-divider {
     display: flex;
@@ -1556,29 +1579,29 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     margin: 0 auto 2rem;
     width: 160px;
 }
- 
+
 .login-divider-line {
     flex: 1;
     height: 1px;
     background: linear-gradient(to right, transparent, var(--gold-dim));
 }
- 
+
 .login-divider-line.rev {
     background: linear-gradient(to left, transparent, var(--gold-dim));
 }
- 
+
 .login-divider-dot {
     width: 4px;
     height: 4px;
     border-radius: 50%;
     background: var(--gold-dim);
 }
- 
+
 .form-group {
     text-align: left;
     margin-bottom: 1.2rem;
 }
- 
+
 .form-group label {
     display: block;
     font-family: 'Raleway', sans-serif;
@@ -1589,11 +1612,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: rgba(245, 240, 232, 0.55);
     margin-bottom: 0.5rem;
 }
- 
+
 .input-wrapper {
     position: relative;
 }
- 
+
 .input-wrapper input {
     width: 100%;
     padding: 11px 14px;
@@ -1606,16 +1629,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
- 
+
 .input-wrapper input::placeholder {
     color: rgba(245, 240, 232, 0.25);
 }
- 
+
 .input-wrapper input:focus {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.05);
 }
- 
+
 .login-btn {
     width: 100%;
     margin-top: 0.8rem;
@@ -1631,13 +1654,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     cursor: pointer;
     transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
 }
- 
+
 .login-btn:hover {
     background: var(--gold-light);
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(201, 168, 76, 0.25);
 }
- 
+
 .login-btn:active {
     transform: translateY(0);
 }
@@ -2085,6 +2108,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 @media (max-width: 580px) {
+
     .client-info,
     .client-events {
         padding: 1rem;
@@ -2274,7 +2298,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(5,8,20,0.55) 0%, rgba(5,8,20,0.75) 100%);
+    background: linear-gradient(to bottom, rgba(5, 8, 20, 0.55) 0%, rgba(5, 8, 20, 0.75) 100%);
 }
 
 .twofa-card {
@@ -2286,13 +2310,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     width: 100%;
     max-width: 440px;
     text-align: center;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 .twofa-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 2rem; right: 2rem;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
     height: 1px;
     background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
@@ -2336,14 +2362,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     width: 100%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
     margin: auto;
 }
 
 .auth-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 2rem; right: 2rem;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
     height: 1px;
     background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
@@ -2376,7 +2404,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .auth-form input {
     width: 100%;
     padding: 13px 14px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.3);
     color: var(--cream);
     font-family: 'Raleway', sans-serif;
