@@ -56,6 +56,8 @@ return [
     'form.anniversary' => 'Anniversaire de mariage',
     'form.baby_shower' => 'Fête prénatale',
     'form.other' => 'Autre',
+    'form.event_date_placeholder' => 'Date de votre événement',
+    'form.event_time_placeholder' => 'Heure de votre événement',
     'form.number_of_guests' => 'Nombre d\'invités',
     'form.menu_selection' => 'Sélection du menu',
     'form.main_menu' => 'Menu principal',

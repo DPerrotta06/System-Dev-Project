@@ -56,14 +56,16 @@ return [
     'form.anniversary' => 'Anniversary',
     'form.baby_shower' => 'Baby Shower',
     'form.other' => 'Other',
-    'form.number_of_guests' => 'Number of Guests',
+    'form.event_date_placeholder' => 'Date of your event',
+    'form.event_time_placeholder' => 'Time of your event',
+    'form.number_of_guests' => 'Number of guests',
     'form.menu_selection' => 'Menu Selection',
     'form.main_menu' => 'Main Menu',
     'form.buffet' => 'Buffet',
     'form.midnight_table' => 'Midnight Table',
     'form.additional_notes' => 'Additional Notes',
     'form.notes_placeholder' => 'Allergies, Religious dietary restrictions, etc.',
-    'form.continue_floor' => 'Continue to Table Planning',
+    'form.continue_floor' => 'Continue to Floor Planning',
 
     //Client edit
     'client.edit_title' => 'Edit Client',
