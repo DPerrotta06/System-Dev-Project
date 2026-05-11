@@ -27,7 +27,7 @@
             <div class="cal-panel">
                 <div class="cal-nav">
                     <a href="{{ base_path }}/calendar?year={{ prevYear }}&month={{ prevMonth }}" class="cal-nav-btn">‹</a>
-                    <span class="cal-month-label">{{ monthName }} {{ year }}</span>
+                    <span class="cal-month-label">{{ trans('calendar.months.' ~ month) }} {{ year }}</span>
                     <a href="{{ base_path }}/calendar?year={{ nextYear }}&month={{ nextMonth }}" class="cal-nav-btn">›</a>
                 </div>
 
@@ -74,7 +74,7 @@
             <div class="cal-detail-panel">
                 {% if selectedDay is not null %}
                     {% set dateKey = year ~ '-' ~ '%02d'|format(month) ~ '-' ~ '%02d'|format(selectedDay) %}
-                    <h3 class="cal-detail-date">{{ monthName }} {{ selectedDay }}, {{ year }}</h3>
+                    <h3 class="cal-detail-date">{{ trans('calendar.months.' ~ month) }} {{ selectedDay }}, {{ year }}</h3>
 
                     {% if byDate[dateKey] is defined and byDate[dateKey]|length > 0 %}
                         {% for event in byDate[dateKey] %}

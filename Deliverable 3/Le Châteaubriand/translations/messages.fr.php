@@ -123,7 +123,23 @@ return [
     'calendar.has_events' => 'Événements prévus',
     'calendar.guests' => 'invités',
     'calendar.no_events' => 'Aucun événement prévu pour cette journée.',
-
+    'calendar' => [
+        'months' => [
+            1 => 'Janvier',
+            2 => 'Février',
+            3 => 'Mars',
+            4 => 'Avril',
+            5 => 'Mai',
+            6 => 'Juin',
+            7 => 'Juillet',
+            8 => 'Août',
+            9 => 'Septembre',
+            10 => 'Octobre',
+            11 => 'Novembre',
+            12 => 'Décembre',
+        ],
+    ],
+    
     //Navigation
     'nav.back' => 'Retour',
 
