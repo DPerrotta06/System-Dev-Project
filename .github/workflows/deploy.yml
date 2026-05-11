@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Where is my composer.json?
+        run: find . -name "composer.json"
   
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -26,9 +29,6 @@ jobs:
       - name: Run tests
         working-directory: ./Deliverable 3/Le Châteaubriand
         run: vendor/bin/phpunit
-
-      - name: Where is my composer.json?
-        run: find . -name "composer.json"
 
   deploy:
     name: Deploy via SSH
