@@ -28,7 +28,11 @@ jobs:
   
       - name: Run tests
         working-directory: Deliverable 3/Le Châteaubriand
+<<<<<<< HEAD
         run: vendor/bin/phpunit
+=======
+        run: php vendor/phpunit/phpunit/phpunit
+>>>>>>> parent of 4b6852d (Disable test execution in deploy workflow)
 
   deploy:
     name: Deploy via SSH
