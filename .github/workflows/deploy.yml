@@ -18,5 +18,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            cat ~/.ssh/id_rsa.pub
             bash /var/www/deploy.sh
