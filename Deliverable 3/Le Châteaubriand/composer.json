@@ -10,7 +10,8 @@
         "bacon/bacon-qr-code": "^3.1",
         "symfony/translation": "^8.0",
         "gabordemooij/redbean": "^5.7",
-        "endroid/qr-code": "^6.1"
+        "endroid/qr-code": "^6.1",
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "psr-4": {
