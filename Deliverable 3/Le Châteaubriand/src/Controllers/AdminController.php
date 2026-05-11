@@ -95,7 +95,7 @@ class AdminController
 
         $events = R::getAll(
             "SELECT eventId, eventDate, eventTime, eventType, clientName,
-                    clientId, ballroom, guestCount, status
+                    ballroom, guestCount, status
                FROM v_event_summary
               WHERE eventDate BETWEEN ? AND ?
               ORDER BY eventDate ASC, eventTime ASC",
