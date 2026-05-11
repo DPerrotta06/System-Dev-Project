@@ -17,4 +17,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             bash /var/www/deploy.sh
