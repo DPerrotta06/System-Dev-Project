@@ -1,0 +1,170 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ 'faq.title'|trans }} - {{ 'site.name'|trans }}
+{% endblock %}
+
+{% block content %}
+
+	<div class="faq-hero">
+
+		<div class="faq-hero-icon">?</div>
+
+		<h1 class="faq-hero-title">
+			{{ 'faq.hero_title'|trans }}
+		</h1>
+
+		<p class="faq-hero-sub">
+			{{ 'faq.hero_subtitle'|trans }}
+		</p>
+
+	</div>
+
+	<div class="faq-body">
+
+		<div class="faq-list">
+
+			<div class="faq-item">
+
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q1'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+
+				<div class="faq-answer">
+					<p>{{ 'faq.a1'|trans }}</p>
+				</div>
+
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q2'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a2'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q3'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a3'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q4'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a4'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q5'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a5'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q6'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a6'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q7'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a7'|trans }}</p>
+				</div>
+			</div>
+
+			<div class="faq-item">
+				<button class="faq-question" aria-expanded="false">
+					<span>{{ 'faq.q8'|trans }}</span>
+					<svg class="faq-chevron" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="6 9 12 15 18 9"/>
+					</svg>
+				</button>
+				<div class="faq-answer">
+					<p>{{ 'faq.a8'|trans }}</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="faq-still">
+
+		<h2>{{ 'faq.still_title'|trans }}</h2>
+
+		<p>{{ 'faq.still_subtitle'|trans }}</p>
+
+		<div class="faq-still-btns">
+
+			<a href="mailto:{{ 'site.email'|trans }}" class="faq-btn-outline">
+				{{ 'faq.email_us'|trans }}
+			</a>
+
+		</div>
+
+	</div>
+
+	 <script>
+	document.addEventListener("DOMContentLoaded", () => {
+	    document.querySelectorAll(".faq-question").forEach(btn => {
+	        btn.addEventListener("click", () => {
+	            const item = btn.closest(".faq-item");
+	            const isOpen = item.classList.contains("open");
+	
+	            document.querySelectorAll(".faq-item.open").forEach(el => {
+	                el.classList.remove("open");
+	                el.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+	                el.querySelector(".faq-answer").style.maxHeight = null;
+	            });
+	
+	            if (!isOpen) {
+	                item.classList.add("open");
+	                btn.setAttribute("aria-expanded", "true");
+	                const answer = item.querySelector(".faq-answer");
+	                answer.style.maxHeight = answer.scrollHeight + "px";
+	            }
+	        });
+	    });
+	});
+	</script>
+
+{% endblock %}
