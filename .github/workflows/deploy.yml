@@ -20,6 +20,7 @@ jobs:
           extensions: mbstring, xml, mysql
   
       - name: Install dependencies
+        working-directory: ./Deliverable 3/Le Châteaubriand
         run: composer install --prefer-dist --no-progress
   
       - name: Run tests
