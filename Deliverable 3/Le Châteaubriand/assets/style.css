@@ -43,7 +43,7 @@ textarea {
 }
 
 body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     background: var(--black);
     color: var(--cream);
     min-height: 100vh;
@@ -135,7 +135,7 @@ body {
 }
 
 .subtitle {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.24em;
@@ -273,7 +273,7 @@ body {
     padding: 12px 10px;
     background: rgba(201, 168, 76, 0.08);
     color: rgba(245, 240, 232, 0.88);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -384,7 +384,7 @@ body {
     padding: 1.4rem 3rem;
     opacity: 0;
     animation: fadeIn 1.2s ease 1s forwards;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     font-weight: 300;
     letter-spacing: 0.18em;
@@ -526,7 +526,7 @@ body {
 /* LABELS */
 .client-form-container label {
     display: block;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -547,7 +547,7 @@ body {
     border: 1px solid rgba(201, 168, 76, 0.3);
     border-radius: 0;
     color: var(--cream);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s ease, background 0.2s ease;
@@ -631,7 +631,7 @@ body {
     transform: translateY(-60%);
     color: rgba(245, 240, 232, 0.25);
     pointer-events: none;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     transition: opacity 0.2s ease;
 }
@@ -687,7 +687,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     transform: translateY(-60%);
     color: rgba(245, 240, 232, 0.25);
     pointer-events: none;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     transition: opacity 0.2s ease;
 }
@@ -906,7 +906,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .floor-hero-sub {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.18em;
@@ -1032,7 +1032,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .card-body small {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     color: rgba(245, 240, 232, 0.3);
     letter-spacing: 0.06em;
@@ -1141,7 +1141,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .faq-hero-sub {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.24em;
@@ -1180,7 +1180,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding: 1.2rem 1.5rem;
     cursor: pointer;
     text-align: left;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.88rem;
     font-weight: 500;
     letter-spacing: 0.04em;
@@ -1220,7 +1220,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .faq-answer p {
     margin: 0;
     padding: 0 1.5rem 1.3rem 1.5rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.85rem;
     line-height: 1.8;
     color: rgba(245, 240, 232, 0.55);
@@ -1248,7 +1248,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .faq-still p {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     letter-spacing: 0.06em;
     color: rgba(245, 240, 232, 0.45);
@@ -1318,13 +1318,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .reviews-hero h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cinzel', serif;
     font-size: 2.5rem;
     color: #C9A84C;
     margin-bottom: 1rem;
 }
 
 .subtitle {
+    font-family: 'Cinzel', serif;
     font-size: 1.1rem;
     color: rgba(245, 240, 232, 0.8);
     margin-bottom: 2rem;
@@ -1604,7 +1605,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .form-group label {
     display: block;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -1623,7 +1624,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.3);
     color: var(--cream);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     border-radius: 0;
     outline: none;
@@ -1703,7 +1704,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .admin-nav a {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -1792,7 +1793,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .admin-btn {
     padding: 6px 12px;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -1894,7 +1895,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .calendar-hero-sub {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.24em;
@@ -1938,7 +1939,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .calendar-event {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     color: rgba(245, 240, 232, 0.8);
     line-height: 1.4;
@@ -2003,7 +2004,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .client-details-hero-sub {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.24em;
@@ -2045,7 +2046,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .client-info p {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     color: rgba(245, 240, 232, 0.8);
     line-height: 1.6;
@@ -2093,7 +2094,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .client-events li h4 {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--gold);
@@ -2101,7 +2102,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .client-events li p {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.85rem;
     color: rgba(245, 240, 232, 0.8);
     line-height: 1.4;
@@ -2169,7 +2170,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .edit-client-hero-sub {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.24em;
@@ -2212,7 +2213,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .edit-client-form label {
     display: block;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -2228,7 +2229,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.3);
     color: var(--cream);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     border-radius: 0;
     outline: none;
@@ -2344,7 +2345,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .otp-note {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     color: rgba(245, 240, 232, 0.55);
     text-align: center;
@@ -2393,7 +2394,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .auth-form label {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -2407,7 +2408,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.3);
     color: var(--cream);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 1.1rem;
     letter-spacing: 0.3em;
     text-align: center;
@@ -2421,7 +2422,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .auth-error {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     color: #EA4335;
     text-align: center;
@@ -2471,7 +2472,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(201, 168, 76, 0.3);
     color: var(--cream);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.85rem;
     outline: none;
     transition: border-color 0.2s ease;
@@ -2510,7 +2511,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .no-results {
     text-align: center;
     color: rgba(245, 240, 232, 0.35);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.85rem;
     padding: 2rem !important;
     letter-spacing: 0.06em;
@@ -2721,7 +2722,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .cal-day-cell {
     text-decoration: none;
     color: rgba(245, 240, 232, 0.7);
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 0.85rem;
     cursor: pointer;
     transition: background 0.15s ease;
@@ -3399,6 +3400,173 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
     .admin-btn.cancel-btn,
     .admin-btn.save-btn {
+        width: 100%;
+    }
+}
+
+/* ─────────────────────────────────────────────
+   EVENTS INDEX — CARD VIEW
+───────────────────────────────────────────── */
+
+.events-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+    gap: 1.4rem;
+    width: 100%;
+}
+
+.event-list-card {
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 20px;
+    background:
+        linear-gradient(135deg, rgba(201, 168, 76, 0.08), transparent 38%),
+        rgba(14, 13, 9, 0.96);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+}
+
+.event-list-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.event-list-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+}
+
+.event-list-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--gold-light);
+    color: var(--black);
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.event-list-title {
+    min-width: 0;
+}
+
+.event-list-title h3 {
+    margin: 0 0 0.35rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--cream);
+}
+
+.event-list-title a,
+.event-list-title span {
+    color: var(--gold-light);
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.event-list-title a:hover {
+    text-decoration: underline;
+}
+
+.event-list-info,
+.event-list-money {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.event-list-money {
+    margin-top: 0.85rem;
+}
+
+.event-list-info div,
+.event-list-money div {
+    padding: 0.95rem;
+    border-radius: 14px;
+    background: rgba(245, 240, 232, 0.035);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.event-list-info span,
+.event-list-money span {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.45);
+}
+
+.event-list-info strong,
+.event-list-money strong {
+    color: var(--cream);
+    font-size: 0.98rem;
+    font-weight: 500;
+}
+
+.event-list-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid rgba(201, 168, 76, 0.14);
+}
+
+.event-list-actions form {
+    margin: 0;
+}
+
+.event-list-actions .admin-btn {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+@media (max-width: 760px) {
+    .events-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-list-header {
+        grid-template-columns: auto 1fr;
+    }
+
+    .event-list-header .status-badge {
+        grid-column: 1 / -1;
+        width: fit-content;
+    }
+
+    .event-list-info,
+    .event-list-money {
+        grid-template-columns: 1fr;
+    }
+
+    .event-list-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .event-list-actions .admin-btn,
+    .event-list-actions form,
+    .event-list-actions button {
         width: 100%;
     }
 }

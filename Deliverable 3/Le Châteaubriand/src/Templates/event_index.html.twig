@@ -4,86 +4,140 @@
 {% block content %}
 {#
   Expected variables:
-    - events (array from v_event_summary): eventId, eventType, eventDate, eventTime,
-              guestCount, ballroom, clientName, totalPrice, amountLeft, status
+    - events (array from v_event_summary): eventId, clientId, eventType, eventDate,
+      eventTime, guestCount, ballroom, clientName, totalPrice, amountLeft, status
 #}
 
 <div class="admin-container">
-    <aside class="admin-sidebar">
-        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
-        <nav class="admin-nav">
-            <a href="{{ base_path }}/admin">{{ trans('admin.dashboard.name') }}</a>
-            <a href="{{ base_path }}/clients">{{ trans('admin.page.title') }}</a>
-            <a href="{{ base_path }}/events" class="active">{{ trans('event.index_title') }}</a>
-            <a href="{{ base_path }}/menus">{{ trans('menu.main_course') }}</a>
-            <a href="{{ base_path }}/calendar">{{ trans('admin.nav.calendar') }}</a>
-        </nav>
-        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
-            <button type="submit" class="admin-logout-btn">{{ trans('admin.nav.logout') }}</button>
-        </form>
-    </aside>
+<aside class="admin-sidebar">
+    <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
+
+    <nav class="admin-nav">
+        <a href="{{ base_path }}/admin"
+           class="{% if active_page is defined and active_page == 'dashboard' %}active{% endif %}">
+            {{ trans('admin.dashboard.name') }}
+        </a>
+
+        <a href="{{ base_path }}/clients"
+           class="{% if active_page is defined and active_page == 'clients' %}active{% endif %}">
+            {{ trans('admin.page.title') }}
+        </a>
+
+        <a href="{{ base_path }}/events"
+           class="{% if active_page is defined and active_page == 'events' %}active{% endif %}">
+            {{ trans('event.index_title') }}
+        </a>
+
+        <a href="{{ base_path }}/menus"
+           class="{% if active_page is defined and active_page == 'menus' %}active{% endif %}">
+            {{ trans('menu.main_course') }}
+        </a>
+
+        <a href="{{ base_path }}/calendar"
+           class="{% if active_page is defined and active_page == 'calendar' %}active{% endif %}">
+            {{ trans('admin.nav.calendar') }}
+        </a>
+    </nav>
+
+    <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+        <button type="submit" class="admin-logout-btn">
+            {{ trans('admin.nav.logout') }}
+        </button>
+    </form>
+</aside>
 
     <main class="admin-content">
         <div class="admin-page-header" style="display:flex;align-items:center;gap:1rem;">
             <h2>{{ trans('event.index_title') }}</h2>
+
+            {# Uncomment only after adding GET /events/new and POST /events/new routes. #}
+            {#
             <a href="{{ base_path }}/events/new" class="admin-btn confirm-btn" style="margin-left:auto;">
                 + {{ trans('event.new') }}
             </a>
+            #}
         </div>
 
-        {% if events is defined and events|length > 0 %}
-        <div class="admin-table-wrapper">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>{{ trans('admin.table.event_type') }}</th>
-                        <th>{{ trans('admin.table.date') }}</th>
-                        <th>{{ trans('admin.table.time') }}</th>
-                        <th>{{ trans('admin.table.guests') }}</th>
-                        <th>{{ trans('admin.table.ballroom') }}</th>
-                        <th>{{ trans('admin.table.client') }}</th>
-                        <th>{{ trans('admin.table.budget') }}</th>
-                        <th>{{ trans('admin.table.balance') }}</th>
-                        <th>{{ trans('admin.table.status') }}</th>
-                        <th>{{ trans('admin.table.actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in events %}
-                    <tr>
-                        <td>{{ event.eventType }}</td>
-                        <td>{{ event.eventDate }}</td>
-                        <td>{{ event.eventTime }}</td>
-                        <td>{{ event.guestCount }}</td>
-                        <td>{{ event.ballroom ?? '—' }}</td>
-                        <td>
-                            <a href="{{ base_path }}/clients/{{ event.clientId }}">{{ event.clientName }}</a>
-                        </td>
-                        <td>${{ event.totalPrice ? event.totalPrice|number_format(0, '.', ',') : '—' }}</td>
-                        <td>${{ event.amountLeft ? event.amountLeft|number_format(0, '.', ',') : '—' }}</td>
-                        <td>
-                            <span class="status-badge {{ event.status|lower }}">
-                                {{ trans('status.' ~ event.status|lower) }}
-                            </span>
-                        </td>
-                        <td>
-                            <a href="{{ base_path }}/events/{{ event.eventId }}" class="admin-btn edit">
-                                {{ trans('admin.actions.view') }}
+{% if events is defined and events|length > 0 %}
+    <div class="events-card-grid">
+        {% for event in events %}
+            <article class="event-list-card">
+
+                <div class="event-list-header">
+                    <div class="event-list-avatar">
+                        {{ event.clientName|slice(0, 1)|upper }}
+                    </div>
+
+                    <div class="event-list-title">
+                        <h3>{{ event.eventType }}</h3>
+
+                        {% if event.clientId is defined and event.clientId %}
+                            <a href="{{ base_path }}/clients/{{ event.clientId }}">
+                                {{ event.clientName }}
                             </a>
-                            <form action="{{ base_path }}/events/{{ event.eventId }}/delete" method="POST" style="display:inline;"
-                                  onsubmit="return confirm('{{ trans('admin.confirm.delete_event') }}');">
-                                <button type="submit" class="admin-btn delete">🗑</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="admin-empty">{{ trans('event.none') }}</p>
-        {% endif %}
+                        {% else %}
+                            <span>{{ event.clientName }}</span>
+                        {% endif %}
+                    </div>
 
+                    <span class="status-badge {{ event.status|lower }}">
+                        {{ trans('status.' ~ event.status|lower) }}
+                    </span>
+                </div>
+
+                <div class="event-list-info">
+                    <div>
+                        <span>Date</span>
+                        <strong>{{ event.eventDate }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Time</span>
+                        <strong>{{ event.eventTime }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Guests</span>
+                        <strong>{{ event.guestCount }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Ballroom</span>
+                        <strong>{{ event.ballroom ?? '—' }}</strong>
+                    </div>
+                </div>
+
+                <div class="event-list-money">
+                    <div>
+                        <span>Budget</span>
+                        <strong>${{ event.totalPrice ? event.totalPrice|number_format(0, '.', ',') : '—' }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Balance</span>
+                        <strong>${{ event.amountLeft ? event.amountLeft|number_format(0, '.', ',') : '—' }}</strong>
+                    </div>
+                </div>
+
+                <div class="event-list-actions">
+                    <a href="{{ base_path }}/events/{{ event.eventId }}" class="admin-btn edit">
+                        {{ trans('admin.actions.view_details') }}
+                    </a>
+
+                    <form action="{{ base_path }}/events/{{ event.eventId }}/delete" method="POST"
+                          onsubmit="return confirm('{{ trans('admin.confirm.delete_event') }}');">
+                        <button type="submit" class="admin-btn delete">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="admin-empty">{{ trans('event.none') }}</p>
+{% endif %}
     </main>
 </div>
 {% endblock %}
