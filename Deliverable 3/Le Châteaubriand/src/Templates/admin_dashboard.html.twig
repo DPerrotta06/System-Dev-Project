@@ -110,7 +110,7 @@
                             <td>{{ event.eventTime }}</td>
                             <td>{{ event.guestCount }}</td>
                             <td>{{ event.ballroom ?? '—' }}</td>
-                            <td><a href="{{ base_path }}/clients/{{ event.clientId }}" class="admin-btn edit">{{ trans('admin.actions.view_details') }}</a></td>
+                            <td><a href="{{ base_path }}/events/{{ event.eventId }}" class="admin-btn edit">{{ trans('admin.actions.view_details') }}</a></td>
                         </tr>
                         {% else %}
                         <tr>

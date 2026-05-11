@@ -28,6 +28,7 @@
         {# ── CLIENT INFO CARD ── #}
         <div class="detail-card">
             <h3 class="detail-card-name">{{ client.firstName }} {{ client.lastName }}</h3>
+            <br>
             <div class="detail-grid">
                 <div class="detail-row">
                     <span class="detail-label">{{ trans('client.email') }}</span>
@@ -69,6 +70,9 @@
                             <td>${{ event.totalPrice ? event.totalPrice|number_format(0, '.', ',') : '—' }}</td>
                             <td><span class="status-badge {{ event.status|lower }}">{{ trans('status.' ~ event.status|lower) }}</span></td>
                             <td>
+                                <a href="{{ base_path }}/events/{{ event.eventId }}" class="admin-btn edit">
+                                    {{ trans('admin.actions.view_details') }}
+                                </a>
                                 <form action="{{ base_path }}/events/{{ event.eventId }}/status" method="POST" style="display:inline;">
                                     <input type="hidden" name="status" value="Confirmed">
                                     <button type="submit" class="admin-btn confirm-btn">{{ trans('admin.actions.confirm') }}</button>

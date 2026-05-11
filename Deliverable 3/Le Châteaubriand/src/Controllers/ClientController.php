@@ -56,23 +56,30 @@ class ClientController
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
-        $client = R::load('client', (int) $args['id']);
-        if (!$client->id) {
+        $clientId = (int) $args['id'];
+
+        $client = R::getRow(
+            'SELECT * FROM client WHERE clientId = ?',
+            [$clientId]
+        );
+
+        if (!$client) {
             $response->getBody()->write('Client not found.');
             return $response->withStatus(404);
         }
 
         $events = R::getAll(
             'SELECT * FROM v_event_summary WHERE clientId = ? ORDER BY eventDate DESC',
-            [(int) $args['id']]
+            [$clientId]
         );
 
         $html = $this->twig->render('client_details.html.twig', [
-            'client'    => $client->export(),
+            'client'    => $client,
             'events'    => $events,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
@@ -85,17 +92,24 @@ class ClientController
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
-        $client = R::load('client', (int) $args['id']);
-        if (!$client->id) {
+        $clientId = (int) $args['id'];
+
+        $client = R::getRow(
+            'SELECT * FROM client WHERE clientId = ?',
+            [$clientId]
+        );
+
+        if (!$client) {
             $response->getBody()->write('Client not found.');
             return $response->withStatus(404);
         }
 
         $html = $this->twig->render('client_edit.html.twig', [
-            'client'    => $client->export(),
+            'client'    => $client,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }

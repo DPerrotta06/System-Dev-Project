@@ -1,0 +1,334 @@
+{% extends "layout.html.twig" %}
+{% block title %}
+    {{ trans('site.name') }} – {{ event is defined and event.eventId is defined ? trans('event.edit_title') : trans('event.new_title') }}
+{% endblock %}
+
+{% block content %}
+{#
+  Expected variables:
+    - event (object, optional for create): eventId, clientId, ballroomId, menuId, barId,
+              eventDate, eventTime, guestCount, eventType, description, status
+    - payment (object, optional): totalPrice, depositRequired, amountPaid, paymentPlan,
+              paymentMethod, nextPaymentDue
+    - clients   (array): clientId, firstName, lastName
+    - ballrooms (array): ballroomId, roomName, minCapacity, maxCapacity
+    - menus     (array): menuId, menuName, pricePerPerson
+    - bars      (array): barId, barType, pricePerPerson
+    - services  (array): serviceId, serviceName, serviceType
+    - selectedServices (array of serviceIds currently attached, optional)
+    - errors    (object keyed by field name, optional)
+#}
+
+{% set isEdit = event is defined and event.eventId is defined %}
+
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
+        <nav class="admin-nav">
+            <a href="{{ base_path }}/admin">{{ trans('admin.dashboard.name') }}</a>
+            <a href="{{ base_path }}/clients">{{ trans('admin.page.title') }}</a>
+            <a href="{{ base_path }}/events" class="active">{{ trans('event.index_title') }}</a>
+            <a href="{{ base_path }}/menus">{{ trans('menu.main_course') }}</a>
+            <a href="{{ base_path }}/calendar">{{ trans('admin.nav.calendar') }}</a>
+        </nav>
+        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+            <button type="submit" class="admin-logout-btn">{{ trans('admin.nav.logout') }}</button>
+        </form>
+    </aside>
+
+    <main class="admin-content">
+        <div class="admin-page-header" style="display:flex;align-items:center;gap:1rem;">
+            <a href="{{ isEdit ? base_path ~ '/events/' ~ event.eventId : base_path ~ '/events' }}" class="admin-btn edit">
+                ← {{ trans('nav.back') }}
+            </a>
+            <h2>{{ isEdit ? trans('event.edit_title') : trans('event.new_title') }}</h2>
+        </div>
+
+        <div class="edit-wrapper">
+            <form action="{{ isEdit ? base_path ~ '/events/' ~ event.eventId ~ '/edit' : base_path ~ '/events/new' }}"
+                  method="POST" class="edit-form">
+
+                {# ── EVENT INFO ── #}
+                <div class="card edit-card">
+                    <h2 class="edit-section-title">{{ trans('event.info_section') }}</h2>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.clientId is defined %} has-error{% endif %}">
+                            <label for="clientId">{{ trans('event.client') }}</label>
+                            <div class="select-wrapper">
+                                <select id="clientId" name="clientId" required>
+                                    <option value="">— {{ trans('event.select_client') }} —</option>
+                                    {% for c in clients %}
+                                    <option value="{{ c.clientId }}"
+                                        {% if event is defined and event.clientId == c.clientId %} selected {% endif %}>
+                                        {{ c.firstName }} {{ c.lastName }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.clientId is defined %}
+                                <span class="field-error">{{ errors.clientId|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.eventType is defined %} has-error{% endif %}">
+                            <label for="eventType">{{ trans('admin.table.event_type') }}</label>
+                            <div class="select-wrapper">
+                                <select id="eventType" name="eventType" required>
+                                    {% for type in ['Wedding', 'Birthday', 'Corporate Event', 'Anniversary', 'Gala', 'Other'] %}
+                                    <option value="{{ type }}"
+                                        {% if event is defined and event.eventType == type %} selected {% endif %}>
+                                        {{ type }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.eventType is defined %}
+                                <span class="field-error">{{ errors.eventType|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.eventDate is defined %} has-error{% endif %}">
+                            <label for="eventDate">{{ trans('admin.table.date') }}</label>
+                            <input type="date" id="eventDate" name="eventDate"
+                                   value="{{ event is defined ? event.eventDate : '' }}" required>
+                            {% if errors.eventDate is defined %}
+                                <span class="field-error">{{ errors.eventDate|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.eventTime is defined %} has-error{% endif %}">
+                            <label for="eventTime">{{ trans('admin.table.time') }}</label>
+                            <input type="time" id="eventTime" name="eventTime"
+                                   value="{{ event is defined ? event.eventTime : '' }}" required>
+                            {% if errors.eventTime is defined %}
+                                <span class="field-error">{{ errors.eventTime|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.guestCount is defined %} has-error{% endif %}">
+                            <label for="guestCount">{{ trans('admin.table.guests') }}</label>
+                            <input type="number" id="guestCount" name="guestCount" min="1"
+                                   value="{{ event is defined ? event.guestCount : '' }}" required>
+                            {% if errors.guestCount is defined %}
+                                <span class="field-error">{{ errors.guestCount|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.status is defined %} has-error{% endif %}">
+                            <label for="status">{{ trans('admin.table.status') }}</label>
+                            <div class="select-wrapper">
+                                <select id="status" name="status">
+                                    {% for s in ['Pending', 'Confirmed', 'Cancelled', 'Completed', 'Declined'] %}
+                                    <option value="{{ s }}"
+                                        {% if event is defined and event.status == s %} selected
+                                        {% elseif event is not defined and s == 'Pending' %} selected
+                                        {% endif %}>
+                                        {{ trans('status.' ~ s|lower) }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.status is defined %}
+                                <span class="field-error">{{ errors.status|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width{% if errors.description is defined %} has-error{% endif %}">
+                        <label for="description">{{ trans('event.description') }}</label>
+                        <textarea id="description" name="description" rows="3">{{ event is defined ? event.description : '' }}</textarea>
+                        {% if errors.description is defined %}
+                            <span class="field-error">{{ errors.description|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# ── VENUE ── #}
+                <div class="card edit-card">
+                    <h2 class="edit-section-title">{{ trans('event.venue_section') }}</h2>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.ballroomId is defined %} has-error{% endif %}">
+                            <label for="ballroomId">{{ trans('admin.table.ballroom') }}</label>
+                            <div class="select-wrapper">
+                                <select id="ballroomId" name="ballroomId" required>
+                                    <option value="">— {{ trans('event.select_ballroom') }} —</option>
+                                    {% for b in ballrooms %}
+                                    <option value="{{ b.ballroomId }}"
+                                        {% if event is defined and event.ballroomId == b.ballroomId %} selected {% endif %}>
+                                        {{ b.roomName }} ({{ b.minCapacity }}–{{ b.maxCapacity }} {{ trans('event.guests') }})
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.ballroomId is defined %}
+                                <span class="field-error">{{ errors.ballroomId|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.barId is defined %} has-error{% endif %}">
+                            <label for="barId">{{ trans('event.bar') }}</label>
+                            <div class="select-wrapper">
+                                <select id="barId" name="barId">
+                                    <option value="">— {{ trans('event.no_bar') }} —</option>
+                                    {% for b in bars %}
+                                    <option value="{{ b.barId }}"
+                                        {% if event is defined and event.barId == b.barId %} selected {% endif %}>
+                                        {{ b.barType }} (${{ b.pricePerPerson }}/{{ trans('event.person') }})
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.barId is defined %}
+                                <span class="field-error">{{ errors.barId|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.menuId is defined %} has-error{% endif %}">
+                            <label for="menuId">{{ trans('event.menu') }}</label>
+                            <div class="select-wrapper">
+                                <select id="menuId" name="menuId">
+                                    <option value="">— {{ trans('event.no_menu') }} —</option>
+                                    {% for m in menus %}
+                                    <option value="{{ m.menuId }}"
+                                        {% if event is defined and event.menuId == m.menuId %} selected {% endif %}>
+                                        {{ m.menuName }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.menuId is defined %}
+                                <span class="field-error">{{ errors.menuId|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {# ── SERVICES ── #}
+                {% if services is defined and services|length > 0 %}
+                <div class="card edit-card">
+                    <h2 class="edit-section-title">{{ trans('event.services') }}</h2>
+                    <div class="form-row" style="flex-wrap:wrap;gap:0.75rem;">
+                        {% for s in services %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="serviceIds[]" value="{{ s.serviceId }}"
+                                {% if selectedServices is defined and s.serviceId in selectedServices %} checked {% endif %}>
+                            {{ s.serviceName }}
+                            <span class="checkbox-sub">{{ s.serviceType }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {# ── PAYMENT ── #}
+                <div class="card edit-card">
+                    <h2 class="edit-section-title">{{ trans('event.payment') }}</h2>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.totalPrice is defined %} has-error{% endif %}">
+                            <label for="totalPrice">{{ trans('payment.total') }}</label>
+                            <input type="number" id="totalPrice" name="totalPrice" min="0" step="0.01"
+                                   value="{{ payment is defined ? payment.totalPrice : '' }}">
+                            {% if errors.totalPrice is defined %}
+                                <span class="field-error">{{ errors.totalPrice|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.depositRequired is defined %} has-error{% endif %}">
+                            <label for="depositRequired">{{ trans('payment.deposit') }}</label>
+                            <input type="number" id="depositRequired" name="depositRequired" min="0" step="0.01"
+                                   value="{{ payment is defined ? payment.depositRequired : '' }}">
+                            {% if errors.depositRequired is defined %}
+                                <span class="field-error">{{ errors.depositRequired|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.amountPaid is defined %} has-error{% endif %}">
+                            <label for="amountPaid">{{ trans('payment.paid') }}</label>
+                            <input type="number" id="amountPaid" name="amountPaid" min="0" step="0.01"
+                                   value="{{ payment is defined ? payment.amountPaid : '' }}">
+                            {% if errors.amountPaid is defined %}
+                                <span class="field-error">{{ errors.amountPaid|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.paymentPlan is defined %} has-error{% endif %}">
+                            <label for="paymentPlan">{{ trans('payment.plan') }}</label>
+                            <div class="select-wrapper">
+                                <select id="paymentPlan" name="paymentPlan">
+                                    {% for plan in ['Full', 'Installments'] %}
+                                    <option value="{{ plan }}"
+                                        {% if payment is defined and payment.paymentPlan == plan %} selected
+                                        {% elseif payment is not defined and plan == 'Full' %} selected
+                                        {% endif %}>
+                                        {{ plan }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.paymentPlan is defined %}
+                                <span class="field-error">{{ errors.paymentPlan|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group{% if errors.paymentMethod is defined %} has-error{% endif %}">
+                            <label for="paymentMethod">{{ trans('payment.method') }}</label>
+                            <div class="select-wrapper">
+                                <select id="paymentMethod" name="paymentMethod">
+                                    {% for method in ['Credit Card', 'Debit Card', 'Cash', 'Bank Transfer', 'Cheque'] %}
+                                    <option value="{{ method }}"
+                                        {% if payment is defined and payment.paymentMethod == method %} selected {% endif %}>
+                                        {{ method }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="select-arrow">▾</span>
+                            </div>
+                            {% if errors.paymentMethod is defined %}
+                                <span class="field-error">{{ errors.paymentMethod|trans }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group{% if errors.nextPaymentDue is defined %} has-error{% endif %}">
+                            <label for="nextPaymentDue">{{ trans('payment.next_due') }}</label>
+                            <input type="date" id="nextPaymentDue" name="nextPaymentDue"
+                                   value="{{ payment is defined ? payment.nextPaymentDue : '' }}">
+                            {% if errors.nextPaymentDue is defined %}
+                                <span class="field-error">{{ errors.nextPaymentDue|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ isEdit ? base_path ~ '/events/' ~ event.eventId : base_path ~ '/events' }}"
+                       class="btn btn-cancel">{{ trans('client.cancel') }}</a>
+                    <button type="submit" class="btn btn-primary">
+                        {{ isEdit ? trans('event.save') : trans('event.create') }}
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}

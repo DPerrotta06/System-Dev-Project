@@ -2817,3 +2817,588 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
         grid-template-columns: 1fr;
     }
 }
+
+.event-details-page {
+    padding: 3rem 4rem;
+}
+
+.event-details-header {
+    margin-bottom: 2.5rem;
+}
+
+.event-details-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: rgba(245, 240, 232, 0.55);
+    font-size: 1rem;
+}
+
+.event-hero-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(201, 168, 76, 0.28);
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(201, 168, 76, 0.08), transparent 45%),
+        rgba(20, 18, 10, 0.88);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+
+.event-hero-card h1 {
+    margin: 1.4rem 0 1.8rem;
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 700;
+}
+
+.event-meta-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.event-meta-list span {
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    background: rgba(245, 240, 232, 0.09);
+    color: var(--cream);
+    font-size: 0.95rem;
+}
+
+.event-status-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.details-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+.detail-card {
+    padding: 1.8rem;
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 18px;
+    background:
+        linear-gradient(135deg, rgba(201, 168, 76, 0.05), transparent 40%),
+        rgba(12, 11, 8, 0.94);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    font-family: 'Cinzel', serif;
+}
+
+.detail-card-header {
+    margin-bottom: 1.3rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+}
+
+.detail-card-header h3 {
+    margin: 0;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.detail-row {
+    padding: 1rem;
+    border-radius: 14px;
+    background: rgba(245, 240, 232, 0.035);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.detail-row.full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: rgba(245, 240, 232, 0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    color: var(--cream);
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+.client-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.client-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--gold-light);
+    color: var(--black);
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.client-name {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    color: var(--gold-light);
+    font-size: 1rem;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.client-name-link:hover {
+    text-decoration: underline;
+}
+
+.client-summary-card p {
+    margin: 0.2rem 0;
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+}
+
+.payment-card {
+    grid-column: 1 / -1;
+    
+}
+
+.payment-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Cinzel', serif;
+}
+
+.payment-summary > div {
+    padding: 1.5rem;
+    border-radius: 18px;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    font-family: 'Cinzel', serif;
+}
+
+.payment-label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: rgba(245, 240, 232, 0.62);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.payment-summary strong {
+    color: var(--cream);
+    font-size: 1.55rem;
+}
+
+.payment-details {
+    margin-top: 1rem;
+}
+
+.services-section {
+    margin-top: 2.5rem;
+    font-family: 'Cinzel', serif;
+}
+
+@media (max-width: 1000px) {
+    .event-details-page {
+        padding: 2rem 1.5rem;
+    }
+
+    .event-hero-card {
+        flex-direction: column;
+        padding: 2rem;
+    }
+
+    .event-status-actions {
+        justify-content: flex-start;
+    }
+
+    .details-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-grid,
+    .payment-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+.payment-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    font-family: 'Cinzel', serif;
+}
+
+.payment-summary strong {
+    color: #fff;
+    font-size: 1.35rem;
+    font-family: 'Cinzel', serif;
+}
+
+.payment-details {
+    margin-top: 1rem;
+    font-family: 'Cinzel', serif;
+}
+
+.services-section {
+    margin-top: 2rem;
+    font-family: 'Cinzel', serif;
+}
+
+.status-badge {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'Cinzel', serif;
+}
+
+.status-badge.confirmed {
+    color: #9ff0b0;
+    background: rgba(20, 120, 45, 0.18);
+    border: 1px solid rgba(90, 220, 120, 0.35);
+    font-family: 'Cinzel', serif;
+}
+
+.status-badge.pending {
+    color: #ffd978;
+    background: rgba(160, 120, 20, 0.18);
+    border: 1px solid rgba(255, 210, 90, 0.35);
+    font-family: 'Cinzel', serif;
+}
+
+.status-badge.cancelled,
+.status-badge.declined {
+    color: #ff9b8e;
+    background: rgba(160, 35, 25, 0.18);
+    border: 1px solid rgba(255, 90, 70, 0.35);
+    font-family: 'Cinzel', serif;
+}
+
+.status-badge.completed {
+    color: #9bc8ff;
+    background: rgba(40, 90, 160, 0.18);
+    border: 1px solid rgba(100, 160, 255, 0.35);
+    font-family: 'Cinzel', serif;
+}
+
+@media (max-width: 1000px) {
+    .event-details-page {
+        padding: 1.5rem;
+    }
+
+    .event-hero-card,
+    .event-details-header {
+        flex-direction: column;
+    }
+
+    .details-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-grid,
+    .payment-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+.edit-client-page {
+    max-width: 1200px;
+    width: 100%;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-header h2 {
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+    font-family: 'Cinzel', serif;
+    font-size: 2.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+}
+
+.page-subtitle {
+    margin: 0;
+    color: rgba(245, 240, 232, 0.52);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-card {
+    position: relative;
+    max-width: 860px;
+    padding: 2rem;
+    font-family: 'Cinzel', serif;
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 18px;
+    background:
+        linear-gradient(135deg, rgba(201, 168, 76, 0.08), transparent 34%),
+        rgba(14, 13, 9, 0.95);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
+}
+
+.edit-client-card::before {
+    content: '';
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.edit-client-card-header {
+    display: flex;
+    align-items: center;
+    font-family: 'Cinzel', serif;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.16);
+}
+
+.edit-client-card-header h3 {
+    margin: 0 0 0.25rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--cream);
+}
+
+.edit-client-card-header p {
+    margin: 0;
+    color: rgba(245, 240, 232, 0.5);
+    font-size: 0.9rem;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-avatar {
+    flex: 0 0 auto;
+    width: 58px;
+    height: 58px;
+    font-size: 1.1rem;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin {
+    width: 100%;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin .form-group {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin label {
+    display: block;
+    margin-bottom: 0.55rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.52);
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin input,
+.edit-client-form-admin select,
+.edit-client-form-admin textarea {
+    width: 100%;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(201, 168, 76, 0.26);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-client-form-admin input:focus,
+.edit-client-form-admin select:focus,
+.edit-client-form-admin textarea:focus {
+    border-color: var(--gold);
+    background: rgba(201, 168, 76, 0.06);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin input::placeholder,
+.edit-client-form-admin textarea::placeholder {
+    color: rgba(245, 240, 232, 0.25);
+    font-family: 'Cinzel', serif;
+}
+
+.edit-client-form-admin .has-error input,
+.edit-client-form-admin .has-error select,
+.edit-client-form-admin .has-error textarea {
+    border-color: rgba(234, 67, 53, 0.65);
+    font-family: 'Cinzel', serif;
+}
+
+.field-error {
+    display: block;
+    margin-top: 0.45rem;
+    color: #ff756b;
+    font-size: 0.78rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(201, 168, 76, 0.14);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.6rem 0.95rem;
+    text-decoration: none;
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--gold-light);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.back-btn:hover {
+    background: rgba(201, 168, 76, 0.2);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    padding: 0.85rem 1.1rem;
+    text-decoration: none;
+    background: transparent;
+    color: rgba(245, 240, 232, 0.7);
+    border: 1px solid rgba(245, 240, 232, 0.16);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.save-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 170px;
+    padding: 0.85rem 1.1rem;
+    background: var(--gold);
+    color: var(--black);
+    border: 1px solid var(--gold);
+    font-family: 'Cinzel', serif;
+}
+
+.admin-btn.save-btn:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    color: var(--black);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(201, 168, 76, 0.18);
+    font-family: 'Cinzel', serif;
+}
+
+@media (max-width: 900px) {
+    .edit-client-card {
+        max-width: 100%;
+    }
+
+    .edit-client-form-admin .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .admin-btn.cancel-btn,
+    .admin-btn.save-btn {
+        width: 100%;
+    }
+}

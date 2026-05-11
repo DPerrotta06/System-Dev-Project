@@ -35,7 +35,7 @@ class EventController
         } else {
             $events = R::getAll('SELECT * FROM v_event_summary ORDER BY eventDate ASC');
         }
-        $html = $this->twig->render('events/index.html.twig', [
+        $html = $this->twig->render('event_index.html.twig', [
             'events'     => $events,
             'status'     => $status,
             'base_path'  => $this->basePath,
@@ -64,7 +64,7 @@ class EventController
             'SELECT * FROM v_event_services WHERE eventId = ?',
             [(int) $args['id']]
         );
-        $html = $this->twig->render('events/show.html.twig', [
+        $html = $this->twig->render('event_details.html.twig', [
             'event'     => $event,
             'services'  => $services,
             'base_path' => $this->basePath,

@@ -1,164 +1,106 @@
 {% extends "layout.html.twig" %}
+
 {% block title %}
-	{{ 'site.name'|trans }} – {{ 'client.edit_title'|trans }}
+    {{ trans('site.name') }} – Edit Client
 {% endblock %}
 
 {% block content %}
-{#
-  Expected variables:
-    - client (object): id, first_name, last_name, email, phone, event_type,
-                        event_date, guest_count, budget, ballroom, status, notes
-    - event_types (array of strings) e.g. ['Wedding','Birthday','Corporate Event',…]
-    - ballrooms (array of strings) e.g. ['Grand Salon','Petit Salon',…]
-    - statuses (array of strings) e.g. ['Pending','Confirmed','Cancelled']
-    - errors (object keyed by field name, optional)
-#}
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
 
-<div class="page-header">
-  <a href="{{ base_path }}/client/{{ client.id }}" class="back-link">←
-    {{ 'nav.back'|trans }}</a>
-  <h1>{{ 'client.edit_title'|trans }}</h1>
-</div>
+        <nav class="admin-nav">
+            <a href="{{ base_path }}/admin">{{ trans('admin.dashboard.name') }}</a>
+            <a href="{{ base_path }}/clients" class="active">{{ trans('admin.page.title') }}</a>
+            <a href="{{ base_path }}/events">Events</a>
+            <a href="{{ base_path }}/menus">{{ trans('menu.main_course') }}</a>
+            <a href="{{ base_path }}/calendar">{{ trans('admin.nav.calendar') }}</a>
+        </nav>
 
-<div class="edit-wrapper">
-  <div class="card edit-card">
-    <h2 class="edit-section-title">{{ 'client.info_section'|trans }}</h2>
+        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+            <button type="submit" class="admin-logout-btn">{{ trans('admin.nav.logout') }}</button>
+        </form>
+    </aside>
 
-    <form action="{{ base_path }}/client/{{ client.id }}/edit" method="POST" class="edit-form">
+    <main class="admin-content edit-client-page">
 
-      <div class="form-row">
-        <div class="form-group{% if errors.first_name is defined %} has-error{% endif %}">
-          <label for="first_name">{{ 'client.first_name'|trans }}</label>
-          <input type="text" id="first_name" name="first_name" value="{{ client.first_name }}" required>
-          {% if errors.first_name is defined %}
-            <span class="field-error">{{ errors.first_name|trans }}</span>
-          {% endif %}
+        <div class="admin-page-header edit-client-header">
+            <div>
+                <a href="{{ base_path }}/clients/{{ client.clientId }}" class="admin-btn back-btn">← Back</a>
+                <h2>Edit Client</h2>
+                <p class="page-subtitle">
+                    Update the contact information for {{ client.firstName }} {{ client.lastName }}.
+                </p>
+            </div>
         </div>
 
-        <div class="form-group{% if errors.last_name is defined %} has-error{% endif %}">
-          <label for="last_name">{{ 'client.last_name'|trans }}</label>
-          <input type="text" id="last_name" name="last_name" value="{{ client.last_name }}" required>
-          {% if errors.last_name is defined %}
-            <span class="field-error">{{ errors.last_name|trans }}</span>
-          {% endif %}
-        </div>
-      </div>
+        <section class="edit-client-card">
+            <div class="edit-client-card-header">
+                <div class="client-avatar edit-avatar">
+                    {{ client.firstName|slice(0, 1)|upper }}{{ client.lastName|slice(0, 1)|upper }}
+                </div>
 
-      <div class="form-row">
-        <div class="form-group{% if errors.email is defined %} has-error{% endif %}">
-          <label for="email">{{ 'client.email'|trans }}</label>
-          <input type="email" id="email" name="email" value="{{ client.email }}" required>
-          {% if errors.email is defined %}
-            <span class="field-error">{{ errors.email|trans }}</span>
-          {% endif %}
-        </div>
+                <div>
+                    <h3>{{ client.firstName }} {{ client.lastName }}</h3>
+                    <p>{{ client.email }}</p>
+                </div>
+            </div>
 
-        <div class="form-group{% if errors.phone is defined %} has-error{% endif %}">
-          <label for="phone">{{ 'client.phone'|trans }}</label>
-          <input type="tel" id="phone" name="phone" value="{{ client.phone }}">
-          {% if errors.phone is defined %}
-            <span class="field-error">{{ errors.phone|trans }}</span>
-          {% endif %}
-        </div>
-      </div>
+            <form action="{{ base_path }}/clients/{{ client.clientId }}/edit" method="POST" class="edit-client-form-admin">
 
-      <div class="form-row">
-        <div class="form-group{% if errors.event_type is defined %} has-error{% endif %}">
-          <label for="event_type">{{ 'client.event_type'|trans }}</label>
-          <div class="select-wrapper">
-            <select id="event_type" name="event_type">
-              {% for type in event_types %}
-                <option value="{{ type }}" {% if client.event_type == type %} selected {% endif %}>
-                  {{ type }}
-                </option>
-              {% endfor %}
-            </select>
-            <span class="select-arrow">▾</span>
-          </div>
-          {% if errors.event_type is defined %}
-            <span class="field-error">{{ errors.event_type|trans }}</span>
-          {% endif %}
-        </div>
+                <div class="form-row">
+                    <div class="form-group{% if errors.firstName is defined %} has-error{% endif %}">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" value="{{ client.firstName }}" required>
 
-        <div class="form-group{% if errors.event_date is defined %} has-error{% endif %}">
-          <label for="event_date">{{ 'client.event_date'|trans }}</label>
-          <input type="date" id="event_date" name="event_date" value="{{ client.event_date }}" required>
-          {% if errors.event_date is defined %}
-            <span class="field-error">{{ errors.event_date|trans }}</span>
-          {% endif %}
-        </div>
-      </div>
+                        {% if errors.firstName is defined %}
+                            <span class="field-error">{{ errors.firstName }}</span>
+                        {% endif %}
+                    </div>
 
-      <div class="form-row">
-        <div class="form-group{% if errors.guest_count is defined %} has-error{% endif %}">
-          <label for="guest_count">{{ 'client.guest_count'|trans }}</label>
-          <input type="number" id="guest_count" name="guest_count" value="{{ client.guest_count }}" min="1">
-          {% if errors.guest_count is defined %}
-            <span class="field-error">{{ errors.guest_count|trans }}</span>
-          {% endif %}
-        </div>
+                    <div class="form-group{% if errors.lastName is defined %} has-error{% endif %}">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" value="{{ client.lastName }}" required>
 
-        <div class="form-group{% if errors.budget is defined %} has-error{% endif %}">
-          <label for="budget">{{ 'client.budget'|trans }}</label>
-          <input type="number" id="budget" name="budget" value="{{ client.budget }}" min="0" step="100">
-          {% if errors.budget is defined %}
-            <span class="field-error">{{ errors.budget|trans }}</span>
-          {% endif %}
-        </div>
-      </div>
+                        {% if errors.lastName is defined %}
+                            <span class="field-error">{{ errors.lastName }}</span>
+                        {% endif %}
+                    </div>
+                </div>
 
-      <div class="form-row">
-        <div class="form-group{% if errors.ballroom is defined %} has-error{% endif %}">
-          <label for="ballroom">{{ 'client.ballroom'|trans }}</label>
-          <div class="select-wrapper">
-            <select id="ballroom" name="ballroom">
-              {% for room in ballrooms %}
-                <option value="{{ room }}" {% if client.ballroom == room %} selected {% endif %}>
-                  {{ room }}
-                </option>
-              {% endfor %}
-            </select>
-            <span class="select-arrow">▾</span>
-          </div>
-          {% if errors.ballroom is defined %}
-            <span class="field-error">{{ errors.ballroom|trans }}</span>
-          {% endif %}
-        </div>
+                <div class="form-row">
+                    <div class="form-group{% if errors.email is defined %} has-error{% endif %}">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ client.email }}" required>
 
-        <div class="form-group{% if errors.status is defined %} has-error{% endif %}">
-          <label for="status">{{ 'client.status'|trans }}</label>
-          <div class="select-wrapper">
-            <select id="status" name="status">
-              {% for s in statuses %}
-                <option value="{{ s }}" {% if client.status == s %} selected {% endif %}>
-                  {{ ('status.' ~ s|lower)|trans }}
-                </option>
-              {% endfor %}
-            </select>
-            <span class="select-arrow">▾</span>
-          </div>
-          {% if errors.status is defined %}
-            <span class="field-error">{{ errors.status|trans }}</span>
-          {% endif %}
-        </div>
-      </div>
+                        {% if errors.email is defined %}
+                            <span class="field-error">{{ errors.email }}</span>
+                        {% endif %}
+                    </div>
 
-      <div class="form-group full-width{% if errors.notes is defined %} has-error{% endif %}">
-        <label for="notes">{{ 'client.notes'|trans }}</label>
-        <textarea id="notes" name="notes" rows="4">{{ client.notes }}</textarea>
-        {% if errors.notes is defined %}
-          <span class="field-error">{{ errors.notes|trans }}</span>
-        {% endif %}
-      </div>
+                    <div class="form-group{% if errors.phoneNumber is defined %} has-error{% endif %}">
+                        <label for="phoneNumber">Phone</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" value="{{ client.phoneNumber }}">
 
-      <div class="form-actions">
-        <a href="{{ base_path }}/client/{{ client.id }}" class="btn btn-cancel">
-          {{ 'client.cancel'|trans }}
-        </a>
-        <button type="submit" class="btn btn-primary"></button>
-      </div>
+                        {% if errors.phoneNumber is defined %}
+                            <span class="field-error">{{ errors.phoneNumber }}</span>
+                        {% endif %}
+                    </div>
+                </div>
 
-    </form>
-  </div>
+                <div class="form-actions">
+                    <a href="{{ base_path }}/clients/{{ client.clientId }}" class="admin-btn cancel-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="admin-btn save-btn">
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
 </div>
 {% endblock %}
