@@ -4,149 +4,256 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedTables = {};
     let currentLayout = document.body.dataset.hall || "grand_salon";
 
-    // ── COLOURS (matching site theme) ──
     const COLOR = {
-        bg:           "#0e0c09",
-        room:         "#1a1712",
-        roomStroke:   "#C9A84C",
-        feature:      "#111008",
-        featureStroke:"rgba(201,168,76,0.4)",
-        featureText:  "rgba(245,240,232,0.35)",
-        tableFill:    "#1a1712",
-        tableStroke:  "rgba(201,168,76,0.5)",
-        tableText:    "rgba(245,240,232,0.7)",
-        selected:     "rgba(201,168,76,0.25)",
+        bg:            "#0e0c09",
+        room:          "#1a1712",
+        roomStroke:    "#C9A84C",
+        feature:       "#111008",
+        featureStroke: "rgba(201,168,76,0.45)",
+        featureText:   "rgba(245,240,232,0.4)",
+        tableFill:     "#1a1712",
+        tableStroke:   "rgba(201,168,76,0.5)",
+        tableText:     "rgba(245,240,232,0.7)",
+        selected:      "rgba(201,168,76,0.22)",
         selectedStroke:"#C9A84C",
-        selectedText: "#C9A84C",
-        label:        "rgba(245,240,232,0.55)",
+        selectedText:  "#C9A84C",
+        label:         "rgba(245,240,232,0.55)",
     };
 
-    // ── TABLE RADIUS ──
-    const R = 18;
+    const R = 20; // table radius
 
-    // ── LAYOUTS ──
-    // Royal Hall: 26 tables around perimeter, mirroring the photo
-    // Canvas is 800x600
-    const layouts = {
+    // ─────────────────────────────────────────────
+    // ROYAL HALL  (matches Royal_Map.jpg)
+    // 28 tables arranged around a central dance floor
+    // Honor table top-center, Entrance + Stage bottom
+    // Bar/servery nook on left wall
+    // ─────────────────────────────────────────────
+    const royal = (() => {
+        // Room rect
+        const rx = 50, ry = 50, rw = 700, rh = 490;
+        // Dance floor – 25'×25', roughly centered, shifted slightly left
+        const dfx = rx + 200, dfy = ry + 130, dfw = 300, dfh = 250;
+        // Honor table – top center above dance floor
+        const htx = dfx + 20, hty = ry + 68, htw = dfw - 40, hth = 26;
 
-        royal: (() => {
-            // The room rect on canvas
-            const rx = 60, ry = 55, rw = 680, rh = 470;
-            // Dance floor
-            const dfx = rx + 160, dfy = ry + 110, dfw = 360, dfh = 230;
-            // Honor table (top center)
-            const htx = rx + 155, hty = ry + 60, htw = 370, hth = 28;
+        // Tables – matching the photo layout closely
+        const tables = [
+            // TOP ROW (flanking honor table)
+            { x: rx+80,  y: ry+80  }, // 1 top-left
+            { x: rx+155, y: ry+80  }, // 2
+            { x: rx+rw-155, y: ry+80  }, // 3
+            { x: rx+rw-80,  y: ry+80  }, // 4 top-right
 
-            const tables = [];
+            // LEFT COLUMN (outer wall)
+            { x: rx+55,  y: ry+175 }, // 5
+            { x: rx+55,  y: ry+275 }, // 6
+            { x: rx+55,  y: ry+375 }, // 7
 
-            // LEFT COLUMN (x ≈ rx+55, y spread down)
-            const leftX = rx + 52;
-            [ry+80, ry+150, ry+220, ry+290, ry+360].forEach(y =>
-                tables.push({ x: leftX, y })
-            );
+            // LEFT INNER (beside dance floor)
+            { x: dfx-60, y: dfy+50  }, // 8
+            { x: dfx-60, y: dfy+130 }, // 9
+            { x: dfx-60, y: dfy+210 }, // 10
 
-            // RIGHT COLUMN (x ≈ rx+rw-55)
-            const rightX = rx + rw - 52;
-            [ry+80, ry+150, ry+220, ry+290, ry+360].forEach(y =>
-                tables.push({ x: rightX, y })
-            );
+            // RIGHT COLUMN (outer wall)
+            { x: rx+rw-55, y: ry+175 }, // 11
+            { x: rx+rw-55, y: ry+275 }, // 12
+            { x: rx+rw-55, y: ry+375 }, // 13
 
-            // TOP ROW (between honor table and left/right)
-            tables.push({ x: rx + 110, y: ry + 47 });
-            tables.push({ x: rx + rw - 110, y: ry + 47 });
+            // RIGHT INNER (beside dance floor)
+            { x: dfx+dfw+60, y: dfy+50  }, // 14
+            { x: dfx+dfw+60, y: dfy+130 }, // 15
+            { x: dfx+dfw+60, y: dfy+210 }, // 16
 
-            // BOTTOM ROW (above stage / entrance)
-            const bottomY = ry + rh - 48;
-            [rx+110, rx+200, rx+310, rx+420, rx+530, rx+rw-110].forEach(x =>
-                tables.push({ x, y: bottomY })
-            );
+            // BOTTOM ROW (above entrance/stage)
+            { x: rx+80,        y: ry+rh-65 }, // 17
+            { x: rx+175,       y: ry+rh-65 }, // 18
+            { x: dfx+40,       y: ry+rh-65 }, // 19
+            { x: dfx+dfw/2,    y: ry+rh-65 }, // 20
+            { x: dfx+dfw-40,   y: ry+rh-65 }, // 21
+            { x: rx+rw-175,    y: ry+rh-65 }, // 22
+            { x: rx+rw-80,     y: ry+rh-65 }, // 23
 
-            // INNER LEFT (beside dance floor)
-            tables.push({ x: dfx - 52, y: dfy + 40 });
-            tables.push({ x: dfx - 52, y: dfy + 110 });
-            tables.push({ x: dfx - 52, y: dfy + 180 });
+            // EXTRA TABLES (corners / additional)
+            { x: rx+130, y: ry+175 }, // 24
+            { x: rx+130, y: ry+275 }, // 25
+            { x: rx+rw-130, y: ry+175 }, // 26
+            { x: rx+rw-130, y: ry+275 }, // 27
+            { x: dfx+dfw/2, y: dfy-55 }, // 28 above dance floor center
+        ];
 
-            // INNER RIGHT (beside dance floor)
-            tables.push({ x: dfx + dfw + 52, y: dfy + 40 });
-            tables.push({ x: dfx + dfw + 52, y: dfy + 110 });
-            tables.push({ x: dfx + dfw + 52, y: dfy + 180 });
+        return {
+            tables,
+            room:       { x: rx, y: ry, w: rw, h: rh },
+            danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh, label: "Dance Floor", sub: "(25'×25')" },
+            honorTable: { x: htx, y: hty, w: htw, h: hth },
+            podium:     null,
+            stage:      { x: rx+rw/2+10, y: ry+rh-8, w: 140, h: 52, label: "STAGE", sub: "(10'×18')" },
+            entrance:   { x: rx+rw/2-150, y: ry+rh-8, w: 110, h: 40, label: "ENTRANCE" },
+            bar:        { x: rx-8, y: ry+180, w: 40, h: 140, label: "BAR" },
+            djBooth:    null,
+            label: "Royal Hall",
+        };
+    })();
 
-            return {
-                tables,
-                room: { x: rx, y: ry, w: rw, h: rh },
-                danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh },
-                honorTable: { x: htx, y: hty, w: htw, h: hth },
-                stage: { x: rx + rw/2 + 20, y: ry + rh - 10, w: 130, h: 55 },
-                entrance: { x: rx + rw/2 - 120, y: ry + rh - 10, w: 100, h: 40 },
-                label: "Royal Hall"
-            };
-        })(),
+    // ─────────────────────────────────────────────
+    // GRAND SALON  (based on Grand_Salon_Map.jpg)
+    // 35 tables, podium top-center, dance floor 18'×33'
+    // DJ booth bottom-left, entrance bottom-right (dashed)
+    // Two columns left + two columns right of dance floor
+    // ─────────────────────────────────────────────
+    const grand_salon = (() => {
+        const rx = 50, ry = 50, rw = 710, rh = 605; // Room rect dimensions
+        // Dance floor – 18'×33', taller than wide, center-right of room
+        const dfx = rx + 280, dfy = ry + 120, dfw = 200, dfh = 340;
+        // Honor table top, above dance floor
+        const htx = dfx + 10, hty = ry + 60, htw = dfw - 20, hth = 26;
+        // Podium above honor table
+        const podx = dfx + dfw/2 - 50, pody = ry + 60, podw = 100, podh = 26;
 
-        grand_salon: (() => {
-            const rx = 60, ry = 55, rw = 680, rh = 470;
-            const dfx = rx + 180, dfy = ry + 120, dfw = 320, dfh = 210;
-            const tables = [];
+        const tables = [
+            // LEFT OUTER COLUMN
+            { x: rx+110, y: ry+115 }, // 1
+            { x: rx+110, y: ry+195 }, // 2
+            { x: rx+110, y: ry+275 }, // 3
+            { x: rx+110, y: ry+355 }, // 4
+            { x: rx+110, y: ry+435 }, // 5
 
-            // Left col
-            const lx = rx + 52;
-            [ry+80, ry+170, ry+260, ry+360].forEach(y => tables.push({ x: lx, y }));
+            // LEFT INNER COLUMN
+            { x: rx+220, y: ry+115 }, // 6
+            { x: rx+220, y: ry+195 }, // 7
+            { x: rx+220, y: ry+275 }, // 8
+            { x: rx+220, y: ry+355 }, // 9
+            { x: rx+220, y: ry+435 }, // 10
+            
+            //BELOW LEFT INNER COLUMN
+            { x: dfx+dfw/2-215, y: ry+150 }, // 11
+            { x: dfx+dfw/2-215, y: ry+235 }, // 12
+            { x: dfx+dfw/2-215, y: ry+315 }, // 13
+            { x: dfx+dfw/2-215, y: ry+400 }, // 14
+            { x: dfx+dfw/2-215,  y: ry+480 }, // 30
+            
 
-            // Right col
-            const rx2 = rx + rw - 52;
-            [ry+80, ry+170, ry+260, ry+360].forEach(y => tables.push({ x: rx2, y }));
+            // RIGHT INNER COLUMN
+            { x: dfx+dfw+55, y: ry+115 }, // 15
+            { x: dfx+dfw+55, y: ry+195 }, // 16
+            { x: dfx+dfw+55, y: ry+275 }, // 17
+            { x: dfx+dfw+55, y: ry+355 }, // 18
+            { x: dfx+dfw+55, y: ry+435 }, // 19
 
-            // Top row
-            [rx+160, rx+280, rx+400, rx+520].forEach(x => tables.push({ x, y: ry+52 }));
+            // RIGHT OUTER COLUMN
+            { x: rx+rw-55, y: ry+115 }, // 20
+            { x: rx+rw-55, y: ry+195 }, // 21
+            { x: rx+rw-55, y: ry+275 }, // 22
+            { x: rx+rw-55, y: ry+355 }, // 23
+            { x: rx+rw-55, y: ry+435 }, // 24
+            
+            //BELOW RIGHT INNER COLUMN
+            { x: dfx+dfw/2+215,  y: ry+150 }, // 25
+            { x: dfx+dfw/2+215,  y: ry+235 }, // 26
+            { x: dfx+dfw/2+215,  y: ry+315 }, // 27
+            { x: dfx+dfw/2+215,  y: ry+400 }, // 28
+            { x: dfx+dfw/2+215,  y: ry+480 }, // 29
+            { x: dfx+dfw/2-15,  y: ry+480 }, // 30
 
-            // Bottom row
-            [rx+130, rx+250, rx+390, rx+530, rx+rw-130].forEach(x =>
-                tables.push({ x, y: ry + rh - 48 })
-            );
+            // Flanking dance floor center
+            { x: dfx-60, y: dfy+230} , // 31
+            { x: dfx+dfw/2-130, y: ry+500 }, // 32
+            { x: rx+220, y: ry+540  },// 33
+            { x: dfx+dfw+60, y: dfy+70  }, // 34 — already covered by right inner col
+            { x: dfx+dfw+60, y: dfy+150 }, // 35
+        ];
 
-            // Inner sides
-            tables.push({ x: dfx - 52, y: dfy + 60 });
-            tables.push({ x: dfx - 52, y: dfy + 150 });
-            tables.push({ x: dfx + dfw + 52, y: dfy + 60 });
-            tables.push({ x: dfx + dfw + 52, y: dfy + 150 });
+        return {
+            tables,
+            room:       { x: rx, y: ry, w: rw, h: rh },
+            danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh, label: "Piste de Dance", sub: "(18'×33')" },
+            honorTable: { x: htx, y: hty, w: htw, h: hth },
+            podium:     { x: podx, y: pody, w: podw, h: podh, label: "Honor Table", sub: "(8'×12')" },
+            stage:      null,
+            entrance:   { x: rx+rw-330, y: ry+rh+2, w: 100, h: 36, label: "ENTRANCE", dashed: true },
+            bar:        null,
+            djBooth:    { x: rx+290, y: ry+rh-70, w: 110, h: 55, label: "Espace DJ", sub: "(8'×12')" },
+            label: "Grand Salon",
+        };
+    })();
 
-            return {
-                tables,
-                room: { x: rx, y: ry, w: rw, h: rh },
-                danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh },
-                honorTable: { x: rx + 160, y: ry + 65, w: 360, h: 26 },
-                stage: { x: rx + rw/2 - 65, y: ry + rh - 10, w: 130, h: 50 },
-                entrance: { x: rx + rw/2 - 230, y: ry + rh - 10, w: 100, h: 36 },
-                label: "Grand Salon"
-            };
-        })(),
+    // ─────────────────────────────────────────────
+    // PRINCESS  (smaller hall, 14 tables)
+    // ─────────────────────────────────────────────
+    const princess = (() => {
+        const rx = 80, ry = 70, rw = 640, rh = 430;
+        const dfx = rx+180, dfy = ry+110, dfw=280, dfh=200;
+        const tables = [
+            { x: rx+50,     y: ry+80  }, // 1
+            { x: rx+50,     y: ry+175 }, // 2
+            { x: rx+50,     y: ry+270 }, // 3
+            { x: rx+50,     y: ry+365 }, // 4
+            { x: rx+rw-50,  y: ry+80  }, // 5
+            { x: rx+rw-50,  y: ry+175 }, // 6
+            { x: rx+rw-50,  y: ry+270 }, // 7
+            { x: rx+rw-50,  y: ry+365 }, // 8
+            { x: rx+155,    y: ry+55  }, // 9
+            { x: rx+270,    y: ry+55  }, // 10
+            { x: rx+385,    y: ry+55  }, // 11
+            { x: rx+500,    y: ry+55  }, // 12
+            { x: rx+225,    y: ry+rh-50 }, // 13
+            { x: rx+420,    y: ry+rh-50 }, // 14
+        ];
+        return {
+            tables,
+            room:       { x: rx, y: ry, w: rw, h: rh },
+            danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh, label: "Dance Floor", sub: "(18'×25')" },
+            honorTable: { x: dfx+20, y: ry+65, w: dfw-40, h: 24 },
+            podium:     null,
+            stage:      null,
+            entrance:   { x: rx+rw/2-55, y: ry+rh-5, w: 110, h: 32, label: "ENTRANCE", dashed: true },
+            bar:        null,
+            djBooth:    null,
+            label: "Princess",
+        };
+    })();
 
-        princess: (() => {
-            const rx = 100, ry = 80, rw = 600, rh = 400;
-            const dfx = rx + 170, dfy = ry + 100, dfw = 260, dfh = 180;
-            const tables = [];
+    const layouts = { royal, grand_salon, princess };
 
-            const lx = rx + 45;
-            [ry+70, ry+160, ry+260].forEach(y => tables.push({ x: lx, y }));
+    // ─────────────────────────────────────────────
+    // DRAW
+    // ─────────────────────────────────────────────
+    function roundRect(x, y, w, h, r = 0) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+    }
 
-            const rx2 = rx + rw - 45;
-            [ry+70, ry+160, ry+260].forEach(y => tables.push({ x: rx2, y }));
+    function drawFeature(obj, label, sub, dashed = false) {
+        ctx.fillStyle = COLOR.feature;
+        ctx.fill();
+        if (dashed) ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = COLOR.featureStroke;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        if (label) {
+            ctx.font = "10px 'Raleway', sans-serif";
+            ctx.fillStyle = COLOR.featureText;
+            ctx.textAlign = "center";
+            const cx = obj.x + obj.w / 2;
+            const cy = obj.y + obj.h / 2;
+            ctx.fillText(label, cx, sub ? cy - 4 : cy + 4);
+            if (sub) {
+                ctx.font = "9px 'Raleway', sans-serif";
+                ctx.fillText(sub, cx, cy + 10);
+            }
+        }
+    }
 
-            [rx+130, rx+240, rx+360, rx+470].forEach(x => tables.push({ x, y: ry+45 }));
-            [rx+130, rx+240, rx+360, rx+470].forEach(x => tables.push({ x, y: ry+rh-45 }));
-
-            return {
-                tables,
-                room: { x: rx, y: ry, w: rw, h: rh },
-                danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh },
-                honorTable: { x: rx + 165, y: ry + 55, w: 270, h: 24 },
-                stage: null,
-                entrance: { x: rx + rw/2 - 50, y: ry + rh - 8, w: 100, h: 32 },
-                label: "Princess"
-            };
-        })()
-    };
-
-    // ── DRAW ──
     function draw() {
         const layout = layouts[currentLayout];
         if (!layout) return;
@@ -157,72 +264,92 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fillStyle = COLOR.bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const { room, danceFloor, honorTable, stage, entrance, tables, label } = layout;
+        const { room, danceFloor, honorTable, podium, stage, entrance, bar, djBooth, tables, label } = layout;
 
-        // Room outline
+        // Room
+        roundRect(room.x, room.y, room.w, room.h, 4);
         ctx.fillStyle = COLOR.room;
+        ctx.fill();
         ctx.strokeStyle = COLOR.roomStroke;
         ctx.lineWidth = 2;
-        ctx.fillRect(room.x, room.y, room.w, room.h);
-        ctx.strokeRect(room.x, room.y, room.w, room.h);
+        ctx.stroke();
 
-        // Hall label
-        ctx.font = "bold 13px 'Cinzel', serif";
+        // Room label
+        ctx.font = "bold 12px 'Cinzel', serif";
         ctx.fillStyle = COLOR.label;
         ctx.textAlign = "center";
         ctx.fillText(label.toUpperCase(), room.x + room.w / 2, room.y + 22);
 
         // Honor table
-        ctx.fillStyle = COLOR.feature;
-        ctx.strokeStyle = COLOR.featureStroke;
-        ctx.lineWidth = 1;
-        ctx.fillRect(honorTable.x, honorTable.y, honorTable.w, honorTable.h);
-        ctx.strokeRect(honorTable.x, honorTable.y, honorTable.w, honorTable.h);
-        ctx.font = "10px 'Raleway', sans-serif";
-        ctx.fillStyle = COLOR.featureText;
-        ctx.textAlign = "center";
-        ctx.fillText("Honor Table", honorTable.x + honorTable.w / 2, honorTable.y + honorTable.h / 2 + 4);
+        if (honorTable) {
+            roundRect(honorTable.x, honorTable.y, honorTable.w, honorTable.h, 2);
+            drawFeature(honorTable, "Honor Table", null);
+        }
+
+        // Podium
+        if (podium) {
+            roundRect(podium.x, podium.y, podium.w, podium.h, 2);
+            drawFeature(podium, podium.label, podium.sub);
+        }
 
         // Dance floor
+        roundRect(danceFloor.x, danceFloor.y, danceFloor.w, danceFloor.h, 3);
         ctx.fillStyle = COLOR.feature;
+        ctx.fill();
         ctx.strokeStyle = COLOR.featureStroke;
         ctx.lineWidth = 1.5;
-        ctx.fillRect(danceFloor.x, danceFloor.y, danceFloor.w, danceFloor.h);
-        ctx.strokeRect(danceFloor.x, danceFloor.y, danceFloor.w, danceFloor.h);
+        ctx.stroke();
         ctx.font = "11px 'Raleway', sans-serif";
         ctx.fillStyle = COLOR.featureText;
         ctx.textAlign = "center";
-        ctx.fillText("Dance Floor", danceFloor.x + danceFloor.w / 2, danceFloor.y + danceFloor.h / 2 - 6);
+        ctx.fillText(danceFloor.label, danceFloor.x + danceFloor.w / 2, danceFloor.y + danceFloor.h / 2 - 6);
         ctx.font = "9px 'Raleway', sans-serif";
-        ctx.fillText("(18'×32')", danceFloor.x + danceFloor.w / 2, danceFloor.y + danceFloor.h / 2 + 10);
+        ctx.fillText(danceFloor.sub, danceFloor.x + danceFloor.w / 2, danceFloor.y + danceFloor.h / 2 + 10);
 
-        // Entrance
-        if (entrance) {
+        // Bar
+        if (bar) {
+            roundRect(bar.x, bar.y, bar.w, bar.h, 2);
             ctx.fillStyle = COLOR.feature;
+            ctx.fill();
             ctx.strokeStyle = COLOR.featureStroke;
             ctx.lineWidth = 1;
-            ctx.setLineDash([4, 3]);
-            ctx.strokeRect(entrance.x, entrance.y, entrance.w, entrance.h);
-            ctx.setLineDash([]);
-            ctx.fillRect(entrance.x, entrance.y, entrance.w, entrance.h);
+            ctx.stroke();
+            ctx.save();
+            ctx.translate(bar.x + bar.w / 2, bar.y + bar.h / 2);
+            ctx.rotate(-Math.PI / 2);
             ctx.font = "9px 'Raleway', sans-serif";
             ctx.fillStyle = COLOR.featureText;
             ctx.textAlign = "center";
-            ctx.fillText("ENTRANCE", entrance.x + entrance.w / 2, entrance.y + entrance.h / 2 + 4);
+            ctx.fillText(bar.label, 0, 4);
+            ctx.restore();
+        }
+
+        // DJ Booth
+        if (djBooth) {
+            roundRect(djBooth.x, djBooth.y, djBooth.w, djBooth.h, 2);
+            drawFeature(djBooth, djBooth.label, djBooth.sub);
         }
 
         // Stage
         if (stage) {
+            roundRect(stage.x, stage.y, stage.w, stage.h, 2);
+            drawFeature(stage, stage.label, stage.sub);
+        }
+
+        // Entrance
+        if (entrance) {
+            roundRect(entrance.x, entrance.y, entrance.w, entrance.h, 2);
             ctx.fillStyle = COLOR.feature;
+            ctx.fill();
+            if (entrance.dashed) ctx.setLineDash([5, 4]);
             ctx.strokeStyle = COLOR.featureStroke;
-            ctx.lineWidth = 1.5;
-            ctx.fillRect(stage.x, stage.y, stage.w, stage.h);
-            ctx.strokeRect(stage.x, stage.y, stage.w, stage.h);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
             ctx.font = "9px 'Raleway', sans-serif";
             ctx.fillStyle = COLOR.featureText;
             ctx.textAlign = "center";
-            ctx.fillText("STAGE", stage.x + stage.w / 2, stage.y + stage.h / 2 - 3);
-            ctx.fillText("(10'×18')", stage.x + stage.w / 2, stage.y + stage.h / 2 + 9);
+            ctx.fillText(entrance.label, entrance.x + entrance.w / 2, entrance.y + entrance.h / 2 + 4);
         }
 
         // Tables
@@ -247,7 +374,9 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSummary();
     }
 
-    // ── CANVAS CLICK ──
+    // ─────────────────────────────────────────────
+    // CANVAS CLICK
+    // ─────────────────────────────────────────────
     canvas.addEventListener("click", (e) => {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
@@ -259,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const num = index + 1;
             const dx = x - table.x;
             const dy = y - table.y;
-            if (Math.sqrt(dx * dx + dy * dy) < R + 4) {
+            if (Math.sqrt(dx * dx + dy * dy) < R + 5) {
                 const card = document.querySelector(`[data-table="${num}"]`);
                 if (!card) return;
                 const checkbox = card.querySelector(".table-card-checkbox");
@@ -269,12 +398,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ── GRID CARDS ──
+    // ─────────────────────────────────────────────
+    // TABLE CARDS
+    // ─────────────────────────────────────────────
     const tableCards = document.querySelectorAll(".table-card");
     tableCards.forEach(card => {
         const checkbox = card.querySelector(".table-card-checkbox");
-        const input = card.querySelector(".table-card-guest-input");
-        const tableNumber = parseInt(card.dataset.table);
+        const input    = card.querySelector(".table-card-guest-input");
+        const num      = parseInt(card.dataset.table);
 
         card.addEventListener("click", (e) => {
             if (e.target.tagName === "INPUT") return;
@@ -287,12 +418,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 card.classList.add("selected");
                 input.disabled = false;
                 input.focus();
-                selectedTables[tableNumber] = 1;
+                selectedTables[num] = 1;
             } else {
                 card.classList.remove("selected");
                 input.disabled = true;
                 input.value = "";
-                delete selectedTables[tableNumber];
+                delete selectedTables[num];
             }
             draw();
         });
@@ -302,12 +433,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!val || val < 1) val = 1;
             if (val > 12) val = 12;
             input.value = val;
-            selectedTables[tableNumber] = val;
+            selectedTables[num] = val;
             updateSummary();
         });
     });
 
-    // ── SUMMARY ──
+    // ─────────────────────────────────────────────
+    // SUMMARY
+    // ─────────────────────────────────────────────
     function updateSummary() {
         const tableCount = Object.keys(selectedTables).length;
         const guestCount = Object.values(selectedTables).reduce((s, v) => s + v, 0);
@@ -317,64 +450,35 @@ document.addEventListener("DOMContentLoaded", () => {
         if (gc) gc.innerText = guestCount;
     }
 
-    // ── FORM SUBMIT ──
-    const form = document.getElementById(".table-form");
+    // ─────────────────────────────────────────────
+    // FORM SUBMIT
+    // ─────────────────────────────────────────────
+    const form = document.querySelector(".table-form");
     if (form) {
-        form.addEventListener("submit", () => {
+        form.addEventListener("submit", (e) => {
+            const selected = Object.keys(selectedTables);
+            if (selected.length === 0) {
+                e.preventDefault();
+                alert("Please select at least one table.");
+                return;
+            }
+
+            let valid = true;
+            selected.forEach(num => {
+                const val = selectedTables[num];
+                if (!val || val < 1 || val > 12) valid = false;
+            });
+
+            if (!valid) {
+                e.preventDefault();
+                alert("Each selected table must have between 1 and 12 guests.");
+                return;
+            }
+
             const input = document.getElementById("selectedTablesInput");
             if (input) input.value = JSON.stringify(selectedTables);
         });
     }
 
     draw();
-});
-
-
-// ── FORM VALIDATION & INTERACTIONS ──
-document.addEventListener("DOMContentLoaded", () => {
-
-    const form = document.querySelector('.table-form');
-    const checkboxes = document.querySelectorAll('.table-card-checkbox');
-
-    // Enable/disable inputs
-    checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', function() {
-            const input = this.closest('.table-card').querySelector('.table-card-guest-input');
-
-            input.disabled = !this.checked;
-
-            if (!this.checked) {
-                input.value = "";
-            }
-        });
-    });
-
-    // Form validation
-    form.addEventListener('submit', function(e) {
-        const tableCards = document.querySelectorAll('.table-card');
-
-        let valid = false;
-        let errorMessage = "";
-
-        tableCards.forEach(card => {
-            const checkbox = card.querySelector('.table-card-checkbox');
-            const input = card.querySelector('.table-card-guest-input');
-
-            if (checkbox.checked) {
-                const value = parseInt(input.value);
-
-                if (!value || value < 1 || value > 12) {
-                    errorMessage = "Each selected table must have between 1 and 12 guests.";
-                } else {
-                    valid = true;
-                }
-            }
-        });
-
-        if (!valid) {
-            e.preventDefault();
-            alert(errorMessage || "Select at least one table with 1–12 guests.");
-        }
-    });
-
 });

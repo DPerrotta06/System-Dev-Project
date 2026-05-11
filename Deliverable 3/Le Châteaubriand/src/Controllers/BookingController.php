@@ -171,7 +171,7 @@ class BookingController
 
     private function calculateTotal(array $data, int $eventId): float
     {
-        $total      = 0.0;
+        $total = 0.0;
         $guestCount = (int) ($data['guestCount'] ?? 0);
 
         if (!empty($data['menuId'])) {
@@ -224,12 +224,13 @@ class BookingController
         // Get form data
         $numberOfGuests = (int) ($data['number_of_guests'] ?? 1);
         $eventType = $data['event_type'] ?? 'Other';
-        // Determine hall based on guest count (simple logic - you can adjust)
-        $hall = 'princess'; // default
-        if ($numberOfGuests > 200) {
-            $hall = 'royal';
-        } elseif ($numberOfGuests > 100) {
+        // Determine hall based on guest count
+        if ($numberOfGuests > 225) {
             $hall = 'grand_salon';
+        } elseif ($numberOfGuests > 125) {
+            $hall = 'royal';
+        } else {
+            $hall = 'princess';
         }
         // Calculate approximate table quantity (assuming 10 guests per table)
         $tableQuantity = (int) ceil($numberOfGuests / 10);
@@ -248,7 +249,7 @@ class BookingController
             'guest_quantity' => $numberOfGuests,
         ];
         //render the next page
-        $html = $this->twig->render('floor_planning.html.twig', [
+        $html = $this->twig->render('landing_page.html.twig', [
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
             'hall' => $hall,
