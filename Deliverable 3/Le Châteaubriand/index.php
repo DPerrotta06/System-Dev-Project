@@ -35,7 +35,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . '/var/chateaubriand.db';
+$dbPath = __DIR__ . '/var/chateaubriand3.db';
 R::setup('sqlite:' . $dbPath);
 R::exec('PRAGMA foreign_keys = ON;');
 R::freeze(false);
