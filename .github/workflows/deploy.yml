@@ -28,7 +28,7 @@ jobs:
   
       - name: Run tests
         working-directory: Deliverable 3/Le Châteaubriand
-        run: vendor/bin/phpunit
+        run: ./vendor/bin/phpunit
 
   deploy:
     name: Deploy via SSH
