@@ -16,7 +16,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          shell: bash
           script: |
             export COMPOSER_ALLOW_SUPERUSER=1
-            source /etc/profile
-            bash -l /var/www/deploy.sh
+            bash /var/www/deploy.sh
