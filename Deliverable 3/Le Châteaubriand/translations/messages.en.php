@@ -260,4 +260,45 @@ return [
 
     //Calendar — misc
     'calendar.select_day' => 'Select a day to view events.',
+
+
+    // Events
+    'event.index_title' => 'Events',
+    'event.new' => 'New Event',
+    'event.none' => 'No events found.',
+    'event.details_title' => 'Event Details',
+    'event.edit' => 'Edit Event',
+    'event.menu' => 'Menu',
+    'event.bar' => 'Bar',
+    'event.person' => 'person',
+    'event.description' => 'Description',
+    'event.client' => 'Client',
+    'event.payment' => 'Payment',
+    'event.services' => 'Services',
+
+    // Payments
+    'payment.total' => 'Total',
+    'payment.deposit' => 'Deposit',
+    'payment.paid' => 'Paid',
+    'payment.balance' => 'Balance',
+    'payment.plan' => 'Payment Plan',
+    'payment.method' => 'Payment Method',
+    'payment.next_due' => 'Next Payment Due',
+
+    // Services
+    'service.name' => 'Service Name',
+    'service.type' => 'Type',
+    'service.email' => 'Email',
+    'service.phone' => 'Phone',
+
+    // Missing admin/event table labels
+    'admin.table.balance' => 'Balance',
+    'admin.actions.view' => 'View',
+    'admin.actions.delete_event' => 'Delete',
+    'admin.actions.cancelled' => 'Cancel',
+    'admin.actions.completed' => 'Complete',
+    'admin.actions.declined' => 'Decline',
+
+    // Extra statuses
+    'status.declined' => 'Declined',
 ];

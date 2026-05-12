@@ -1,0 +1,142 @@
+{% extends "layout.html.twig" %}
+{% block title %}{{ trans('site.name') }} – {{ trans('payment.index_title') }}{% endblock %}
+
+{% block content %}
+{#
+  Expected variables:
+    - payments (array from v_event_summary joined with payment):
+        eventId, eventType, eventDate, clientName, clientId,
+        ballroom, guestCount, totalPrice, depositRequired,
+        amountPaid, amountLeft, paymentPlan, paymentMethod,
+        nextPaymentDue, status
+    - summary (object, optional): totalRevenue, totalPaid, totalOutstanding
+#}
+
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
+
+        <nav class="admin-nav">
+            <a href="{{ base_path }}/admin"
+            class="{% if active_page is defined and active_page == 'dashboard' %}active{% endif %}">
+                {{ trans('admin.dashboard.name') }}
+            </a>
+
+            <a href="{{ base_path }}/clients"
+            class="{% if active_page is defined and active_page == 'clients' %}active{% endif %}">
+                {{ trans('admin.page.title') }}
+            </a>
+
+            <a href="{{ base_path }}/events"
+            class="{% if active_page is defined and active_page == 'events' %}active{% endif %}">
+                {{ trans('event.index_title') }}
+            </a>
+
+            <a href="{{ base_path }}/menus"
+            class="{% if active_page is defined and active_page == 'menus' %}active{% endif %}">
+                {{ trans('menu.main_course') }}
+            </a>
+
+            <a href="{{ base_path }}/calendar"
+            class="{% if active_page is defined and active_page == 'calendar' %}active{% endif %}">
+                {{ trans('admin.nav.calendar') }}
+            </a>
+        </nav>
+
+        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+            <button type="submit" class="admin-logout-btn">
+                {{ trans('admin.nav.logout') }}
+            </button>
+        </form>
+    </aside>
+
+    <main class="admin-content">
+        <div class="admin-page-header">
+            <h2>{{ trans('payment.index_title') }}</h2>
+        </div>
+
+        {# ── SUMMARY CARDS ── #}
+        {% if summary is defined %}
+        <div class="detail-grid" style="display:flex;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;">
+            <div class="detail-card" style="flex:1;min-width:160px;">
+                <div class="detail-label">{{ trans('payment.total_revenue') }}</div>
+                <div class="detail-card-name">${{ summary.totalRevenue|number_format(0, '.', ',') }}</div>
+            </div>
+            <div class="detail-card" style="flex:1;min-width:160px;">
+                <div class="detail-label">{{ trans('payment.total_paid') }}</div>
+                <div class="detail-card-name">${{ summary.totalPaid|number_format(0, '.', ',') }}</div>
+            </div>
+            <div class="detail-card" style="flex:1;min-width:160px;">
+                <div class="detail-label">{{ trans('payment.total_outstanding') }}</div>
+                <div class="detail-card-name">${{ summary.totalOutstanding|number_format(0, '.', ',') }}</div>
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── PAYMENTS TABLE ── #}
+        {% if payments is defined and payments|length > 0 %}
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>{{ trans('admin.table.event_type') }}</th>
+                        <th>{{ trans('admin.table.date') }}</th>
+                        <th>{{ trans('admin.table.client') }}</th>
+                        <th>{{ trans('admin.table.ballroom') }}</th>
+                        <th>{{ trans('payment.total') }}</th>
+                        <th>{{ trans('payment.deposit') }}</th>
+                        <th>{{ trans('payment.paid') }}</th>
+                        <th>{{ trans('payment.balance') }}</th>
+                        <th>{{ trans('payment.plan') }}</th>
+                        <th>{{ trans('payment.method') }}</th>
+                        <th>{{ trans('payment.next_due') }}</th>
+                        <th>{{ trans('admin.table.status') }}</th>
+                        <th>{{ trans('admin.table.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in payments %}
+                    <tr class="{{ p.amountLeft > 0 and p.nextPaymentDue < 'now'|date('Y-m-d') ? 'row-overdue' : '' }}">
+                        <td>{{ p.eventType }}</td>
+                        <td>{{ p.eventDate }}</td>
+                        <td>
+                            <a href="{{ base_path }}/clients/{{ p.clientId }}">{{ p.clientName }}</a>
+                        </td>
+                        <td>{{ p.ballroom ?? '—' }}</td>
+                        <td>${{ p.totalPrice|number_format(0, '.', ',') }}</td>
+                        <td>${{ p.depositRequired|number_format(0, '.', ',') }}</td>
+                        <td>${{ p.amountPaid|number_format(0, '.', ',') }}</td>
+                        <td>
+                            {% if p.amountLeft > 0 %}
+                                <span style="color:var(--color-danger);">
+                                    ${{ p.amountLeft|number_format(0, '.', ',') }}
+                                </span>
+                            {% else %}
+                                <span style="color:var(--color-success);">{{ trans('payment.settled') }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ p.paymentPlan }}</td>
+                        <td>{{ p.paymentMethod }}</td>
+                        <td>{{ p.nextPaymentDue ?? '—' }}</td>
+                        <td>
+                            <span class="status-badge {{ p.status|lower }}">
+                                {{ trans('status.' ~ p.status|lower) }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ base_path }}/events/{{ p.eventId }}" class="admin-btn edit">
+                                {{ trans('admin.actions.view') }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="admin-empty">{{ trans('payment.none') }}</p>
+        {% endif %}
+
+    </main>
+</div>
+{% endblock %}

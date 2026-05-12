@@ -151,7 +151,7 @@ class AdminController
         $outstanding = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) > 0);
         $paid        = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) <= 0);
 
-        $html = $this->twig->render('admin/payments.html.twig', [
+        $html = $this->twig->render('admin_payments.html.twig', [
             'outstanding' => array_values($outstanding),
             'paid'        => array_values($paid),
             'base_path'   => $this->basePath,

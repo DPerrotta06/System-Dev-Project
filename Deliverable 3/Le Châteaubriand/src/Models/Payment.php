@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTime;
+use RedBeanPHP\R;
 
 class Payment {
     public function __construct(
@@ -24,8 +25,7 @@ class Payment {
             paymentId: (int) $bean->paymentId,
             eventId: (int) $bean->eventId,
             amountPaid: (float) $bean->amountPaid,
-            paymentDate: new DateTime($bean->paymentDate),
-            amountLeft: (float) $bean->amountLeft,
+            nextPaymentDue: new DateTime($bean->nextPaymentDue),
             paymentMethod: (string) $bean->paymentMethod,
             paymentPlan: (string) $bean->paymentPlan,
             depositRequired: (float) $bean->depositRequired,
@@ -41,7 +41,6 @@ class Payment {
             'eventId'       => $this->eventId,
             'amountPaid'    => $this->amountPaid,
             'nextPaymentDue' => $this->nextPaymentDue->format('Y-m-d'),
-            'amountLeft'    => $this->amountLeft,
             'paymentMethod' => $this->paymentMethod,
             'paymentPlan'   => $this->paymentPlan,
             'depositRequired' => $this->depositRequired,
