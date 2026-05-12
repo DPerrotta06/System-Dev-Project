@@ -6,7 +6,6 @@
     <title>{% block title %}Le Châteaubriand{% endblock %}</title>
     <link rel="stylesheet" href="{{ base_path }}/assets/style.css">
     <script src="{{ base_path }}/assets/client_form.js"></script>
-    <script src="{{ base_path }}/assets/floor_planning_canvas.js"></script>
 </head>
 
 <body>
@@ -25,5 +24,6 @@
         <a href="tel:{{ 'site.phone_raw'|trans }}" class="bottom-contact"> &nbsp;{{ 'site.phone'|trans }}</a>
     </div>
 </footer>
+{% block javascripts %}{% endblock %}
 </body>
 </html>

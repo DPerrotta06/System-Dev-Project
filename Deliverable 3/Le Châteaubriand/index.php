@@ -130,11 +130,7 @@ $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/faq', [PageController::class, 'showFaq']);
 $app->get('/client-form', [BookingController::class, 'showClientForm']);
 $app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
-// $app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
-//     responseFactory: $app->getResponseFactory(),
-//     basePath: $basePath
-// ));
-
+$app->post('/table_plan/submit', [BookingController::class, 'submitFloorPlan']);
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);

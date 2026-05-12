@@ -9,7 +9,7 @@
 </div>
 
 <div class="floor-planning-container">
-    <form class="table-form" action="{{ base_path }}/booking" method="post">
+    <form class="table-form" action="{{ base_path }}/table_plan/submit" method="post">
 
         <div class="floor-meta">
             <div class="floor-meta-item">
@@ -52,6 +52,7 @@
             {% endfor %}
         </div>
 
+        <input type="hidden" id="floorPlanImage" name="floor_plan_image">
         <input type="hidden" id="selectedTablesInput" name="selected_tables">
 
         <button type="submit" style="margin-top:2rem; width:100%; padding:14px 28px; background:var(--gold); color:var(--black); font-family:'Cinzel',serif; font-size:0.65rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; border:none; cursor:pointer;">
@@ -61,9 +62,10 @@
     </form>
 </div>
 
-{% endblock %}
-
 {% block javascripts %}
     <script>document.body.dataset.hall = "{{ hall }}";</script>
-    <script src="{{ base_path }}/assets/floor_planning.js"></script>
+    <script src="{{ base_path }}/assets/floor_planning_canvas.js"></script>
 {% endblock %}
+
+{% endblock %}
+

@@ -56,4 +56,19 @@
         </div>
     </div>
 </section>
+
+{% if app.request.query.get('booked') %}
+<div class="booking-success-banner">
+    <div class="booking-success-inner">
+        <div class="gold-divider" style="margin: 0 auto 1.2rem;">
+            <div class="gold-divider-line"></div>
+            <div class="gold-divider-dot"></div>
+            <div class="gold-divider-line rev"></div>
+        </div>
+        <p class="booking-success-title">Your Event Has Been Reserved</p>
+        <p class="booking-success-sub">Our team will be in touch shortly to confirm your booking.</p>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
