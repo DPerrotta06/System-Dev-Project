@@ -71,10 +71,10 @@ class BookingController
             $client = $existing;
         } else {
             $client              = R::dispense('client');
-            $client->firstName   = trim($data['firstName']);
-            $client->lastName    = trim($data['lastName']);
+            $client->firstName   = trim($data['firstname']);
+            $client->lastName    = trim($data['lastname']);
             $client->email       = trim($data['email']);
-            $client->phoneNumber = trim($data['phoneNumber']);
+            $client->phonenumber = trim($data['phone']);
             R::store($client);
         }
 
@@ -148,10 +148,10 @@ class BookingController
     {
         $errors = [];
 
-        if (empty(trim($data['firstName'] ?? '')))   $errors['firstName']   = 'First name is required.';
-        if (empty(trim($data['lastName']  ?? '')))   $errors['lastName']    = 'Last name is required.';
+        if (empty(trim($data['firstname'] ?? '')))   $errors['firstname']   = 'First name is required.';
+        if (empty(trim($data['lastname']  ?? '')))   $errors['lastname']    = 'Last name is required.';
         if (empty(trim($data['email']     ?? '')))   $errors['email']       = 'Email is required.';
-        if (empty(trim($data['phoneNumber'] ?? ''))) $errors['phoneNumber'] = 'Phone number is required.';
+        if (empty(trim($data['phone'] ?? ''))) $errors['phone'] = 'Phone number is required.';
         if (empty($data['ballroomId']))              $errors['ballroomId']  = 'Please select a ballroom.';
         if (empty($data['eventDate']))               $errors['eventDate']   = 'Please select a date.';
         if (empty($data['eventTime']))               $errors['eventTime']   = 'Please select a time.';
@@ -192,11 +192,11 @@ class BookingController
         $foodItems = R::getAll('
         SELECT fi.itemName, fi.extraPrice, fc.categoryName, m.menuName
         FROM fooditem fi
-        JOIN foodcategory fc ON fi.itemCategory = fc.categoryId
-        JOIN menufooditem mfi ON fi.itemId = mfi.itemId
-        JOIN menu m ON mfi.menuId = m.menuId
-        ORDER BY m.menuId, fc.categoryName, fi.itemName
-        ');
+        JOIN foodcategory fc ON fi.itemCategory = fc.id
+        JOIN menufooditem mfi ON fi.id = mfi.itemId
+        JOIN menu m ON mfi.menuId = m.id
+        ORDER BY m.id, fc.categoryName, fi.itemName
+    ');
         $menus = ['main' => [], 'buffet' => [], 'midnight' => []];
         foreach ($foodItems as $item) {
             $menuType = match (strtolower(trim($item['menuName']))) {
@@ -225,9 +225,9 @@ class BookingController
         $numberOfGuests = (int) ($data['number_of_guests'] ?? 1);
         $eventType = $data['event_type'] ?? 'Other';
         // Determine hall based on guest count
-        if ($numberOfGuests > 225) {
+        if ($numberOfGuests > 125) {
             $hall = 'grand_salon';
-        } elseif ($numberOfGuests > 125) {
+        } elseif ($numberOfGuests > 40) {
             $hall = 'royal';
         } else {
             $hall = 'princess';
@@ -249,12 +249,109 @@ class BookingController
             'guest_quantity' => $numberOfGuests,
         ];
         //render the next page
-        $html = $this->twig->render('landing_page.html.twig', [
+        $html = $this->twig->render('floor_planning.html.twig', [
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
             'hall' => $hall,
             'table_quantity' => $tableQuantity,
             'guest_quantity' => $numberOfGuests,
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    public function submitFloorPlan(Request $request, Response $response): Response
+    {
+        $data    = (array) $request->getParsedBody();
+        $session = $_SESSION['floor_planning_data'] ?? null;
+
+        if (!$session) {
+            return $response
+                ->withHeader('Location', $this->basePath . '/client-form')
+                ->withStatus(302);
+        }
+
+        // 1. Create or find client
+        $existing = R::findOne('client', 'email = ?', [trim($session['email'])]);
+        if ($existing) {
+            $client = $existing;
+        } else {
+            $client              = R::dispense('client');
+            $client->firstname   = trim($session['firstname']);
+            $client->lastname    = trim($session['lastname']);
+            $client->email       = trim($session['email']);
+            $client->phonenumber = trim($session['phone']);
+            R::store($client);
+        }
+
+        // 2. Resolve ballroomId from hall slug
+        $hallSlugMap = [
+            'royal'       => 'Royal Hall',
+            'grand_salon' => 'Grand Salon',
+            'princess'    => 'Princess',
+        ];
+        $roomName   = $hallSlugMap[$session['hall']] ?? 'Princess';
+        $ballroom   = R::findOne('ballroom', 'roomName = ?', [$roomName]);
+        $ballroomId = $ballroom ? (int) $ballroom->id : 1;
+
+        // 3. Decode base64 image and store as binary (LONGBLOB)
+        $base64Image    = $data['floor_plan_image'] ?? '';
+        $imageData      = null;
+        if ($base64Image) {
+            // Strip the data:image/png;base64, prefix
+            $imageData = base64_decode(preg_replace('/^data:image\/\w+;base64,/', '', $base64Image));
+        }
+
+        // 4. Create event
+        $event                  = R::dispense('event');
+        $event->clientId        = $client->id;
+        $event->ballroomId      = $ballroomId;
+        $event->eventDate       = $session['event_date'];
+        $event->eventTime       = $session['event_time'] ?? '00:00';
+        $event->guestCount      = (int) $session['number_of_guests'];
+        $event->eventType       = $session['event_type'];
+        $event->description     = trim($session['notes'] ?? '');
+        $event->status          = 'Pending';
+        $event->floorArrangement = $imageData;
+        $eventId = R::store($event);
+
+        // 5. Menu selections from session
+        $menuSelections = $session['menu_selections'] ?? [];
+        if (!empty($menuSelections)) {
+            foreach ($menuSelections as $itemName) {
+                $link          = R::dispense('eventmenuitem');
+                $link->eventId = $eventId;
+                $link->itemName = $itemName;
+                R::store($link);
+            }
+        }
+
+        // 6. Payment placeholder
+        $payment                  = R::dispense('payment');
+        $payment->eventId         = $eventId;
+        $payment->totalPrice      = 0.00;
+        $payment->depositRequired = 0.00;
+        $payment->amountPaid      = 0.00;
+        $payment->paymentPlan     = 'TBD';
+        $payment->paymentMethod   = '';
+        $payment->nextPaymentDue  = $session['event_date'];
+        R::store($payment);
+
+        // 7. Clean session
+        unset($_SESSION['floor_planning_data']);
+
+        return $response
+            ->withHeader('Location', $this->basePath . '/?booked=1')
+            ->withStatus(302);
+    }
+
+    public function showLandingPage(Request $request, Response $response): Response
+    {
+        $params = $request->getQueryParams();
+        $html = $this->twig->render('landing_page.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'booked'    => isset($params['booked'])
         ]);
         $response->getBody()->write($html);
         return $response;
