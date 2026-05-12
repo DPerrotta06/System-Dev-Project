@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use RedBeanPHP\R;
+
 class Menu {
     public function __construct(
         public int $menuId,

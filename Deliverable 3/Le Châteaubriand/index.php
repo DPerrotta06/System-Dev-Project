@@ -35,7 +35,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . '/var/chateaubriand.db';
+$dbPath = __DIR__ . '/var/chateaubriand3.db';
 R::setup('sqlite:' . $dbPath);
 R::exec('PRAGMA foreign_keys = ON;');
 R::freeze(false);
@@ -130,11 +130,7 @@ $app->get('/', [PageController::class, 'showLandingPage']);
 $app->get('/faq', [PageController::class, 'showFaq']);
 $app->get('/client-form', [BookingController::class, 'showClientForm']);
 $app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
-// $app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
-//     responseFactory: $app->getResponseFactory(),
-//     basePath: $basePath
-// ));
-
+$app->post('/table_plan/submit', [BookingController::class, 'submitFloorPlan']);
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);

@@ -95,7 +95,7 @@ class AdminController
 
         $events = R::getAll(
             "SELECT eventId, eventDate, eventTime, eventType, clientName,
-                    clientId, ballroom, guestCount, status
+                    ballroom, guestCount, status
                FROM v_event_summary
               WHERE eventDate BETWEEN ? AND ?
               ORDER BY eventDate ASC, eventTime ASC",
@@ -151,7 +151,7 @@ class AdminController
         $outstanding = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) > 0);
         $paid        = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) <= 0);
 
-        $html = $this->twig->render('admin/payments.html.twig', [
+        $html = $this->twig->render('admin_payments.html.twig', [
             'outstanding' => array_values($outstanding),
             'paid'        => array_values($paid),
             'base_path'   => $this->basePath,

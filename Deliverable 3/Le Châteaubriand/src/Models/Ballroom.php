@@ -6,8 +6,6 @@ namespace App\Models;
 
 use RedBeanPHP\R;
 
-
-
 class Ballroom
 {
     public function __construct(

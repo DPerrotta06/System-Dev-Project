@@ -56,6 +56,8 @@ return [
     'form.anniversary' => 'Anniversaire de mariage',
     'form.baby_shower' => 'Fête prénatale',
     'form.other' => 'Autre',
+    'form.event_date_placeholder' => 'Date de votre événement',
+    'form.event_time_placeholder' => 'Heure de votre événement',
     'form.number_of_guests' => 'Nombre d\'invités',
     'form.menu_selection' => 'Sélection du menu',
     'form.main_menu' => 'Menu principal',
@@ -123,7 +125,23 @@ return [
     'calendar.has_events' => 'Événements prévus',
     'calendar.guests' => 'invités',
     'calendar.no_events' => 'Aucun événement prévu pour cette journée.',
-
+    'calendar' => [
+        'months' => [
+            1 => 'Janvier',
+            2 => 'Février',
+            3 => 'Mars',
+            4 => 'Avril',
+            5 => 'Mai',
+            6 => 'Juin',
+            7 => 'Juillet',
+            8 => 'Août',
+            9 => 'Septembre',
+            10 => 'Octobre',
+            11 => 'Novembre',
+            12 => 'Décembre',
+        ],
+    ],
+    
     //Navigation
     'nav.back' => 'Retour',
 

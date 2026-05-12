@@ -56,14 +56,16 @@ return [
     'form.anniversary' => 'Anniversary',
     'form.baby_shower' => 'Baby Shower',
     'form.other' => 'Other',
-    'form.number_of_guests' => 'Number of Guests',
+    'form.event_date_placeholder' => 'Date of your event',
+    'form.event_time_placeholder' => 'Time of your event',
+    'form.number_of_guests' => 'Number of guests',
     'form.menu_selection' => 'Menu Selection',
     'form.main_menu' => 'Main Menu',
     'form.buffet' => 'Buffet',
     'form.midnight_table' => 'Midnight Table',
     'form.additional_notes' => 'Additional Notes',
     'form.notes_placeholder' => 'Allergies, Religious dietary restrictions, etc.',
-    'form.continue_floor' => 'Continue to Table Planning',
+    'form.continue_floor' => 'Continue to Floor Planning',
 
     //Client edit
     'client.edit_title' => 'Edit Client',
@@ -123,6 +125,22 @@ return [
     'calendar.has_events' => 'Has events',
     'calendar.guests' => 'Guests',
     'calendar.no_events' => 'No events scheduled for this day.',
+    'calendar' =>[
+        'months' => [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December',
+        ],
+    ],
 
     //Navigation
     'nav.back' => 'Back',
@@ -242,4 +260,45 @@ return [
 
     //Calendar — misc
     'calendar.select_day' => 'Select a day to view events.',
+
+
+    // Events
+    'event.index_title' => 'Events',
+    'event.new' => 'New Event',
+    'event.none' => 'No events found.',
+    'event.details_title' => 'Event Details',
+    'event.edit' => 'Edit Event',
+    'event.menu' => 'Menu',
+    'event.bar' => 'Bar',
+    'event.person' => 'person',
+    'event.description' => 'Description',
+    'event.client' => 'Client',
+    'event.payment' => 'Payment',
+    'event.services' => 'Services',
+
+    // Payments
+    'payment.total' => 'Total',
+    'payment.deposit' => 'Deposit',
+    'payment.paid' => 'Paid',
+    'payment.balance' => 'Balance',
+    'payment.plan' => 'Payment Plan',
+    'payment.method' => 'Payment Method',
+    'payment.next_due' => 'Next Payment Due',
+
+    // Services
+    'service.name' => 'Service Name',
+    'service.type' => 'Type',
+    'service.email' => 'Email',
+    'service.phone' => 'Phone',
+
+    // Missing admin/event table labels
+    'admin.table.balance' => 'Balance',
+    'admin.actions.view' => 'View',
+    'admin.actions.delete_event' => 'Delete',
+    'admin.actions.cancelled' => 'Cancel',
+    'admin.actions.completed' => 'Complete',
+    'admin.actions.declined' => 'Decline',
+
+    // Extra statuses
+    'status.declined' => 'Declined',
 ];
