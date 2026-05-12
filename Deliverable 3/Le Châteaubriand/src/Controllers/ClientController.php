@@ -27,7 +27,8 @@ class ClientController
     private function getClientByClientId(int $clientId): ?array
     {
         $client = R::getRow(
-            'SELECT * FROM client WHERE clientId = ?',
+            'SELECT id, first_name AS firstName, last_name AS lastName, email, phone_number AS phoneNumber
+             FROM client WHERE id = ?',
             [$clientId]
         );
 
@@ -48,13 +49,17 @@ class ClientController
         if ($search !== '') {
             $like = '%' . $search . '%';
             $clients = R::getAll(
-                'SELECT * FROM client
-                 WHERE firstName LIKE ? OR lastName LIKE ? OR email LIKE ?
-                 ORDER BY lastName, firstName',
+                'SELECT id, first_name AS firstName, last_name AS lastName, email, phone_number AS phoneNumber
+                 FROM client
+                 WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?
+                 ORDER BY last_name, first_name',
                 [$like, $like, $like]
             );
         } else {
-            $clients = R::getAll('SELECT * FROM client ORDER BY lastName, firstName');
+            $clients = R::getAll(
+                'SELECT id, first_name AS firstName, last_name AS lastName, email, phone_number AS phoneNumber
+                 FROM client ORDER BY last_name, first_name'
+            );
         }
 
         $html = $this->twig->render('clients_index.html.twig', [
@@ -151,8 +156,8 @@ class ClientController
 
         R::exec(
             'UPDATE client
-             SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?
-             WHERE clientId = ?',
+             SET first_name = ?, last_name = ?, email = ?, phone_number = ?
+             WHERE id = ?',
             [$firstName, $lastName, $email, $phoneNumber, $clientId]
         );
 
@@ -177,16 +182,16 @@ class ClientController
             return $response->withStatus(404);
         }
 
-        $events = R::getAll('SELECT eventId FROM event WHERE clientId = ?', [$clientId]);
+        $events = R::getAll('SELECT id FROM event WHERE client_id = ?', [$clientId]);
 
         foreach ($events as $event) {
-            $eventId = (int) $event['eventId'];
+            $eventId = (int) $event['id'];
             R::exec('DELETE FROM eventService WHERE eventId = ?', [$eventId]);
-            R::exec('DELETE FROM payment WHERE eventId = ?', [$eventId]);
+            R::exec('DELETE FROM payment WHERE event_id = ?', [$eventId]);
         }
 
-        R::exec('DELETE FROM event WHERE clientId = ?', [$clientId]);
-        R::exec('DELETE FROM client WHERE clientId = ?', [$clientId]);
+        R::exec('DELETE FROM event WHERE client_id = ?', [$clientId]);
+        R::exec('DELETE FROM client WHERE id = ?', [$clientId]);
 
         return $response
             ->withHeader('Location', $this->basePath . '/clients')

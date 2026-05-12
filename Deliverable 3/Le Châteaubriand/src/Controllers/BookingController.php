@@ -74,7 +74,7 @@ class BookingController
             $client->firstName   = trim($data['firstname']);
             $client->lastName    = trim($data['lastname']);
             $client->email       = trim($data['email']);
-            $client->phonenumber = trim($data['phone']);
+            $client->phoneNumber = trim($data['phone']);
             R::store($client);
         }
 
@@ -277,10 +277,10 @@ class BookingController
             $client = $existing;
         } else {
             $client              = R::dispense('client');
-            $client->firstname   = trim($session['firstname']);
-            $client->lastname    = trim($session['lastname']);
+            $client->firstName   = trim($session['firstname']);
+            $client->lastName    = trim($session['lastname']);
             $client->email       = trim($session['email']);
-            $client->phonenumber = trim($session['phone']);
+            $client->phoneNumber = trim($session['phone']);
             R::store($client);
         }
 
@@ -292,7 +292,7 @@ class BookingController
         ];
         $roomName   = $hallSlugMap[$session['hall']] ?? 'Princess';
         $ballroom   = R::findOne('ballroom', 'roomName = ?', [$roomName]);
-        $ballroomId = $ballroom ? (int) $ballroom->id : 1;
+        $ballroomId = $ballroom ? (int) $ballroom->ballroomId : 1;
 
         // 3. Decode base64 image and store as binary (LONGBLOB)
         $base64Image    = $data['floor_plan_image'] ?? '';
@@ -332,7 +332,7 @@ class BookingController
         $payment->totalPrice      = 0.00;
         $payment->depositRequired = 0.00;
         $payment->amountPaid      = 0.00;
-        $payment->paymentPlan     = 'TBD';
+        $payment->paymentPlan     = 'Full';
         $payment->paymentMethod   = '';
         $payment->nextPaymentDue  = $session['event_date'];
         R::store($payment);
