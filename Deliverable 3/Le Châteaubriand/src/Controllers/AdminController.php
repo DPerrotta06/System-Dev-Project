@@ -30,7 +30,7 @@ class AdminController
             'confirmedMonth' => R::getCell(
                 "SELECT COUNT(*) FROM event
                   WHERE status = 'Confirmed'
-                    AND strftime('%Y-%m', eventDate) = strftime('%Y-%m', 'now')"
+                    AND DATE_FORMAT(eventDate, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')"
             ),
             'totalClients' => R::getCell("SELECT COUNT(*) FROM client"),
             'totalEvents'  => R::getCell("SELECT COUNT(*) FROM event"),
@@ -161,3 +161,4 @@ class AdminController
         return $response;
     }
 }
+
