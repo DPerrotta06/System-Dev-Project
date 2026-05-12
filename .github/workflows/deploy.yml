@@ -17,4 +17,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            export COMPOSER_ALLOW_SUPERUSER=1
             bash /var/www/deploy.sh
