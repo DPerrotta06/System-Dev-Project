@@ -4,12 +4,14 @@ declare(strict_types=1);
 error_reporting(E_ALL & ~E_DEPRECATED);
 session_start();
 
+
+use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\PageController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\SessionTimeoutMiddleware;
 use App\Middleware\MaintenanceMiddleware;
 use App\Middleware\SecurityHeadersMiddleware;
-use App\Services\OtpService;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -20,6 +22,7 @@ use Symfony\Component\Translation\Translator;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
 use App\Controllers\BookingController;
 use App\Controllers\EventController;
 use App\Controllers\ClientController;
@@ -32,7 +35,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 
 //DATABASE ──────────────────────────────────────────────────────────────
-$dbPath = __DIR__ . '/var/chateaubriand.db';
+$dbPath = __DIR__ . '/var/chateaubriand3.db';
 R::setup('sqlite:' . $dbPath);
 R::exec('PRAGMA foreign_keys = ON;');
 R::freeze(false);
@@ -52,7 +55,7 @@ $twig->addFunction(new TwigFunction('trans', function (string $key, array $param
     $locale = $_SESSION['lang'] ?? 'en';
     return $translator->trans($key, $params, null, $locale);
 }));
-$twig->addFilter(new \Twig\TwigFilter('trans', function (string $key, array $params = []) use ($translator) {
+$twig->addFilter(new TwigFilter('trans', function (string $key, array $params = []) use ($translator) {
     $locale = $_SESSION['lang'] ?? 'en';
     return $translator->trans($key, $params, null, $locale);
 }));
@@ -64,12 +67,12 @@ $container = new \DI\Container();
 $container->set(Environment::class, $twig);
 $container->set(AuthController::class, fn() => new AuthController(
     $twig, // the Twig environment created above
-    new OtpService(), // a new OtpService instance
+    new ServicesOTPService(), // a new OtpService instance
     $basePath // the $basePath string
 ));
 
 // Register other controllers in the container
-$container->set(AuthController::class, fn() => new AuthController($twig, new ServicesOTPService(), $basePath));
+$container->set(AdminController::class, fn() => new AdminController($twig, $basePath));
 $container->set(BookingController::class, fn() => new BookingController($twig, $basePath));
 $container->set(ClientController::class, fn() => new ClientController($twig, $basePath));
 $container->set(EventController::class, fn() => new EventController($twig, $basePath));
@@ -124,38 +127,50 @@ $app->get('', function ($req, $res) use ($basePath) {
 
 //PUBLIC ROUTES THAT ACCESSIBLE TO ANYONE
 $app->get('/', [PageController::class, 'showLandingPage']);
-$app->get('/client-form', [ClientController::class, 'showClientForm']);
 $app->get('/faq', [PageController::class, 'showFaq']);
-$app->get('/client-form/submit-form', [ClientController::class, 'goToTablePlanning']);
-$app->get('/admin', [AuthController::class, 'showForm']);
+$app->get('/client-form', [BookingController::class, 'showClientForm']);
+$app->post('/table_plan', [BookingController::class, 'goToTablePlanning']);
+// $app->get('/admin', [AdminController::class, 'dashboard'])->add(new AuthMiddleware(
+//     responseFactory: $app->getResponseFactory(),
+//     basePath: $basePath
+// ));
+
 
 // Public booking routes
 $app->get('/booking', [BookingController::class, 'showForm']);
 $app->post('/booking', [BookingController::class, 'submit']);
 $app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation']);
 
-// Event, client, menu and floor-planning (admin)
-$app->get('/events', [EventController::class, 'index']);
-$app->get('/events/{id}', [EventController::class, 'show']);
-$app->post('/events/{id}/status', [EventController::class, 'updateStatus']);
-$app->post('/events/{id}/delete', [EventController::class, 'delete']);
+// Event, client, menu and floor-planning (ADMIN) THESE ARE ALL PROTECTED BY THE MIDDLEWARE TO PREVENT ANYONE EXCEPT THE ADMINS FROM MANIPULATING AND ACCESSING THE DATA
+// grouped the admin routes for better organization and security 
+$app->group('', function($group) {  
 
+    $group->get('/admin', [AdminController::class, 'dashboard']);
+    $group->get('/calendar', [AdminController::class, 'calendar']);
+    $group->get('/events', [EventController::class, 'index']);
+    $group->get('/events/{id}', [EventController::class, 'show']);
+    $group->post('/events/{id}/status', [EventController::class, 'updateStatus']);
+    $group->post('/events/{id}/delete', [EventController::class, 'delete']);
+    $group->get('/clients', [ClientController::class, 'index']);
+    $group->get('/clients/{id}', [ClientController::class, 'show']);
+    $group->get('/clients/{id}/edit', [ClientController::class, 'edit']);
+    $group->post('/clients/{id}/edit', [ClientController::class, 'update']);
+    $group->post('/clients/{id}/delete', [ClientController::class, 'delete']);
+    $group->get('/menus', [MenuController::class, 'index']);
+    $group->get('/menus/{id}', [MenuController::class, 'show']);
+    $group->get('/menus/{id}/edit', [MenuController::class, 'edit']);
+    $group->post('/menus/{id}/edit', [MenuController::class, 'update']);
+    $group->get('/floor-planning', [FloorPlanningController::class, 'index']);
+    $group->get('/floor-planning/{id}', [FloorPlanningController::class, 'show']);
+    $group->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit']);
+    $group->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
 
-$app->get('/clients', [ClientController::class, 'index']);
-$app->get('/clients/{id}', [ClientController::class, 'show']);
-$app->get('/clients/{id}/edit', [ClientController::class, 'edit']);
-$app->post('/clients/{id}/edit', [ClientController::class, 'update']);
-$app->post('/clients/{id}/delete', [ClientController::class, 'delete']);
+})->add(new SessionTimeoutMiddleware($basePath))
+  ->add(new AuthMiddleware(
+    responseFactory: $app->getResponseFactory(),
+    basePath: $basePath
+));
 
-$app->get('/menus', [MenuController::class, 'index']);
-$app->get('/menus/{id}', [MenuController::class, 'show']);
-$app->get('/menus/{id}/edit', [MenuController::class, 'edit']);
-$app->post('/menus/{id}/edit', [MenuController::class, 'update']);
-
-$app->get('/floor-planning', [FloorPlanningController::class, 'index']);
-$app->get('/floor-planning/{id}', [FloorPlanningController::class, 'show']);
-$app->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit']);
-$app->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
 
 // Reviews: render via GoogleReviewsController helper
 $app->get('/reviews', function (Request $request, Response $response) use ($twig, $basePath) {
@@ -167,17 +182,25 @@ $app->get('/reviews', function (Request $request, Response $response) use ($twig
 });
 
 
-//LANGUAGE ROUTE ────────────────────────────────────────────────────────
+/* ───────── LANGUAGE SWITCH ───────── */
 $app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath) {
+
     $allowed = ['en', 'fr'];
+
     if (in_array($args['locale'], $allowed)) {
         $_SESSION['lang'] = $args['locale'];
     }
-    return $response->withHeader('Location', $basePath . '/')->withStatus(302); //REDIRECTION
+
+    $referer = $request->getHeaderLine('Referer');
+    $redirect = $referer ?: $basePath . '/';
+
+    return $response
+        ->withHeader('Location', $redirect)
+        ->withStatus(302);
 });
 
 
-//AUTH ROUTES ───────────────────────────────────────────────────────────
+//AUTH ROUTES FOR LOGGING IN AND OUT ───────────────────────────────────────────────────────────
 $app->get('/auth', [AuthController::class, 'showForm']);
 $app->post('/auth/request', [AuthController::class, 'requestOtp']);
 $app->get('/auth/verify', [AuthController::class, 'showVerify']);

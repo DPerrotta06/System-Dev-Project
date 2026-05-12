@@ -25,7 +25,7 @@ class BookingController
         $bars      = R::getAll('SELECT barId, barType, pricePerPerson FROM bar');
         $services  = R::getAll('SELECT serviceId, serviceName, serviceType FROM services');
 
-        $html = $this->twig->render('booking/form.html.twig', [
+        $html = $this->twig->render('booking/client_form.html.twig', [
             'ballrooms'  => $ballrooms,
             'menus'      => $menus,
             'bars'       => $bars,
@@ -51,7 +51,7 @@ class BookingController
             $bars      = R::getAll('SELECT barId, barType, pricePerPerson FROM bar');
             $services  = R::getAll('SELECT serviceId, serviceName, serviceType FROM services');
 
-            $html = $this->twig->render('booking/form.html.twig', [
+            $html = $this->twig->render('booking/client_form.html.twig', [
                 'errors'     => $errors,
                 'old'        => $data,
                 'ballrooms'  => $ballrooms,
@@ -171,7 +171,7 @@ class BookingController
 
     private function calculateTotal(array $data, int $eventId): float
     {
-        $total      = 0.0;
+        $total = 0.0;
         $guestCount = (int) ($data['guestCount'] ?? 0);
 
         if (!empty($data['menuId'])) {
@@ -185,5 +185,78 @@ class BookingController
         }
 
         return round($total, 2);
+    }
+
+    public function showClientForm(Request $request, Response $response): Response
+    {
+        $foodItems = R::getAll('
+        SELECT fi.itemName, fi.extraPrice, fc.categoryName, m.menuName
+        FROM fooditem fi
+        JOIN foodcategory fc ON fi.itemCategory = fc.categoryId
+        JOIN menufooditem mfi ON fi.itemId = mfi.itemId
+        JOIN menu m ON mfi.menuId = m.menuId
+        ORDER BY m.menuId, fc.categoryName, fi.itemName
+        ');
+        $menus = ['main' => [], 'buffet' => [], 'midnight' => []];
+        foreach ($foodItems as $item) {
+            $menuType = match (strtolower(trim($item['menuName']))) {
+                'main menu' => 'main',
+                'buffet' => 'buffet',
+                'midnight table' => 'midnight',
+                default => null,
+            };
+            if ($menuType) {
+                $menus[$menuType][$item['categoryName']][] = $item['itemName'];
+            }
+        }
+        $html = $this->twig->render('client_form.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'menus'     => $menus,
+        ]);
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    public function goToTablePlanning(Request $request, Response $response): Response
+    {
+        $data = (array) $request->getParsedBody();
+        // Get form data
+        $numberOfGuests = (int) ($data['number_of_guests'] ?? 1);
+        $eventType = $data['event_type'] ?? 'Other';
+        // Determine hall based on guest count
+        if ($numberOfGuests > 225) {
+            $hall = 'grand_salon';
+        } elseif ($numberOfGuests > 125) {
+            $hall = 'royal';
+        } else {
+            $hall = 'princess';
+        }
+        // Calculate approximate table quantity (assuming 10 guests per table)
+        $tableQuantity = (int) ceil($numberOfGuests / 10);
+        // Store data in session for use in floor planning
+        $_SESSION['floor_planning_data'] = [
+            'firstname' => $data['firstname'] ?? '',
+            'lastname' => $data['lastname'] ?? '',
+            'email' => $data['email'] ?? '',
+            'phone' => $data['phone'] ?? '',
+            'event_type' => $eventType,
+            'event_date' => $data['event_date'] ?? '',
+            'number_of_guests' => $numberOfGuests,
+            'notes' => $data['notes'] ?? '',
+            'hall' => $hall,
+            'table_quantity' => $tableQuantity,
+            'guest_quantity' => $numberOfGuests,
+        ];
+        //render the next page
+        $html = $this->twig->render('landing_page.html.twig', [
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'hall' => $hall,
+            'table_quantity' => $tableQuantity,
+            'guest_quantity' => $numberOfGuests,
+        ]);
+        $response->getBody()->write($html);
+        return $response;
     }
 }

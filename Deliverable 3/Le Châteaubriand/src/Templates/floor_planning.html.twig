@@ -1,38 +1,69 @@
 {% extends 'layout.html.twig' %}
-{% block title %}Le Châteaubriand{% endblock %}
+{% block title %}Le Châteaubriand — Table Planning{% endblock %}
+
 {% block content %}
-<h4>Make your event yours!</h4>
-<p>Select the tables for your event and specify the number of guests per table (Maximum: 12)</p>
+
+<div class="floor-hero">
+    <h1 class="floor-hero-title">Make It Yours</h1>
+    <p class="floor-hero-sub">Select your tables and assign guests — Maximum 12 per table</p>
+</div>
+
 <div class="floor-planning-container">
-    <p>
-        Your Ballroom:
-        <strong>
-            {% if hall == 'royal' %}Royal hall
-            {% elseif hall == 'grand_salon' %}Grand Salon
-            {% else %}Princess
-            {% endif %}
-        </strong>
-    </p>
-    <div class="floor-planning-summary">
-        <p id="tableCount">{{ table_quantity }} Tables</p>
-        <p id="guestCount">{{ guest_quantity }} Guests</p>
-    </div
-    <div class="floor-planning-ui">
-        <canvas id="floor-canvas" width="800" height="600"></canvas>
-    </div>
-    <div class="table-selection-grid-container">
-        {% for i in 1..26 %}
-        <div class="table-card">
-            <div class="table-card-header">
-                <span>Table {{ i }}</span>
-                <input type="checkbox" class="table-card-checkbox">
+    <form class="table-form" action="{{ base_path }}/booking" method="post">
+
+        <div class="floor-meta">
+            <div class="floor-meta-item">
+                <span class="floor-meta-label">Ballroom</span>
+                <span class="floor-meta-value">
+                    {% if hall == 'royal' %}Royal Hall
+                    {% elseif hall == 'grand_salon' %}Grand Salon
+                    {% else %}Princess{% endif %}
+                </span>
             </div>
-            <div class="card-body">
-                <small>Click to select the table</small>
-                <input type="number" class="table-card-guest-input" min="1" max="12" disabled>
+            <div class="floor-meta-divider"></div>
+            <div class="floor-meta-item">
+                <span class="floor-meta-label">Tables Selected</span>
+                <span class="floor-meta-value" id="tableCount">0</span>
+            </div>
+            <div class="floor-meta-divider"></div>
+            <div class="floor-meta-item">
+                <span class="floor-meta-label">Guests Seated</span>
+                <span class="floor-meta-value" id="guestCount">0</span>
             </div>
         </div>
-        {%endfor%}
-    </div>
+
+        <div class="floor-planning-ui">
+            <canvas id="floor-canvas" width="800" height="700"></canvas>
+        </div>
+
+        <div class="table-selection-grid-container">
+            {% set table_count = hall == 'royal' ? 20 : (hall == 'grand_salon' ? 35 : 14) %}
+            {% for i in 1..table_count %}
+            <div class="table-card" data-table="{{ i }}">
+                <div class="table-card-header">
+                    <span>Table {{ i }}</span>
+                    <input type="checkbox" class="table-card-checkbox" name="tables[]" value="{{ i }}">
+                </div>
+                <div class="card-body">
+                    <small>Click to select</small>
+                    <input type="number" class="table-card-guest-input" name="guests[{{ i }}]" min="1" max="12" placeholder="Guests" disabled>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" id="selectedTablesInput" name="selected_tables">
+
+        <button type="submit" style="margin-top:2rem; width:100%; padding:14px 28px; background:var(--gold); color:var(--black); font-family:'Cinzel',serif; font-size:0.65rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; border:none; cursor:pointer;">
+            Submit Floor Plan
+        </button>
+
+    </form>
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>document.body.dataset.hall = "{{ hall }}";</script>
+    <script src="{{ base_path }}/assets/floor_planning.js"></script>
 {% endblock %}

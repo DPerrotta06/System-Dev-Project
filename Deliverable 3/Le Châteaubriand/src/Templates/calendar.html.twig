@@ -1,0 +1,130 @@
+{% extends "layout.html.twig" %}
+{% block title %}{{ trans('site.name') }} – {{ trans('calendar.title') }}{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
+
+        <nav class="admin-nav">
+            <a href="{{ base_path }}/admin"
+            class="{% if active_page is defined and active_page == 'dashboard' %}active{% endif %}">
+                {{ trans('admin.dashboard.name') }}
+            </a>
+
+            <a href="{{ base_path }}/clients"
+            class="{% if active_page is defined and active_page == 'clients' %}active{% endif %}">
+                {{ trans('admin.page.title') }}
+            </a>
+
+            <a href="{{ base_path }}/events"
+            class="{% if active_page is defined and active_page == 'events' %}active{% endif %}">
+                {{ trans('event.index_title') }}
+            </a>
+
+            <a href="{{ base_path }}/menus"
+            class="{% if active_page is defined and active_page == 'menus' %}active{% endif %}">
+                {{ trans('menu.main_course') }}
+            </a>
+
+            <a href="{{ base_path }}/calendar"
+            class="{% if active_page is defined and active_page == 'calendar' %}active{% endif %}">
+                {{ trans('admin.nav.calendar') }}
+            </a>
+        </nav>
+
+        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+            <button type="submit" class="admin-logout-btn">
+                {{ trans('admin.nav.logout') }}
+            </button>
+        </form>
+    </aside>
+
+    <main class="admin-content">
+        <div class="admin-page-header">
+            <h2>{{ trans('calendar.title') }}</h2>
+        </div>
+
+        <div class="cal-layout">
+
+            {# ── CALENDAR GRID PANEL ── #}
+            <div class="cal-panel">
+                <div class="cal-nav">
+                    <a href="{{ base_path }}/calendar?year={{ prevYear }}&month={{ prevMonth }}" class="cal-nav-btn">‹</a>
+                    <span class="cal-month-label">{{ trans('calendar.months.' ~ month) }} {{ year }}</span>
+                    <a href="{{ base_path }}/calendar?year={{ nextYear }}&month={{ nextMonth }}" class="cal-nav-btn">›</a>
+                </div>
+
+                <div class="cal-grid">
+                    {# Day headers — Sun first #}
+                    {% for lbl in ['calendar.days.sun','calendar.days.mon','calendar.days.tue','calendar.days.wed','calendar.days.thu','calendar.days.fri','calendar.days.sat'] %}
+                        <div class="cal-head">{{ trans(lbl) }}</div>
+                    {% endfor %}
+
+                    {# Leading blanks: firstDayOfWeek 1=Mon…7=Sun → convert to 0=Sun offset #}
+                    {% set offset = firstDayOfWeek % 7 %}
+                    {% for i in 0..offset - 1 %}
+                        <div class="cal-cell cal-blank"></div>
+                    {% endfor %}
+
+                    {# Numbered days #}
+                    {% for d in 1..daysInMonth %}
+                        {% set dateKey = year ~ '-' ~ '%02d'|format(month) ~ '-' ~ '%02d'|format(d) %}
+                        {% set hasEvents = byDate[dateKey] is defined and byDate[dateKey]|length > 0 %}
+                        {% set isSelected = selectedDay is not null and selectedDay == d %}
+                        <a href="{{ base_path }}/calendar?year={{ year }}&month={{ month }}&day={{ d }}"
+                           class="cal-cell cal-day-cell{% if hasEvents %} cal-has-events{% endif %}{% if isSelected %} cal-selected{% endif %}">
+                            <span class="cal-day-num">{{ d }}</span>
+                            {% if hasEvents %}
+                                <span class="cal-event-dot"></span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+
+                    {# Trailing blanks #}
+                    {% set trailing = (7 - ((offset + daysInMonth) % 7)) % 7 %}
+                    {% for i in 1..trailing %}
+                        <div class="cal-cell cal-blank"></div>
+                    {% endfor %}
+                </div>
+
+                <div class="cal-legend">
+                    <span class="cal-event-dot" style="display:inline-block;"></span>
+                    <span>{{ trans('calendar.has_events') }}</span>
+                </div>
+            </div>
+
+            {# ── EVENT DETAIL PANEL ── #}
+            <div class="cal-detail-panel">
+                {% if selectedDay is not null %}
+                    {% set dateKey = year ~ '-' ~ '%02d'|format(month) ~ '-' ~ '%02d'|format(selectedDay) %}
+                    <h3 class="cal-detail-date">{{ trans('calendar.months.' ~ month) }} {{ selectedDay }}, {{ year }}</h3>
+
+                    {% if byDate[dateKey] is defined and byDate[dateKey]|length > 0 %}
+                        {% for event in byDate[dateKey] %}
+                        <div class="cal-event-card">
+                            <span class="status-badge {{ event.status|lower }}">
+                                {{ trans('status.' ~ event.status|lower) }}
+                            </span>
+                            <p class="cal-event-title">{{ event.eventType }} – {{ event.clientName }}</p>
+                            {% if event.eventTime %}
+                                <p class="cal-event-meta">🕐 {{ event.eventTime }}</p>
+                            {% endif %}
+                            <p class="cal-event-meta">👥 {{ event.guestCount }} {{ trans('calendar.guests') }}</p>
+                            {% if event.ballroom %}
+                                <p class="cal-event-meta">🏛 {{ event.ballroom }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="cal-no-events">{{ trans('calendar.no_events') }}</p>
+                    {% endif %}
+                {% else %}
+                    <p class="cal-no-events">{{ trans('calendar.select_day') }}</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+</div>
+{% endblock %}

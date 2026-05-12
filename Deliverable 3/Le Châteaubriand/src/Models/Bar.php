@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTime;
+use RedBeanPHP\R;
 
 class Bar {
     public function __construct(

@@ -16,18 +16,37 @@ class EventController
         private string $basePath,
     ) {}
 
-    // GET /events 
-    // list all events, optionally filtered by status.
-    public function index(Request $request, Response $response): Response
+    private function requireAuth(Response $response): ?Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
-        $params = $request->getQueryParams();
-        $status = $params['status'] ?? null;
+        return null;
+    }
 
-        if ($status) {
+    private function getEventByEventId(int $eventId): ?array
+    {
+        $event = R::getRow(
+            'SELECT * FROM event WHERE eventId = ?',
+            [$eventId]
+        );
+
+        return $event ?: null;
+    }
+
+    // GET /events
+    // List all events, optionally filtered by status.
+    public function index(Request $request, Response $response): Response
+    {
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
+        }
+
+        $params = $request->getQueryParams();
+        $status = trim((string) ($params['status'] ?? ''));
+
+        if ($status !== '') {
             $events = R::getAll(
                 'SELECT * FROM v_event_summary WHERE status = ? ORDER BY eventDate ASC',
                 [$status]
@@ -36,27 +55,30 @@ class EventController
             $events = R::getAll('SELECT * FROM v_event_summary ORDER BY eventDate ASC');
         }
 
-        $html = $this->twig->render('events/index.html.twig', [
-            'events'     => $events,
-            'status'     => $status,
-            'base_path'  => $this->basePath,
-            'app_lang'   => $_SESSION['lang'] ?? 'en',
+        $html = $this->twig->render('event_index.html.twig', [
+            'events'    => $events,
+            'status'    => $status !== '' ? $status : null,
+            'base_path' => $this->basePath,
+            'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // GET /events/{id} 
-    // full detail view for a single event.
+    // GET /events/{id}
+    // Full detail view for a single event.
     public function show(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
+
+        $eventId = (int) $args['id'];
 
         $event = R::getRow(
             'SELECT * FROM v_event_summary WHERE eventId = ?',
-            [(int) $args['id']]
+            [$eventId]
         );
 
         if (!$event) {
@@ -66,63 +88,70 @@ class EventController
 
         $services = R::getAll(
             'SELECT * FROM v_event_services WHERE eventId = ?',
-            [(int) $args['id']]
+            [$eventId]
         );
 
-        $html = $this->twig->render('events/show.html.twig', [
+        $html = $this->twig->render('event_details.html.twig', [
             'event'     => $event,
             'services'  => $services,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    //  POST /events/{id}/status 
-    // update event status (Confirmed, Cancelled, etc.).
+    // POST /events/{id}/status
+    // Update event status using eventId, not RedBean's internal id.
     public function updateStatus(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $data   = (array) $request->getParsedBody();
-        $status = trim($data['status'] ?? '');
+        $eventId = (int) $args['id'];
+        $data = (array) $request->getParsedBody();
+        $status = trim((string) ($data['status'] ?? ''));
         $allowed = ['Pending', 'Confirmed', 'Cancelled', 'Completed', 'Declined'];
 
-        if (!in_array($status, $allowed)) {
-            return $response->withHeader('Location', $this->basePath . '/events')->withStatus(302);
+        if (!in_array($status, $allowed, true)) {
+            return $response->withHeader('Location', $this->basePath . '/events/' . $eventId)->withStatus(302);
         }
 
-        $event = R::load('event', (int) $args['id']);
-        if ($event->id) {
-            $event->status = $status;
-            R::store($event);
+        if (!$this->getEventByEventId($eventId)) {
+            $response->getBody()->write('Event not found.');
+            return $response->withStatus(404);
         }
+
+        R::exec(
+            'UPDATE event SET status = ? WHERE eventId = ?',
+            [$status, $eventId]
+        );
 
         return $response
-            ->withHeader('Location', $this->basePath . '/events/' . $args['id'])
+            ->withHeader('Location', $this->basePath . '/events/' . $eventId)
             ->withStatus(302);
     }
 
-    //  POST /events/{id}/delete 
-    // update event status (Confirmed, Cancelled, etc.).
+    // POST /events/{id}/delete
+    // Delete an event using eventId, not RedBean's internal id.
     public function delete(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $id = (int) $args['id'];
+        $eventId = (int) $args['id'];
 
-        R::exec('DELETE FROM eventService WHERE eventId = ?', [$id]);
-        R::exec('DELETE FROM payment     WHERE eventId = ?', [$id]);
-
-        $event = R::load('event', $id);
-        if ($event->id) {
-            R::trash($event);
+        if (!$this->getEventByEventId($eventId)) {
+            $response->getBody()->write('Event not found.');
+            return $response->withStatus(404);
         }
+
+        R::exec('DELETE FROM eventService WHERE eventId = ?', [$eventId]);
+        R::exec('DELETE FROM payment WHERE eventId = ?', [$eventId]);
+        R::exec('DELETE FROM event WHERE eventId = ?', [$eventId]);
 
         return $response
             ->withHeader('Location', $this->basePath . '/events')

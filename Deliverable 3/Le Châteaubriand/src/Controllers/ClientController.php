@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Controllers;
@@ -16,166 +15,181 @@ class ClientController
         private string $basePath,
     ) {}
 
-    // GET /clients 
-    // list all clients, with optional name search.
-    public function index(Request $request, Response $response): Response
+    private function requireAuth(Response $response): ?Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
+        return null;
+    }
+
+    private function getClientByClientId(int $clientId): ?array
+    {
+        $client = R::getRow(
+            'SELECT * FROM client WHERE clientId = ?',
+            [$clientId]
+        );
+
+        return $client ?: null;
+    }
+
+    // GET /clients
+    // List all clients, with optional name search.
+    public function index(Request $request, Response $response): Response
+    {
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
+        }
+
         $params = $request->getQueryParams();
-        $search = trim($params['search'] ?? '');
+        $search = trim((string) ($params['search'] ?? ''));
 
         if ($search !== '') {
-            $like    = '%' . $search . '%';
+            $like = '%' . $search . '%';
             $clients = R::getAll(
                 'SELECT * FROM client
-                  WHERE firstName LIKE ? OR lastName LIKE ? OR email LIKE ?
-                  ORDER BY lastName, firstName',
+                 WHERE firstName LIKE ? OR lastName LIKE ? OR email LIKE ?
+                 ORDER BY lastName, firstName',
                 [$like, $like, $like]
             );
         } else {
             $clients = R::getAll('SELECT * FROM client ORDER BY lastName, firstName');
         }
 
-        $html = $this->twig->render('clients/index.html.twig', [
+        $html = $this->twig->render('clients_index.html.twig', [
             'clients'   => $clients,
             'search'    => $search,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // GET /clients/{id} 
-    // client detail — profile + all their events + payment info.
+    // GET /clients/{id}
+    // Client detail — profile + all their events.
     public function show(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $client = R::load('client', (int) $args['id']);
-        if (!$client->id) {
+        $clientId = (int) $args['id'];
+        $client = $this->getClientByClientId($clientId);
+
+        if (!$client) {
             $response->getBody()->write('Client not found.');
             return $response->withStatus(404);
         }
 
         $events = R::getAll(
             'SELECT * FROM v_event_summary WHERE clientId = ? ORDER BY eventDate DESC',
-            [(int) $args['id']]
+            [$clientId]
         );
 
-        $html = $this->twig->render('clients_show.html.twig', [
-            'client'    => $client->export(),
+        $html = $this->twig->render('client_details.html.twig', [
+            'client'    => $client,
             'events'    => $events,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // GET /clients/{id}/edit 
-    // show edit form for a client.
+    // GET /clients/{id}/edit
+    // Show edit form for a client.
     public function edit(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $client = R::load('client', (int) $args['id']);
-        if (!$client->id) {
+        $clientId = (int) $args['id'];
+        $client = $this->getClientByClientId($clientId);
+
+        if (!$client) {
             $response->getBody()->write('Client not found.');
             return $response->withStatus(404);
         }
 
-        $html = $this->twig->render('clients/edit.html.twig', [
-            'client'    => $client->export(),
+        $html = $this->twig->render('client_edit.html.twig', [
+            'client'    => $client,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // POST /clients/{id}/edit 
-    // save edits to a client record.
+    // POST /clients/{id}/edit
+    // Save edits to a client record.
     public function update(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $data   = (array) $request->getParsedBody();
-        $client = R::load('client', (int) $args['id']);
+        $clientId = (int) $args['id'];
+        $client = $this->getClientByClientId($clientId);
 
-        if (!$client->id) {
+        if (!$client) {
             $response->getBody()->write('Client not found.');
             return $response->withStatus(404);
         }
 
-        $client->firstName   = trim($data['firstName']   ?? $client->firstName);
-        $client->lastName    = trim($data['lastName']    ?? $client->lastName);
-        $client->email       = trim($data['email']       ?? $client->email);
-        $client->phoneNumber = trim($data['phoneNumber'] ?? $client->phoneNumber);
+        $data = (array) $request->getParsedBody();
 
-        R::store($client);
+        $firstName = trim((string) ($data['firstName'] ?? $client['firstName']));
+        $lastName = trim((string) ($data['lastName'] ?? $client['lastName']));
+        $email = trim((string) ($data['email'] ?? $client['email']));
+        $phoneNumber = trim((string) ($data['phoneNumber'] ?? $client['phoneNumber']));
+
+        R::exec(
+            'UPDATE client
+             SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?
+             WHERE clientId = ?',
+            [$firstName, $lastName, $email, $phoneNumber, $clientId]
+        );
 
         return $response
-            ->withHeader('Location', $this->basePath . '/clients/' . $args['id'])
+            ->withHeader('Location', $this->basePath . '/clients/' . $clientId)
             ->withStatus(302);
     }
 
-    //  POST /clients/{id}/delete 
-    // delete a client and cascade their events/payments.
+    // POST /clients/{id}/delete
+    // Delete a client and cascade their events/payments.
     public function delete(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $id     = (int) $args['id'];
-        $events = R::getAll('SELECT eventId FROM event WHERE clientId = ?', [$id]);
+        $clientId = (int) $args['id'];
+        $client = $this->getClientByClientId($clientId);
+
+        if (!$client) {
+            $response->getBody()->write('Client not found.');
+            return $response->withStatus(404);
+        }
+
+        $events = R::getAll('SELECT eventId FROM event WHERE clientId = ?', [$clientId]);
 
         foreach ($events as $event) {
-            $eid = (int) $event['eventId'];
-            R::exec('DELETE FROM eventService WHERE eventId = ?', [$eid]);
-            R::exec('DELETE FROM payment     WHERE eventId = ?', [$eid]);
+            $eventId = (int) $event['eventId'];
+            R::exec('DELETE FROM eventService WHERE eventId = ?', [$eventId]);
+            R::exec('DELETE FROM payment WHERE eventId = ?', [$eventId]);
         }
 
-        R::exec('DELETE FROM event  WHERE clientId = ?', [$id]);
-
-        $client = R::load('client', $id);
-        if ($client->id) {
-            R::trash($client);
-        }
+        R::exec('DELETE FROM event WHERE clientId = ?', [$clientId]);
+        R::exec('DELETE FROM client WHERE clientId = ?', [$clientId]);
 
         return $response
             ->withHeader('Location', $this->basePath . '/clients')
             ->withStatus(302);
     }
-
-    public function showClientForm(Request $request, Response $response): Response
-    {
-        $html = $this->twig->render('client_form.html.twig', [
-            'base_path' => $this->basePath,
-            'app_lang'  => $_SESSION['lang'] ?? 'en',
-        ]);
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    public function goToTablePlanning(Request $request, Response $response, array $args): Response
-{
-    $html = $this->twig->render('floor_planning.html.twig', [
-        'base_path' => $this->basePath,
-        'app_lang'  => $_SESSION['lang'] ?? 'en',
-    ]);
-    $response->getBody()->write($html);
-    return $response;
-}
-
 }

@@ -16,7 +16,7 @@ class AdminController
         private string $basePath,
     ) {}
 
-    // GET /admin 
+    // GET /admin
     // Main dashboard: stats + upcoming events + pending queue.
     public function dashboard(Request $request, Response $response): Response
     {
@@ -26,17 +26,17 @@ class AdminController
 
         // Stats bar
         $stats = [
-            'pending'        => R::getCell("SELECT COUNT(*) FROM event WHERE status = 'Pending'"),
+            'pending' => R::getCell("SELECT COUNT(*) FROM event WHERE status = 'Pending'"),
             'confirmedMonth' => R::getCell(
                 "SELECT COUNT(*) FROM event
                   WHERE status = 'Confirmed'
                     AND strftime('%Y-%m', eventDate) = strftime('%Y-%m', 'now')"
             ),
-            'totalClients'   => R::getCell("SELECT COUNT(*) FROM client"),
-            'totalEvents'    => R::getCell("SELECT COUNT(*) FROM event"),
+            'totalClients' => R::getCell("SELECT COUNT(*) FROM client"),
+            'totalEvents'  => R::getCell("SELECT COUNT(*) FROM event"),
         ];
 
-        //  Upcoming confirmed events (next 10) 
+        // Upcoming confirmed events (next 10)
         $upcoming = R::getAll(
             "SELECT * FROM v_event_summary
               WHERE status = 'Confirmed'
@@ -45,14 +45,14 @@ class AdminController
               LIMIT 10"
         );
 
-        //  Pending bookings needing a decision
+        // Pending bookings needing a decision
         $pending = R::getAll(
             "SELECT * FROM v_event_summary
               WHERE status = 'Pending'
               ORDER BY eventDate ASC"
         );
 
-        $html = $this->twig->render('admin/dashboard.html.twig', [
+        $html = $this->twig->render('admin_dashboard.html.twig', [
             'stats'     => $stats,
             'upcoming'  => $upcoming,
             'pending'   => $pending,
@@ -63,8 +63,8 @@ class AdminController
         return $response;
     }
 
-    //  GET /admin/calendar 
-    // Monthly calendar view of all events.
+    // GET /calendar
+    // Monthly calendar view of all events, with optional ?day= for detail panel.
     public function calendar(Request $request, Response $response): Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
@@ -78,8 +78,17 @@ class AdminController
         $month = (int) ($params['month'] ?? date('m'));
 
         // Clamp month to valid range
-        if ($month < 1)  { $month = 12; $year--; }
-        if ($month > 12) { $month = 1;  $year++; }
+        if ($month < 1) {
+            $month = 12;
+            $year--;
+        }
+        if ($month > 12) {
+            $month = 1;
+            $year++;
+        }
+
+        // Optional selected day for the detail panel
+        $selectedDay = isset($params['day']) ? (int) $params['day'] : null;
 
         $from = sprintf('%04d-%02d-01', $year, $month);
         $to   = date('Y-m-t', strtotime($from)); // last day of the month
@@ -93,7 +102,7 @@ class AdminController
             [$from, $to]
         );
 
-        // Group events by date for easy rendering in the template
+        // Group events by full date string (YYYY-MM-DD) for easy template lookup
         $byDate = [];
         foreach ($events as $event) {
             $byDate[$event['eventDate']][] = $event;
@@ -105,25 +114,26 @@ class AdminController
         $nextMonth = $month === 12 ? 1  : $month + 1;
         $nextYear  = $month === 12 ? $year + 1 : $year;
 
-        $html = $this->twig->render('admin/calendar.html.twig', [
-            'byDate'    => $byDate,
-            'year'      => $year,
-            'month'     => $month,
-            'monthName' => date('F', mktime(0, 0, 0, $month, 1, $year)),
-            'daysInMonth' => (int) date('t', strtotime($from)),
+        $html = $this->twig->render('calendar.html.twig', [
+            'byDate'         => $byDate,
+            'year'           => $year,
+            'month'          => $month,
+            'monthName'      => date('F', mktime(0, 0, 0, $month, 1, $year)),
+            'daysInMonth'    => (int) date('t', strtotime($from)),
             'firstDayOfWeek' => (int) date('N', strtotime($from)), // 1=Mon, 7=Sun
-            'prevYear'  => $prevYear,
-            'prevMonth' => $prevMonth,
-            'nextYear'  => $nextYear,
-            'nextMonth' => $nextMonth,
-            'base_path' => $this->basePath,
-            'app_lang'  => $_SESSION['lang'] ?? 'en',
+            'selectedDay'    => $selectedDay,
+            'prevYear'       => $prevYear,
+            'prevMonth'      => $prevMonth,
+            'nextYear'       => $nextYear,
+            'nextMonth'      => $nextMonth,
+            'base_path'      => $this->basePath,
+            'app_lang'       => $_SESSION['lang'] ?? 'en',
         ]);
         $response->getBody()->write($html);
         return $response;
     }
 
-    //  GET /admin/payments 
+    // GET /admin/payments
     // Payment overview — all events with outstanding balances.
     public function payments(Request $request, Response $response): Response
     {
@@ -141,7 +151,7 @@ class AdminController
         $outstanding = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) > 0);
         $paid        = array_filter($payments, fn($p) => ($p['amountLeft'] ?? 0) <= 0);
 
-        $html = $this->twig->render('admin/payments.html.twig', [
+        $html = $this->twig->render('admin_payments.html.twig', [
             'outstanding' => array_values($outstanding),
             'paid'        => array_values($paid),
             'base_path'   => $this->basePath,

@@ -1,0 +1,127 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+    {{ trans('site.name') }} – Edit Client
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <div class="admin-logo">{{ trans('admin.nav.logo') }}</div>
+
+        <nav class="admin-nav">
+            <a href="{{ base_path }}/admin"
+            class="{% if active_page is defined and active_page == 'dashboard' %}active{% endif %}">
+                {{ trans('admin.dashboard.name') }}
+            </a>
+
+            <a href="{{ base_path }}/clients"
+            class="{% if active_page is defined and active_page == 'clients' %}active{% endif %}">
+                {{ trans('admin.page.title') }}
+            </a>
+
+            <a href="{{ base_path }}/events"
+            class="{% if active_page is defined and active_page == 'events' %}active{% endif %}">
+                {{ trans('event.index_title') }}
+            </a>
+
+            <a href="{{ base_path }}/menus"
+            class="{% if active_page is defined and active_page == 'menus' %}active{% endif %}">
+                {{ trans('menu.main_course') }}
+            </a>
+
+            <a href="{{ base_path }}/calendar"
+            class="{% if active_page is defined and active_page == 'calendar' %}active{% endif %}">
+                {{ trans('admin.nav.calendar') }}
+            </a>
+        </nav>
+
+        <form action="{{ base_path }}/auth/logout" method="POST" style="margin-top:auto;">
+            <button type="submit" class="admin-logout-btn">
+                {{ trans('admin.nav.logout') }}
+            </button>
+        </form>
+    </aside>
+
+    <main class="admin-content edit-client-page">
+
+        <div class="admin-page-header edit-client-header">
+            <div>
+                <a href="{{ base_path }}/clients/{{ client.clientId }}" class="admin-btn back-btn">← Back</a>
+                <h2>Edit Client</h2>
+                <p class="page-subtitle">
+                    Update the contact information for {{ client.firstName }} {{ client.lastName }}.
+                </p>
+            </div>
+        </div>
+
+        <section class="edit-client-card">
+            <div class="edit-client-card-header">
+                <div class="client-avatar edit-avatar">
+                    {{ client.firstName|slice(0, 1)|upper }}{{ client.lastName|slice(0, 1)|upper }}
+                </div>
+
+                <div>
+                    <h3>{{ client.firstName }} {{ client.lastName }}</h3>
+                    <p>{{ client.email }}</p>
+                </div>
+            </div>
+
+            <form action="{{ base_path }}/clients/{{ client.clientId }}/edit" method="POST" class="edit-client-form-admin">
+
+                <div class="form-row">
+                    <div class="form-group{% if errors.firstName is defined %} has-error{% endif %}">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" value="{{ client.firstName }}" required>
+
+                        {% if errors.firstName is defined %}
+                            <span class="field-error">{{ errors.firstName }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group{% if errors.lastName is defined %} has-error{% endif %}">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" value="{{ client.lastName }}" required>
+
+                        {% if errors.lastName is defined %}
+                            <span class="field-error">{{ errors.lastName }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group{% if errors.email is defined %} has-error{% endif %}">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ client.email }}" required>
+
+                        {% if errors.email is defined %}
+                            <span class="field-error">{{ errors.email }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group{% if errors.phoneNumber is defined %} has-error{% endif %}">
+                        <label for="phoneNumber">Phone</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" value="{{ client.phoneNumber }}">
+
+                        {% if errors.phoneNumber is defined %}
+                            <span class="field-error">{{ errors.phoneNumber }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ base_path }}/clients/{{ client.clientId }}" class="admin-btn cancel-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="admin-btn save-btn">
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
+</div>
+{% endblock %}

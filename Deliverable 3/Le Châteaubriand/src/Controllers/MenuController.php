@@ -16,29 +16,49 @@ class MenuController
         private string $basePath,
     ) {}
 
-    // GET /menus 
-    // list all menus with their items.
-    public function index(Request $request, Response $response): Response
+    private function requireAuth(Response $response): ?Response
     {
         if (!($_SESSION['authenticated'] ?? false)) {
             return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
         }
 
+        return null;
+    }
+
+    private function getMenuByMenuId(int $menuId): ?array
+    {
+        $menu = R::getRow(
+            'SELECT * FROM menu WHERE menuId = ?',
+            [$menuId]
+        );
+
+        return $menu ?: null;
+    }
+
+    // GET /menus
+    // List all menus with their items.
+    public function index(Request $request, Response $response): Response
+    {
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
+        }
+
         $menus = R::getAll('SELECT * FROM v_menu_items ORDER BY menuName, categoryName, itemName');
 
-        // Group rows into a nested structure for the template.
         $grouped = [];
         foreach ($menus as $row) {
-            $mid = $row['menuId'];
-            if (!isset($grouped[$mid])) {
-                $grouped[$mid] = [
-                    'menuId'        => $mid,
-                    'menuName'      => $row['menuName'],
+            $menuId = (int) $row['menuId'];
+
+            if (!isset($grouped[$menuId])) {
+                $grouped[$menuId] = [
+                    'menuId'         => $menuId,
+                    'menuName'       => $row['menuName'],
                     'pricePerPerson' => $row['pricePerPerson'],
-                    'items'         => [],
+                    'items'          => [],
                 ];
             }
-            $grouped[$mid]['items'][] = [
+
+            $grouped[$menuId]['items'][] = [
                 'itemId'       => $row['itemId'],
                 'itemName'     => $row['itemName'],
                 'itemPrice'    => $row['itemPrice'],
@@ -47,26 +67,29 @@ class MenuController
             ];
         }
 
-        $html = $this->twig->render('menus/index.html.twig', [
+        $html = $this->twig->render('menu_index.html.twig', [
             'menus'     => array_values($grouped),
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // GET /menus/{id} 
-    // single menu detail with all food items.
+    // GET /menus/{id}
+    // Single menu detail with all food items.
     public function show(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
+
+        $menuId = (int) $args['id'];
 
         $rows = R::getAll(
             'SELECT * FROM v_menu_items WHERE menuId = ? ORDER BY categoryName, itemName',
-            [(int) $args['id']]
+            [$menuId]
         );
 
         if (empty($rows)) {
@@ -78,84 +101,102 @@ class MenuController
             'menuId'         => $rows[0]['menuId'],
             'menuName'       => $rows[0]['menuName'],
             'pricePerPerson' => $rows[0]['pricePerPerson'],
-            'items'          => array_map(fn($r) => [
-                'itemId'       => $r['itemId'],
-                'itemName'     => $r['itemName'],
-                'itemPrice'    => $r['itemPrice'],
-                'extraPrice'   => $r['extraPrice'],
-                'categoryName' => $r['categoryName'],
+            'items'          => array_map(fn($row) => [
+                'itemId'       => $row['itemId'],
+                'itemName'     => $row['itemName'],
+                'itemPrice'    => $row['itemPrice'],
+                'extraPrice'   => $row['extraPrice'],
+                'categoryName' => $row['categoryName'],
             ], $rows),
         ];
 
-        $html = $this->twig->render('menus/show.html.twig', [
-            'menu'      => $menu,
+        $html = $this->twig->render('menu_index.html.twig', [
+            'menus'     => [$menu],
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // GET /menus/{id}/edit 
-    // edit a menu's name and price per person.
+    // GET /menus/{id}/edit
+    // Edit a menu's name, price per person, and linked food items.
     public function edit(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $menu       = R::load('menu', (int) $args['id']);
-        $allItems   = R::getAll('SELECT fi.*, fc.categoryName FROM foodItem fi JOIN foodCategory fc ON fc.categoryId = fi.categoryId ORDER BY fc.categoryName, fi.itemName');
-        $linkedIds  = R::getCol('SELECT itemId FROM menuFoodItem WHERE menuId = ?', [(int) $args['id']]);
+        $menuId = (int) $args['id'];
+        $menu = $this->getMenuByMenuId($menuId);
 
-        if (!$menu->id) {
+        if (!$menu) {
             $response->getBody()->write('Menu not found.');
             return $response->withStatus(404);
         }
 
-        $html = $this->twig->render('menus/edit.html.twig', [
-            'menu'      => $menu->export(),
+        $allItems = R::getAll(
+            'SELECT fi.*, fc.categoryName
+             FROM foodItem fi
+             JOIN foodCategory fc ON fc.categoryId = fi.categoryId
+             ORDER BY fc.categoryName, fi.itemName'
+        );
+
+        $linkedIds = R::getCol(
+            'SELECT itemId FROM menuFoodItem WHERE menuId = ?',
+            [$menuId]
+        );
+
+        $html = $this->twig->render('menu_index.html.twig', [
+            'menu'      => $menu,
             'allItems'  => $allItems,
             'linkedIds' => $linkedIds,
             'base_path' => $this->basePath,
             'app_lang'  => $_SESSION['lang'] ?? 'en',
         ]);
+
         $response->getBody()->write($html);
         return $response;
     }
 
-    // POST /menus/{id}/edit 
-    // save menu edits and re-sync food item links.
+    // POST /menus/{id}/edit
+    // Save menu edits and re-sync food item links using menuId.
     public function update(Request $request, Response $response, array $args): Response
     {
-        if (!($_SESSION['authenticated'] ?? false)) {
-            return $response->withHeader('Location', $this->basePath . '/auth')->withStatus(302);
+        if ($redirect = $this->requireAuth($response)) {
+            return $redirect;
         }
 
-        $data = (array) $request->getParsedBody();
-        $id   = (int) $args['id'];
-        $menu = R::load('menu', $id);
+        $menuId = (int) $args['id'];
+        $menu = $this->getMenuByMenuId($menuId);
 
-        if (!$menu->id) {
+        if (!$menu) {
             $response->getBody()->write('Menu not found.');
             return $response->withStatus(404);
         }
 
-        $menu->menuName      = trim($data['menuName']      ?? $menu->menuName);
-        $menu->pricePerPerson = (float) ($data['pricePerPerson'] ?? $menu->pricePerPerson);
-        R::store($menu);
+        $data = (array) $request->getParsedBody();
 
-        // Re-sync the food item links.
-        R::exec('DELETE FROM menuFoodItem WHERE menuId = ?', [$id]);
+        $menuName = trim((string) ($data['menuName'] ?? $menu['menuName']));
+        $pricePerPerson = (float) ($data['pricePerPerson'] ?? $menu['pricePerPerson']);
+
+        R::exec(
+            'UPDATE menu SET menuName = ?, pricePerPerson = ? WHERE menuId = ?',
+            [$menuName, $pricePerPerson, $menuId]
+        );
+
+        R::exec('DELETE FROM menuFoodItem WHERE menuId = ?', [$menuId]);
+
         foreach ((array) ($data['itemIds'] ?? []) as $itemId) {
-            $link         = R::dispense('menuFoodItem');
-            $link->menuId = $id;
-            $link->itemId = (int) $itemId;
-            R::store($link);
+            R::exec(
+                'INSERT INTO menuFoodItem (menuId, itemId) VALUES (?, ?)',
+                [$menuId, (int) $itemId]
+            );
         }
 
         return $response
-            ->withHeader('Location', $this->basePath . '/menus/' . $id)
+            ->withHeader('Location', $this->basePath . '/menus/' . $menuId)
             ->withStatus(302);
     }
 }
