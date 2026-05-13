@@ -62,7 +62,7 @@ $twig->addFilter(new TwigFilter('trans', function (string $key, array $params = 
 
 
 //DEPENDENCY INJECTION CONTAINER ───────────────────────────────────────
-$basePath = '/Deliverable 3/Le Châteaubriand';
+$basePath = '/';
 $container = new \DI\Container();
 $container->set(Environment::class, $twig);
 $container->set(AuthController::class, fn() => new AuthController(
