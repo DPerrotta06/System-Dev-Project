@@ -28,7 +28,6 @@ use App\Controllers\EventController;
 use App\Controllers\ClientController;
 use App\Controllers\MenuController;
 use App\Controllers\FloorPlanningController;
-use App\Controllers\GoogleReviewsController;
 use App\Services\OTPService as ServicesOTPService;
 
 require __DIR__ . '/vendor/autoload.php';
