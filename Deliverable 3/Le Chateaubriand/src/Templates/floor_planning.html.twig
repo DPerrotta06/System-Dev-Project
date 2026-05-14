@@ -37,7 +37,7 @@
         </div>
 
         <div class="table-selection-grid-container">
-            {% set table_count = hall == 'royal' ? 20 : (hall == 'grand_salon' ? 35 : 14) %}
+            {% set table_count = hall == 'royal' ? 20 : (hall == 'grand_salon' ? 35 : 10) %}
             {% for i in 1..table_count %}
             <div class="table-card" data-table="{{ i }}">
                 <div class="table-card-header">

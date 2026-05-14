@@ -74,7 +74,7 @@ class BookingController
             $client->firstName   = trim($data['firstname']);
             $client->lastName    = trim($data['lastname']);
             $client->email       = trim($data['email']);
-            $client->phonenumber = trim($data['phone']);
+            $client->phoneNumber = trim($data['phone']);
             R::store($client);
         }
 
@@ -143,29 +143,29 @@ class BookingController
     }
 
     // Private helpers
-
     private function validate(array $data): array
     {
         $errors = [];
-
         if (empty(trim($data['firstname'] ?? '')))   $errors['firstname']   = 'First name is required.';
         if (empty(trim($data['lastname']  ?? '')))   $errors['lastname']    = 'Last name is required.';
         if (empty(trim($data['email']     ?? '')))   $errors['email']       = 'Email is required.';
         if (empty(trim($data['phone'] ?? ''))) $errors['phone'] = 'Phone number is required.';
-        if (empty($data['ballroomId']))              $errors['ballroomId']  = 'Please select a ballroom.';
-        if (empty($data['eventDate']))               $errors['eventDate']   = 'Please select a date.';
-        if (empty($data['eventTime']))               $errors['eventTime']   = 'Please select a time.';
-        if (empty($data['guestCount']))              $errors['guestCount']  = 'Guest count is required.';
-        if (empty(trim($data['eventType'] ?? '')))   $errors['eventType']   = 'Event type is required.';
-
-        if (!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        if (empty($data['eventDate']))               $errors['event_date']   = 'Please select a date.';
+        if (empty($data['eventTime']))               $errors['event_time']   = 'Please select a time.';
+        if (empty($data['guestCount']))              $errors['guest_count']  = 'Guest count is required.';
+        if (empty(trim($data['eventType'] ?? '')))   $errors['event_type']   = 'Event type is required.';
+        if(!empty($data['email']) && FILTER_VALIDATE_EMAIL){
             $errors['email'] = 'Please enter a valid email address.';
         }
-
-        if (!empty($data['eventDate']) && strtotime($data['eventDate']) < strtotime('today')) {
-            $errors['eventDate'] = 'Event date must be in the future.';
+        if(!empty($data['eventDate'])){
+            $currentDate = \DateTime::createFromFormat('Y-m-d', $data['eventDate']);
+            $validDate = $currentDate && $currentDate->format('Y-m-d') === $data['eventDate'];
+            if (!$validDate) {
+                $errors['eventDate'] = 'Please enter a valid date.';
+            } elseif ($currentDate < new \DateTime('today')) {
+                $errors['eventDate'] = 'Event date cannot be in the past.';
+            }
         }
-
         return $errors;
     }
 
@@ -192,10 +192,10 @@ class BookingController
         $foodItems = R::getAll('
         SELECT fi.itemName, fi.extraPrice, fc.categoryName, m.menuName
         FROM fooditem fi
-        JOIN foodcategory fc ON fi.itemCategory = fc.id
-        JOIN menufooditem mfi ON fi.id = mfi.itemId
-        JOIN menu m ON mfi.menuId = m.id
-        ORDER BY m.id, fc.categoryName, fi.itemName
+        JOIN foodcategory fc ON fi.itemCategory = fc.categoryId
+        JOIN menufooditem mfi ON fi.itemId = mfi.itemId
+        JOIN menu m ON mfi.menuId = m.menuId
+        ORDER BY m.menuId, fc.categoryName, fi.itemName
     ');
         $menus = ['main' => [], 'buffet' => [], 'midnight' => []];
         foreach ($foodItems as $item) {
@@ -271,20 +271,20 @@ class BookingController
                 ->withStatus(302);
         }
 
-        // 1. Create or find client
+        //Create or find client
         $existing = R::findOne('client', 'email = ?', [trim($session['email'])]);
         if ($existing) {
             $client = $existing;
         } else {
             $client              = R::dispense('client');
-            $client->firstname   = trim($session['firstname']);
-            $client->lastname    = trim($session['lastname']);
+            $client->firstName   = trim($session['firstname']);
+            $client->lastName    = trim($session['lastname']);
             $client->email       = trim($session['email']);
-            $client->phonenumber = trim($session['phone']);
+            $client->phoneNumber = trim($session['phone']);
             R::store($client);
         }
 
-        // 2. Resolve ballroomId from hall slug
+        //Resolve ballroomId from hall slug
         $hallSlugMap = [
             'royal'       => 'Royal Hall',
             'grand_salon' => 'Grand Salon',
@@ -292,9 +292,9 @@ class BookingController
         ];
         $roomName   = $hallSlugMap[$session['hall']] ?? 'Princess';
         $ballroom   = R::findOne('ballroom', 'roomName = ?', [$roomName]);
-        $ballroomId = $ballroom ? (int) $ballroom->id : 1;
+        $ballroomId = $ballroom ? (int) $ballroom->ballroomId : 1;
 
-        // 3. Decode base64 image and store as binary (LONGBLOB)
+        //Decode base64 image and store as binary (LONGBLOB)
         $base64Image    = $data['floor_plan_image'] ?? '';
         $imageData      = null;
         if ($base64Image) {
@@ -302,7 +302,7 @@ class BookingController
             $imageData = base64_decode(preg_replace('/^data:image\/\w+;base64,/', '', $base64Image));
         }
 
-        // 4. Create event
+        //Create event
         $event                  = R::dispense('event');
         $event->clientId        = $client->id;
         $event->ballroomId      = $ballroomId;
@@ -315,7 +315,7 @@ class BookingController
         $event->floorArrangement = $imageData;
         $eventId = R::store($event);
 
-        // 5. Menu selections from session
+        //Menu selections from session
         $menuSelections = $session['menu_selections'] ?? [];
         if (!empty($menuSelections)) {
             foreach ($menuSelections as $itemName) {
@@ -326,18 +326,18 @@ class BookingController
             }
         }
 
-        // 6. Payment placeholder
+        //Payment placeholder
         $payment                  = R::dispense('payment');
         $payment->eventId         = $eventId;
         $payment->totalPrice      = 0.00;
         $payment->depositRequired = 0.00;
         $payment->amountPaid      = 0.00;
-        $payment->paymentPlan     = 'TBD';
+        $payment->paymentPlan     = 'Full';
         $payment->paymentMethod   = '';
         $payment->nextPaymentDue  = $session['event_date'];
         R::store($payment);
 
-        // 7. Clean session
+        //Clean session
         unset($_SESSION['floor_planning_data']);
 
         return $response

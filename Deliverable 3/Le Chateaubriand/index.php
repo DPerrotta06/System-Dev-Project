@@ -37,7 +37,7 @@ require __DIR__ . '/vendor/autoload.php';
 //DATABASE ──────────────────────────────────────────────────────────────
 $dbPath = __DIR__ . '/var/chateaubriand3.db';
 R::setup('sqlite:' . $dbPath);
-R::exec('PRAGMA foreign_keys = ON;');
+R::exec('PRAGMA foreign_keys = OFF;');
 R::freeze(false);
 
 
@@ -62,7 +62,7 @@ $twig->addFilter(new TwigFilter('trans', function (string $key, array $params = 
 
 
 //DEPENDENCY INJECTION CONTAINER ───────────────────────────────────────
-$basePath = '';
+$basePath = '/Project/System-Dev-Project/Deliverable 3/Le Chateaubriand';
 $container = new \DI\Container();
 $container->set(Environment::class, $twig);
 $container->set(AuthController::class, fn() => new AuthController(
@@ -77,7 +77,6 @@ $container->set(BookingController::class, fn() => new BookingController($twig, $
 $container->set(ClientController::class, fn() => new ClientController($twig, $basePath));
 $container->set(EventController::class, fn() => new EventController($twig, $basePath));
 $container->set(FloorPlanningController::class, fn() => new FloorPlanningController($twig, $basePath));
-$container->set(GoogleReviewsController::class, fn() => new GoogleReviewsController());
 $container->set(MenuController::class, fn() => new MenuController($twig, $basePath));
 $container->set(PageController::class, fn() => new PageController($twig, $basePath));
 
@@ -139,7 +138,7 @@ $app->get('/booking/confirmation/{id}', [BookingController::class, 'confirmation
 
 // Event, client, menu and floor-planning (ADMIN) THESE ARE ALL PROTECTED BY THE MIDDLEWARE TO PREVENT ANYONE EXCEPT THE ADMINS FROM MANIPULATING AND ACCESSING THE DATA
 // grouped the admin routes for better organization and security 
-$app->group('', function($group) {  
+$app->group('', function ($group) {
 
     $group->get('/admin', [AdminController::class, 'dashboard']);
     $group->get('/calendar', [AdminController::class, 'calendar']);
@@ -160,19 +159,15 @@ $app->group('', function($group) {
     $group->get('/floor-planning/{id}', [FloorPlanningController::class, 'show']);
     $group->get('/floor-planning/{id}/edit', [FloorPlanningController::class, 'edit']);
     $group->post('/floor-planning/{id}/edit', [FloorPlanningController::class, 'update']);
-
 })->add(new SessionTimeoutMiddleware($basePath))
-  ->add(new AuthMiddleware(
-    responseFactory: $app->getResponseFactory(),
-    basePath: $basePath
-));
+    ->add(new AuthMiddleware(
+        responseFactory: $app->getResponseFactory(),
+        basePath: $basePath
+    ));
 
-
-// Reviews: render via GoogleReviewsController helper
+//GOOGLE REVIEWS ROUTE
 $app->get('/reviews', function (Request $request, Response $response) use ($twig, $basePath) {
-    $reviewsCtrl = new GoogleReviewsController();
-    $data = $reviewsCtrl->getReviews();
-    $html = $twig->render('reviews.html.twig', ['reviews' => $data, 'base_path' => $basePath, 'app_lang' => $_SESSION['lang'] ?? 'en']);
+    $html = $twig->render('reviews.html.twig', ['base_path' => $basePath, 'app_lang' => $_SESSION['lang'] ?? 'en']);
     $response->getBody()->write($html);
     return $response;
 });
