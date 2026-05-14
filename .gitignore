@@ -1,0 +1,8 @@
+# Ignore all SQL files anywhere
+*.sql
+
+# Ignore Deliverable 1 folder
+Deliverable 1/
+
+# Ignore Deliverable 2 folder
+Deliverable 2/
