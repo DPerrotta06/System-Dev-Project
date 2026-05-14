@@ -29,56 +29,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // Bar/servery nook on left wall
     // ─────────────────────────────────────────────
     const royal = (() => {
-        // Room rect
         const rx = 50, ry = 50, rw = 700, rh = 490;
-        // Dance floor – 25'×25', roughly centered, shifted slightly left
-        const dfx = rx + 200, dfy = ry + 130, dfw = 300, dfh = 250;
-        // Honor table – top center above dance floor
-        const htx = dfx + 20, hty = ry + 68, htw = dfw - 40, hth = 26;
+        const dfx = rx + 220, dfy = ry + 140, dfw = 260, dfh = 230;
+        const htx = rx + 210, hty = ry + 68, htw = 280, hth = 26;
 
-        // Tables – matching the photo layout closely
         const tables = [
-            // TOP ROW (flanking honor table)
-            { x: rx + 80, y: ry + 80 }, // 1 top-left
-            { x: rx + 155, y: ry + 80 }, // 2
-            { x: rx + rw - 155, y: ry + 80 }, // 3
-            { x: rx + rw - 80, y: ry + 80 }, // 4 top-right
+            { x: rx + 100, y: ry + 85 }, // 1
+            { x: rx + 155, y: ry + 140 }, // 2
+            { x: rx + 100, y: ry + 190 }, // 3
+            { x: rx + 155, y: ry + 250 }, // 4
+            { x: rx + 155, y: ry + 340 }, // 5
+            { x: rx + 200, y: ry + 410 }, // 6
 
-            // LEFT COLUMN (outer wall)
-            { x: rx + 55, y: ry + 175 }, // 5
-            { x: rx + 55, y: ry + 275 }, // 6
-            { x: rx + 55, y: ry + 375 }, // 7
-
-            // LEFT INNER (beside dance floor)
-            { x: dfx - 60, y: dfy + 50 }, // 8
-            { x: dfx - 60, y: dfy + 130 }, // 9
-            { x: dfx - 60, y: dfy + 210 }, // 10
-
-            // RIGHT COLUMN (outer wall)
-            { x: rx + rw - 55, y: ry + 175 }, // 11
-            { x: rx + rw - 55, y: ry + 275 }, // 12
-            { x: rx + rw - 55, y: ry + 375 }, // 13
-
-            // RIGHT INNER (beside dance floor)
-            { x: dfx + dfw + 60, y: dfy + 50 }, // 14
-            { x: dfx + dfw + 60, y: dfy + 130 }, // 15
-            { x: dfx + dfw + 60, y: dfy + 210 }, // 16
-
-            // BOTTOM ROW (above entrance/stage)
-            { x: rx + 80, y: ry + rh - 65 }, // 17
-            { x: rx + 175, y: ry + rh - 65 }, // 18
-            { x: dfx + 40, y: ry + rh - 65 }, // 19
-            { x: dfx + dfw / 2, y: ry + rh - 65 }, // 20
-            { x: dfx + dfw - 40, y: ry + rh - 65 }, // 21
-            { x: rx + rw - 175, y: ry + rh - 65 }, // 22
-            { x: rx + rw - 80, y: ry + rh - 65 }, // 23
-
-            // EXTRA TABLES (corners / additional)
-            { x: rx + 130, y: ry + 175 }, // 24
-            { x: rx + 130, y: ry + 275 }, // 25
-            { x: rx + rw - 130, y: ry + 175 }, // 26
-            { x: rx + rw - 130, y: ry + 275 }, // 27
-            { x: dfx + dfw / 2, y: dfy - 55 }, // 28 above dance floor center
+            { x: rx + 530, y: ry + 120 }, // 7
+            { x: rx + 590, y: ry + 165 }, // 8
+            { x: rx + 650, y: ry + 210 }, // 9
+            { x: rx + 650, y: ry + 120 }, // 10
+            { x: dfx + dfw + 45, y: ry + 210 }, // 11
+            { x: rx + 590, y: ry + 255 }, // 12
+            { x: dfx + dfw + 45, y: ry + 300 }, // 13
+            { x: rx + 650, y: ry + 300 }, // 14
+            { x: rx + 590, y: ry + 345 }, // 15
+            { x: dfx + dfw + 45, y: ry + 390 }, // 16
+            { x: rx + 650, y: ry + 390 }, // 17
+            { x: rx + 580, y: ry + 440 }, // 18
+            { x: rx + 650, y: ry + 455 }, // 19
+            { x: rx + 460, y: ry + 410 }, // 20
         ];
 
         return {
@@ -87,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
             danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh, label: "Dance Floor", sub: "(25'×25')" },
             honorTable: { x: htx, y: hty, w: htw, h: hth },
             podium: null,
-            stage: { x: rx + rw / 2 + 10, y: ry + rh - 8, w: 140, h: 52, label: "STAGE", sub: "(10'×18')" },
-            entrance: { x: rx + rw / 2 - 150, y: ry + rh - 8, w: 110, h: 40, label: "ENTRANCE" },
-            bar: { x: rx - 8, y: ry + 180, w: 40, h: 140, label: "BAR" },
+            stage: { x: rx + rw / 2 + 30, y: ry + rh - 8, w: 150, h: 52, label: "STAGE", sub: "(10'×18')" },
+            entrance: { x: rx + rw / 2 - 170, y: ry + rh - 8, w: 120, h: 40, label: "ENTRANCE" },
+            bar: { x: rx - 8, y: ry + 200, w: 40, h: 130, label: "BAR" },
             djBooth: null,
             label: "Royal Hall",
         };
@@ -130,8 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
             { x: dfx + dfw / 2 - 215, y: ry + 235 }, // 12
             { x: dfx + dfw / 2 - 215, y: ry + 315 }, // 13
             { x: dfx + dfw / 2 - 215, y: ry + 400 }, // 14
-            { x: dfx + dfw / 2 - 215, y: ry + 480 }, // 30
-
 
             // RIGHT INNER COLUMN
             { x: dfx + dfw + 55, y: ry + 115 }, // 15
@@ -153,14 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
             { x: dfx + dfw / 2 + 215, y: ry + 315 }, // 27
             { x: dfx + dfw / 2 + 215, y: ry + 400 }, // 28
             { x: dfx + dfw / 2 + 215, y: ry + 480 }, // 29
-            { x: dfx + dfw / 2 - 15, y: ry + 480 }, // 30
+            { x: dfx + dfw / 2 - 215, y: ry + 480 }, // 30
 
             // Flanking dance floor center
-            { x: dfx - 60, y: dfy + 230 }, // 31
-            { x: dfx + dfw / 2 - 130, y: ry + 500 }, // 32
-            { x: rx + 220, y: ry + 540 },// 33
-            { x: dfx + dfw + 60, y: dfy + 70 }, // 34 — already covered by right inner col
-            { x: dfx + dfw + 60, y: dfy + 150 }, // 35
+            { x: dfx - 30, y: dfy + 381 }, // 31
+            { x: rx + 320, y: ry + 485 }, // 32
+            { x: rx + 435, y: ry + 485 }, // 33
+            { x: dfx + dfw + 40, y: dfy + 381 }, // 34
+            { x: dfx + dfw + 180, y: dfy + 381 }, // 35
         ];
 
         return {
@@ -171,44 +145,40 @@ document.addEventListener("DOMContentLoaded", () => {
             podium: { x: podx, y: pody, w: podw, h: podh, label: "Honor Table", sub: "(8'×12')" },
             stage: null,
             entrance: { x: rx + rw - 330, y: ry + rh + 2, w: 100, h: 36, label: "ENTRANCE", dashed: true },
-            bar: null,
+            grandBar: { x: rx + 30, y: ry + rh - 120, w: 80, h: 40, label: "BAR" },
             djBooth: { x: rx + 290, y: ry + rh - 70, w: 110, h: 55, label: "Espace DJ", sub: "(8'×12')" },
             label: "Grand Salon",
         };
     })();
 
     // ─────────────────────────────────────────────
-    // PRINCESS  (smaller hall, 14 tables)
+    // PRINCESS  (smaller hall, 10 tables)
     // ─────────────────────────────────────────────
     const princess = (() => {
-        const rx = 80, ry = 70, rw = 640, rh = 430;
-        const dfx = rx + 180, dfy = ry + 110, dfw = 280, dfh = 200;
+        const rx = 80, ry = 70, rw = 640, rh = 430; // Room dimensions
+        const dfx = rx + 180, dfy = ry + 110, dfw = 280, dfh = 200; // Dance floor – 18'×25', centered
         const tables = [
-            { x: rx + 50, y: ry + 80 }, // 1
-            { x: rx + 50, y: ry + 175 }, // 2
-            { x: rx + 50, y: ry + 270 }, // 3
-            { x: rx + 50, y: ry + 365 }, // 4
-            { x: rx + rw - 50, y: ry + 80 }, // 5
-            { x: rx + rw - 50, y: ry + 175 }, // 6
-            { x: rx + rw - 50, y: ry + 270 }, // 7
-            { x: rx + rw - 50, y: ry + 365 }, // 8
-            { x: rx + 155, y: ry + 55 }, // 9
-            { x: rx + 270, y: ry + 55 }, // 10
-            { x: rx + 385, y: ry + 55 }, // 11
-            { x: rx + 500, y: ry + 55 }, // 12
-            { x: rx + 225, y: ry + rh - 50 }, // 13
-            { x: rx + 420, y: ry + rh - 50 }, // 14
+            { x: rx + 70, y: ry + 130 }, // 1
+            { x: rx + 145, y: ry + 130 }, // 2
+            { x: rx + 105, y: ry + 200 }, // 3
+            { x: rx + 70, y: ry + 270 }, // 4
+            { x: rx + 145, y: ry + 270 }, // 5
+            { x: rx + rw - 150, y: ry + 130 }, // 6
+            { x: rx + rw - 80, y: ry + 130 }, // 7
+            { x: rx + rw - 115, y: ry + 200 }, // 8
+            { x: rx + 490, y: ry + 270 }, // 9
+            { x: rx + 565, y: ry + 270 }, // 10
         ];
         return {
             tables,
             room: { x: rx, y: ry, w: rw, h: rh },
             danceFloor: { x: dfx, y: dfy, w: dfw, h: dfh, label: "Dance Floor", sub: "(18'×25')" },
-            honorTable: { x: dfx + 20, y: ry + 65, w: dfw - 40, h: 24 },
+            honorTable: { x: dfx + 55, y: ry + 40, w: dfw - 100, h: 24 },
             podium: null,
             stage: null,
             entrance: { x: rx + rw / 2 - 55, y: ry + rh - 5, w: 110, h: 32, label: "ENTRANCE", dashed: true },
-            bar: null,
-            djBooth: null,
+            angledBar: { x: rx + rw - 100, y: ry + 35, w: 90, h: 35, angle: 130, label: "BAR" },
+            djBooth: { x: rx + 320, y: ry + rh - 70, w: 110, h: 55, label: "DJ", sub: "(8'×12')" },
             label: "Princess",
         };
     })();
@@ -350,6 +320,25 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.fillStyle = COLOR.featureText;
             ctx.textAlign = "center";
             ctx.fillText(entrance.label, entrance.x + entrance.w / 2, entrance.y + entrance.h / 2 + 4);
+        }
+
+        if (layout.angledBar) {
+            const barObj = layout.angledBar;
+            ctx.save();
+            ctx.translate(barObj.x + barObj.w / 2, barObj.y + barObj.h / 2);
+            ctx.rotate((barObj.angle * Math.PI) / 100);
+            ctx.beginPath();
+            roundRect(-barObj.w / 2, -barObj.h / 2, barObj.w, barObj.h, 3);
+            ctx.fillStyle = COLOR.feature;
+            ctx.fill();
+            ctx.strokeStyle = COLOR.featureStroke;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+            ctx.font = "9px 'Raleway', sans-serif";
+            ctx.fillStyle = COLOR.featureText;
+            ctx.textAlign = "center";
+            ctx.fillText(barObj.label, 0, 4);
+            ctx.restore();
         }
 
         // Tables
