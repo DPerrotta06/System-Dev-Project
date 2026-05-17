@@ -172,6 +172,13 @@ $app->get('/reviews', function (Request $request, Response $response) use ($twig
     return $response;
 });
 
+//CSP HEADER TO ALLOW ELFSIGHT WIDGETS TO FUNCTION PROPERLY
+$app->add(function (Request $request, RequestHandler $handler) {
+    $response = $handler->handle($request);
+$response = $response->withHeader('Content-Security-Policy', "script-src 'self' 'unsafe-inline' https://elfsightcdn.com https://apps.elfsight.com https://universe-static.elfsightcdn.com");
+    return $response;
+});
+
 
 /* ───────── LANGUAGE SWITCH ───────── */
 $app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath) {
